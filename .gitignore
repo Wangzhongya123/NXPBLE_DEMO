@@ -1,0 +1,6 @@
+*.xml
+*.ld
+/bm/mdk/debug/
+*.ini
+*.Administrator
+
