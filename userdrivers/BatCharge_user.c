@@ -1,5 +1,6 @@
 #include "BatCharge_user.h"
 #include "Adc_user.h"
+#include "Key_user.h"
 
 /**********************************************/
 /* 函数功能：电量测试	用于给蓝牙发送电池信息*/
@@ -109,7 +110,7 @@ void ChargeIn_Pin_Init(void)
 /**********************************************/
 void ChargeStart_Init(void)
 {
-	const uint32_t USER_ChartStart_config = (IOCON_FUNC0 |IOCON_MODE_PULLUP | IOCON_DRIVE_HIGH  );  	                                    
+	const uint32_t USER_ChartStart_config = (IOCON_FUNC0 |IOCON_MODE_PULLUP | IOCON_DRIVE_LOW  );  	                                    
 	IOCON_PinMuxSet(IOCON, PORT_CHARGE_IDX, CHARGESTART_PIN, USER_ChartStart_config); /* GPIOA ---CHARGE_START */	
 	
     GPIO_PinInit(GPIOA, CHARGESTART_PIN, &(gpio_pin_config_t){kGPIO_DigitalInput, 1U});
@@ -126,54 +127,54 @@ unsigned char ChargeStart_Status(void)
 /**********************************************/
 void CurrentChoice_Pin_Init(void)
 {
-	const uint32_t USER_CurrentChoice_1_config = (IOCON_FUNC0 |IOCON_MODE_HIGHZ | IOCON_DRIVE_HIGH  );  	                                    
+	const uint32_t USER_CurrentChoice_1_config = (IOCON_FUNC0 |IOCON_MODE_HIGHZ | IOCON_DRIVE_LOW  );  	                                    
 	IOCON_PinMuxSet(IOCON, PORT_CHARGE_IDX, CurrentChoice_1_PIN, USER_CurrentChoice_1_config); /* GPIOA ---CHARGE_CURRENT_CHOICE_1 */
-	const uint32_t USER_CurrentChoice_2_config = (IOCON_FUNC0 |IOCON_MODE_HIGHZ | IOCON_DRIVE_HIGH  );  	                                    
-	IOCON_PinMuxSet(IOCON, PORT_CHARGE_IDX, CurrentChoice_2_PIN, USER_CurrentChoice_2_config); /* GPIOA ---CHARGE_CURRENT_CHOICE_2 */	
+	GPIO_PinInit(GPIOA, CurrentChoice_1_PIN, &(gpio_pin_config_t){kGPIO_DigitalInput, 0U});
 	
-    GPIO_PinInit(GPIOA, CurrentChoice_1_PIN, &(gpio_pin_config_t){kGPIO_DigitalOutput, 0U});
-    GPIO_PinInit(GPIOA, CurrentChoice_2_PIN, &(gpio_pin_config_t){kGPIO_DigitalOutput, 0U});	
+	const uint32_t USER_CurrentChoice_2_config = (IOCON_FUNC0 |IOCON_MODE_HIGHZ | IOCON_DRIVE_LOW  );  	                                    
+	IOCON_PinMuxSet(IOCON, PORT_CHARGE_IDX, CurrentChoice_2_PIN, USER_CurrentChoice_2_config); /* GPIOA ---CHARGE_CURRENT_CHOICE_2 */	
+    GPIO_PinInit(GPIOA, CurrentChoice_2_PIN, &(gpio_pin_config_t){kGPIO_DigitalInput, 0U});	
 }
 
 void CurrentChoice_MIN(void)
 {
-	GPIO_WritePinOutput(GPIOA, CurrentChoice_1_PIN, 1);
-	GPIO_WritePinOutput(GPIOA, CurrentChoice_2_PIN, 1);	
+	const uint32_t USER_CurrentChoice_1_config = (IOCON_FUNC0 |IOCON_MODE_HIGHZ | IOCON_DRIVE_LOW  );  	                                    
+	IOCON_PinMuxSet(IOCON, PORT_CHARGE_IDX, CurrentChoice_1_PIN, USER_CurrentChoice_1_config); /* GPIOA ---CHARGE_CURRENT_CHOICE_1 */
+	GPIO_PinInit(GPIOA, CurrentChoice_1_PIN, &(gpio_pin_config_t){kGPIO_DigitalInput, 0U});
+	
+	const uint32_t USER_CurrentChoice_2_config = (IOCON_FUNC0 |IOCON_MODE_HIGHZ | IOCON_DRIVE_LOW  );  	                                    
+	IOCON_PinMuxSet(IOCON, PORT_CHARGE_IDX, CurrentChoice_2_PIN, USER_CurrentChoice_2_config); /* GPIOA ---CHARGE_CURRENT_CHOICE_2 */	
+    GPIO_PinInit(GPIOA, CurrentChoice_2_PIN, &(gpio_pin_config_t){kGPIO_DigitalInput, 0U});	
 }
 
 void CurrentChoice_MAX(void)
 {
-	GPIO_WritePinOutput(GPIOA, CurrentChoice_1_PIN, 0);
-	GPIO_WritePinOutput(GPIOA, CurrentChoice_2_PIN, 1);		
+	const uint32_t USER_CurrentChoice_1_config = (IOCON_FUNC0 |IOCON_MODE_HIGHZ | IOCON_DRIVE_LOW  );  	                                    
+	IOCON_PinMuxSet(IOCON, PORT_CHARGE_IDX, CurrentChoice_1_PIN, USER_CurrentChoice_1_config); /* GPIOA ---CHARGE_CURRENT_CHOICE_1 */
+	GPIO_PinInit(GPIOA, CurrentChoice_1_PIN, &(gpio_pin_config_t){kGPIO_DigitalInput, 0U});
+	
+	const uint32_t USER_CurrentChoice_2_config = (IOCON_FUNC0 |IOCON_MODE_PULLDOWN | IOCON_DRIVE_LOW  );  	                                    
+	IOCON_PinMuxSet(IOCON, PORT_CHARGE_IDX, CurrentChoice_2_PIN, USER_CurrentChoice_2_config); /* GPIOA ---CHARGE_CURRENT_CHOICE_2 */	
+    GPIO_PinInit(GPIOA, CurrentChoice_2_PIN, &(gpio_pin_config_t){kGPIO_DigitalOutput, 0U});		
+	GPIO_WritePinOutput(GPIOA, CurrentChoice_2_PIN, 0);		
 }
 
 void CurrentChoice_MID(void)
 {	
-	GPIO_WritePinOutput(GPIOA, CurrentChoice_1_PIN, 1);
-	GPIO_WritePinOutput(GPIOA, CurrentChoice_2_PIN, 0);	
+	const uint32_t USER_CurrentChoice_1_config = (IOCON_FUNC0 | IOCON_MODE_PULLDOWN| IOCON_DRIVE_LOW  );  	                                    
+	IOCON_PinMuxSet(IOCON, PORT_CHARGE_IDX, CurrentChoice_1_PIN, USER_CurrentChoice_1_config); /* GPIOA ---CHARGE_CURRENT_CHOICE_1 */
+	GPIO_PinInit(GPIOA, CurrentChoice_1_PIN, &(gpio_pin_config_t){kGPIO_DigitalOutput, 0U});
+	GPIO_WritePinOutput(GPIOA, CurrentChoice_1_PIN, 0);
+	
+	const uint32_t USER_CurrentChoice_2_config = (IOCON_FUNC0 |IOCON_MODE_HIGHZ | IOCON_DRIVE_LOW  );  	                                    
+	IOCON_PinMuxSet(IOCON, PORT_CHARGE_IDX, CurrentChoice_2_PIN, USER_CurrentChoice_2_config); /* GPIOA ---CHARGE_CURRENT_CHOICE_2 */	
+    GPIO_PinInit(GPIOA, CurrentChoice_2_PIN, &(gpio_pin_config_t){kGPIO_DigitalInput, 0U});			
 }
 
 /**********************************************/
 /* 函数功能：电池的低功耗功能 设置			  */					     
 /* 入口参数:                              	  */
 /**********************************************/
-/* Reinitialize peripherals after waked up from PD, 
-	this function will be called in critical area */
-static void USER_WakeupRestore(void)
-{
-
-}
-
-/* 进入睡眠前的准备工作,  */
-static void USER_ToSleep_Intend(void)
-{
-	uint32_t msk, val;
-
-	/* Enable GPIO wakeup */
-    NVIC_ClearPendingIRQ(EXT_GPIO_WAKEUP_IRQn);
-    NVIC_EnableIRQ(EXT_GPIO_WAKEUP_IRQn);
-}
-
 static void switch_to_OSC32M(void)
 {
     POWER_WritePmuCtrl1(SYSCON, SYSCON_PMU_CTRL1_OSC32M_DIS_MASK, SYSCON_PMU_CTRL1_OSC32M_DIS(0U));
@@ -189,24 +190,44 @@ static void switch_to_XTAL(void)
     POWER_WritePmuCtrl1(SYSCON, SYSCON_PMU_CTRL1_OSC32M_DIS_MASK, SYSCON_PMU_CTRL1_OSC32M_DIS(1U));
 }
 
-void USER_ToSleep(void)
+/* Reinitialize peripherals after waked up from PD, 
+	this function will be called in critical area */
+void USER_WakeupRestore(void)
 {
-	__disable_irq();
-	
-	USER_ToSleep_Intend();//准备进入睡眠
-	
-	switch_to_OSC32M();
-
-	POWER_LatchIO();
-	POWER_EnterPowerDown(0);
 	POWER_RestoreIO();
 	switch_to_XTAL();
 
 	NVIC_DisableIRQ(EXT_GPIO_WAKEUP_IRQn);
 	NVIC_ClearPendingIRQ(EXT_GPIO_WAKEUP_IRQn);
 
-	/* after waking up from pwoer down, usart config is lost, recover it */
-	USER_WakeupRestore();//从睡眠中唤醒
+	
 	__enable_irq();
 }
 
+/* 进入睡眠前的准备工作,  */
+void USER_ToSleep_Intend(void)
+{
+	uint32_t msk, val;
+	
+	msk = SYSCON_PMU_CTRL1_XTAL32K_PDM_DIS_MASK | SYSCON_PMU_CTRL1_RCO32K_PDM_DIS_MASK |
+          SYSCON_PMU_CTRL1_XTAL32K_DIS_MASK | SYSCON_PMU_CTRL1_RCO32K_DIS_MASK;
+	
+	val = SYSCON_PMU_CTRL1_XTAL32K_PDM_DIS(1U)  /* switch off XTAL32K during power down */
+	  | SYSCON_PMU_CTRL1_RCO32K_PDM_DIS(1U) /* switch off RCO32K during power down */
+	  | SYSCON_PMU_CTRL1_XTAL32K_DIS(1U)    /* switch off XTAL32K at all time */
+	  | SYSCON_PMU_CTRL1_RCO32K_DIS(1U);    /* switch off RCO32K */
+
+	POWER_WritePmuCtrl1(SYSCON, msk, val);
+	
+	/* Enable GPIO wakeup */
+    NVIC_ClearPendingIRQ(EXT_GPIO_WAKEUP_IRQn);
+    NVIC_EnableIRQ(EXT_GPIO_WAKEUP_IRQn);
+
+	SYSCON->PIO_WAKEUP_LVL0 = SYSCON->PIO_WAKEUP_LVL0 | USER_SW1_GPIO_PIN_MASK;
+    SYSCON->PIO_WAKEUP_EN0 = SYSCON->PIO_WAKEUP_EN0 | USER_SW1_GPIO_PIN_MASK;
+	
+	__disable_irq();
+	
+	POWER_LatchIO();
+    CLOCK_DisableClock(kCLOCK_Flexcomm0);
+}

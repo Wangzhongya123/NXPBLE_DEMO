@@ -182,8 +182,8 @@ void CalculatePWMDuty(float TargerPower,float Resistant_Smoke,float Realtime_Bat
 	
 	if(_duty <= 5u)
 		_duty =5u;
-	else if(_duty >= 90u)
-		_duty = 90u;
+	else if(_duty >= 98u)
+		_duty = 98u;
 	else;
 		
 	PWM_Duty =(unsigned short int)_duty;

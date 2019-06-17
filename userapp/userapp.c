@@ -129,13 +129,13 @@ void SYS_Init(void)
     userBOARD_InitPins();
 
 	Serial_Print(gAppSerMgrIf, "\n\r 综合外设功能测试\n\r", gAllowToBlock_d);
-
+	
 	Time1_Init(SYS_FREQUENCY);
 	Time2_Init(2);
 	Time3_Init(2);
 	ADC_Pin_init();
 	ADC_Configuration();
-	RGB_PWM_init();
+	LED_Pin_Init();//RGB_PWM_init();
 	Key_Init();
 	LoadRESTest_Pin_Init();
 	PWMOUT_Pin_Init();
@@ -148,6 +148,10 @@ void SYS_Init(void)
 	TEST_LED_Pin_Init();
 
 	LED_Flicker(GREEN_LED_Flicker,3);
+	
+	POWER_EnablePD(kPDRUNCFG_PD_MEM9);
+    POWER_EnablePD(kPDRUNCFG_PD_MEM8);
+    POWER_EnablePD(kPDRUNCFG_PD_MEM7);	
 	
 	{
 		do

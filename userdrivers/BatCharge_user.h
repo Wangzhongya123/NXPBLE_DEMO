@@ -21,6 +21,8 @@
 #define BATTERY_FULL_VOLTAGE   4.2f /* milliVolts */
 #define BATTERY_MIN_VOLTAGE    2.8f /* milliVolts */
 
+#define USER_SW1_GPIO_PIN_MASK (1U << USER_SW1_GPIO_PIN)
+
 void NTCPin_Init(void);
 void NTC_EN(void);
 void NTC_DIS(void);
@@ -40,6 +42,7 @@ void CurrentChoice_MIN(void);
 void CurrentChoice_MAX(void);
 void CurrentChoice_MID(void);
 
-void USER_ToSleep(void);
+void USER_WakeupRestore(void);
+void USER_ToSleep_Intend(void);
 
 #endif /* __BatCharge_user_H */

@@ -39,6 +39,7 @@ void ADC_Configuration(void)
 	#define USER_DEFAULT_ADC_REFSOURCE 		kADC_RefSourceVccWithDriver
 	#define USER_DEFAULT_ADC_CLOCK          kADC_Clock2M
 	#define LDO_V							EXRef_LDOVolt
+	#define SDADC_DOWNSAMPLE				kADC_DownSample32
 	
 	/* Power on ADC */
     POWER_EnableADC(true);
@@ -59,6 +60,7 @@ void ADC_Configuration(void)
     /* Initial ADC Sigma Delta(SD) configuration */
     ADC_GetSdDefaultConfig(&adcSdConfigStruct);
 	adcSdConfigStruct.refGain= USER_DEFAULT_SD_REFGAIN;
+	adcSdConfigStruct.downSample = SDADC_DOWNSAMPLE;
 	adcSdConfigStruct.vinnSelect = USER_DEFAULT_SD_VINNSELECT;
     ADC_SetSdConfig(ADC, USER_DEFAULT_ADC_CFG_IDX, &adcSdConfigStruct);
 	ADC_PgaChopperEnable(ADC, true);
@@ -97,6 +99,7 @@ static float ADC_Channel_Result(unsigned char ADC_CHANNEL)
     ADC_GetSdDefaultConfig(&adcSdConfigStruct);
 	adcSdConfigStruct.vinnSelect = USER_DEFAULT_SD_VINNSELECT;
 	adcSdConfigStruct.refGain= USER_DEFAULT_SD_REFGAIN;
+	adcSdConfigStruct.downSample = SDADC_DOWNSAMPLE;
     ADC_SetSdConfig(ADC, USER_DEFAULT_ADC_CFG_IDX, &adcSdConfigStruct);
 	ADC_PgaChopperEnable(ADC, true);
 

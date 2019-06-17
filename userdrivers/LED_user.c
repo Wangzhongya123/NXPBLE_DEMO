@@ -4,8 +4,13 @@
 /* 函数功能：						          */
 /* 入口参数:                              	  */
 /**********************************************/
-static void LED_Pin_Init(void)
+void RGB_PWM_init(void)
 {
+    uint32_t sctimerClock = BUS_CLK_FREQ;
+    sctimer_config_t 			sctimerInfo;
+    sctimer_pwm_signal_param_t 	pwmParam;
+	uint32_t event;
+	
 	/* Enable GPIO clock */    
     CLOCK_EnableClock(kCLOCK_Gpio);
 		
@@ -14,38 +19,7 @@ static void LED_Pin_Init(void)
 	const uint32_t LED_G_config = (IOCON_FUNC2 | IOCON_MODE_HIGHZ |IOCON_DRIVE_LOW  );     
 	IOCON_PinMuxSet(IOCON, 0, G_PIN_IDX, LED_G_config); /* RGB --G */
 	const uint32_t LED_B_config = (IOCON_FUNC2 | IOCON_MODE_HIGHZ |IOCON_DRIVE_LOW  );     
-	IOCON_PinMuxSet(IOCON, 0, B_PIN_IDX, LED_B_config); /* RGB --B */		
-}
-
-/**********************************************/
-/* 函数功能：						          */
-/* 入口参数:                              	  */
-/**********************************************/
-void LED_Close(void)
-{
-	/* Enable GPIO clock */    
-    CLOCK_EnableClock(kCLOCK_Gpio);
-		
-	const uint32_t LED_R_config = (IOCON_FUNC0 | IOCON_MODE_PULLUP |IOCON_DRIVE_LOW  );   
-	IOCON_PinMuxSet(IOCON, 0, R_PIN_IDX, LED_R_config); /* RGB --R */
-	const uint32_t LED_G_config = (IOCON_FUNC0 | IOCON_MODE_PULLUP |IOCON_DRIVE_LOW  );     
-	IOCON_PinMuxSet(IOCON, 0, G_PIN_IDX, LED_G_config); /* RGB --G */
-	const uint32_t LED_B_config = (IOCON_FUNC0 | IOCON_MODE_PULLUP |IOCON_DRIVE_LOW  );     
 	IOCON_PinMuxSet(IOCON, 0, B_PIN_IDX, LED_B_config); /* RGB --B */	
-}
-
-/**********************************************/
-/* 函数功能：						          */
-/* 入口参数:                              	  */
-/**********************************************/
-void RGB_PWM_init(void)
-{
-    uint32_t sctimerClock = BUS_CLK_FREQ;
-    sctimer_config_t 			sctimerInfo;
-    sctimer_pwm_signal_param_t 	pwmParam;
-	uint32_t event;
-	
-	LED_Pin_Init();
 	
 	#define PWM_LEVEL 		 kSCTIMER_LowTrue
 	#define PWM_ALIGENDMODE	 kSCTIMER_EdgeAlignedPwm
@@ -112,74 +86,11 @@ void PWM_DutyPercet_Change(led_rgb_set led_color)
 }
 
 /**********************************************/
-/* 函数功能：						          */
+/* 函数功能：	呼吸使用			          */
 /* 入口参数:                              	  */
 /**********************************************/
-void LED_Red_On(void)
-{
-	LED_Pin_Init();
-	
-	led_rgb_set led_set={
-		.LED_BLUE_Duty	=	1,
-		.LED_RED_Duty 	=	100,
-		.LED_GREEN_Duty =	1,
-	};
-
-	PWM_DutyPercet_Change(led_set);
-}
-void LED_Blue_On(void)
-{
-	LED_Pin_Init();	
-	
-	led_rgb_set led_set={
-		.LED_BLUE_Duty	=	100,
-		.LED_RED_Duty 	=	1,
-		.LED_GREEN_Duty =	1,	
-	};
-
-	PWM_DutyPercet_Change(led_set);
-}
-void LED_Green_On(void)
-{
-	LED_Pin_Init();
-	
-	led_rgb_set led_set={
-		.LED_BLUE_Duty	=	1,
-		.LED_RED_Duty 	=	1,
-		.LED_GREEN_Duty =	100,	
-	};
-	
-	PWM_DutyPercet_Change(led_set);
-}
-void LED_Yellow_On(void)
-{
-	LED_Pin_Init();
-	
-	led_rgb_set led_set={
-		.LED_BLUE_Duty	=	1,
-		.LED_RED_Duty 	=	100,
-		.LED_GREEN_Duty =	100,	
-	};
-	
-	PWM_DutyPercet_Change(led_set);
-}
-void LED_All_On(void)
-{
-	LED_Pin_Init();
-	
-	led_rgb_set led_set={
-		.LED_BLUE_Duty	=	100,
-		.LED_RED_Duty 	=	100,
-		.LED_GREEN_Duty =	100,	
-	};
-	
-	PWM_DutyPercet_Change(led_set);
-}
-
 void LED_Breath(unsigned char duty)
 {
-	LED_Pin_Init();
-	
 	led_rgb_set led_set={
 		.LED_BLUE_Duty	=	duty,
 		.LED_RED_Duty 	=	duty,
@@ -193,25 +104,79 @@ void LED_Breath(unsigned char duty)
 /* 函数功能：						          */
 /* 入口参数:                              	  */
 /**********************************************/
+void LED_Pin_Init(void)
+{
+	/* Enable GPIO clock */    
+    CLOCK_EnableClock(kCLOCK_Gpio);
+		
+	const uint32_t LED_R_config = (IOCON_FUNC0 | IOCON_MODE_PULLUP |IOCON_DRIVE_LOW  );   
+	IOCON_PinMuxSet(IOCON, 0, R_PIN_IDX, LED_R_config); /* RGB --R */
+	GPIO_PinInit(GPIOA, R_PIN_IDX, &(gpio_pin_config_t){kGPIO_DigitalOutput, 1U});
+	
+	const uint32_t LED_G_config = (IOCON_FUNC0 | IOCON_MODE_PULLUP |IOCON_DRIVE_LOW  );     
+	IOCON_PinMuxSet(IOCON, 0, G_PIN_IDX, LED_G_config); /* RGB --G */
+	GPIO_PinInit(GPIOA, G_PIN_IDX, &(gpio_pin_config_t){kGPIO_DigitalOutput, 1U});
+	
+	const uint32_t LED_B_config = (IOCON_FUNC0 | IOCON_MODE_PULLUP |IOCON_DRIVE_LOW  );     
+	IOCON_PinMuxSet(IOCON, 0, B_PIN_IDX, LED_B_config); /* RGB --B */	
+	GPIO_PinInit(GPIOA, B_PIN_IDX, &(gpio_pin_config_t){kGPIO_DigitalOutput, 1U});
+}
+
+/**********************************************/
+/* 函数功能：						          */
+/* 入口参数:                              	  */
+/**********************************************/
+void LED_Red_On(void)
+{
+	GPIO_WritePinOutput(GPIOA, R_PIN_IDX, 0);
+}
+void LED_Blue_On(void)
+{
+	GPIO_WritePinOutput(GPIOA, B_PIN_IDX, 0);
+}
+void LED_Green_On(void)
+{
+	GPIO_WritePinOutput(GPIOA, G_PIN_IDX, 0);
+}
+void LED_Yellow_On(void)
+{
+	GPIO_WritePinOutput(GPIOA, R_PIN_IDX, 0);
+	GPIO_WritePinOutput(GPIOA, G_PIN_IDX, 0);
+}
+void LED_All_On(void)
+{
+	GPIO_WritePinOutput(GPIOA, R_PIN_IDX, 0);	
+	GPIO_WritePinOutput(GPIOA, B_PIN_IDX, 0);
+	GPIO_WritePinOutput(GPIOA, G_PIN_IDX, 0);
+}
+
+
+/**********************************************/
+/* 函数功能：						          */
+/* 入口参数:                              	  */
+/**********************************************/
 void LED_Red_Off(void)
 {
-	LED_Close();
+	GPIO_WritePinOutput(GPIOA, R_PIN_IDX, 1);
 }
 void LED_Blue_Off(void)
 {
-	LED_Close();
+	GPIO_WritePinOutput(GPIOA, B_PIN_IDX, 1);
 }
 void LED_Green_Off(void)
 {
-	LED_Close();
+	GPIO_WritePinOutput(GPIOA, G_PIN_IDX, 1);
 }
 void LED_Yellow_Off(void)
 {
-	LED_Close();
+	GPIO_WritePinOutput(GPIOA, R_PIN_IDX, 1);
+	GPIO_WritePinOutput(GPIOA, G_PIN_IDX, 1);	
 }
 void LED_All_Off(void)
 {
-	LED_Close();
+	GPIO_WritePinOutput(GPIOA, R_PIN_IDX, 1);	
+	GPIO_WritePinOutput(GPIOA, B_PIN_IDX, 1);
+	GPIO_WritePinOutput(GPIOA, G_PIN_IDX, 1);	
 }
 
 /**********************************************/
@@ -235,12 +200,13 @@ void LED_Flicker(unsigned char led_colour,unsigned char num)
 	for(i=0;i<num;i++)
 	{	
 		delaytobletask = 0;
-		LED_Close();
+		LED_All_Off();
 		
-		while(delaytobletask<=20u)
+		while(delaytobletask<=13u)
 			ble_task();		
 		
 		delaytobletask = 0;
+		
 		switch(led_colour)
 		{
 			case RED_LED_Flicker:  		LED_Red_On(); 	;break;
@@ -248,10 +214,10 @@ void LED_Flicker(unsigned char led_colour,unsigned char num)
 			case BLUE_LED_Flicker:  	LED_Blue_On();	;break;
 			case YELLOW_LED_Flicker: 	LED_Yellow_On();;break;
 			case WHITE_LED_Flicker: 	LED_All_On(); 	;break;		
-			default:					LED_Close();	;break;	
+			default:					LED_All_Off();	;break;	
 		}
 		
-		while(delaytobletask<=20u)
+		while(delaytobletask<=13u)
 			ble_task();
 	}
 	LED_All_Off();

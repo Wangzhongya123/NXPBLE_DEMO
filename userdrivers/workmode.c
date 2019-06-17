@@ -91,7 +91,7 @@ extern void ble_task(void);//执行蓝牙消息队列检查
 extern void USER_SendDateToAir(void *pData);
 extern void USER_Serial_Printf(void * pParam);//modify by wzy
 
-char str[15]={0};//临时使用
+char str[20]={0};//临时使用
 
 /**********************************************/
 /* 函数功能； 使用消息队列检查的方法进行延时  */
@@ -296,12 +296,12 @@ WORK_MODE CheckWorkMode(void)
 			LoadRESTest_EN();	
 			delay_bybletask(20);
 			error_code = CalculateResistant_Value(&res,&ntc_res);
-			
+
 			memset(str,'\0',15);
 			memset(Send_Str,'\0',SENDDATA_NUMBER);
-			sprintf(str,"%.2fohm %.2fK\r\n",res,ntc_res);	
-			sprintf(Send_Str,"%.2fohm %.2fK",res,ntc_res);	
-			
+			sprintf(str,"%.2fohm %.2fK %.2fV\r\n",res,ntc_res,ADC_BAT_RealTimeValue);	
+			sprintf(Send_Str,"%.2fohm %.2fK %.2fV",res,ntc_res,ADC_BAT_RealTimeValue);	
+
 			USER_Serial_Printf(str);
 			USER_SendDateToAir((char *)Send_Str);	
 			
@@ -381,7 +381,7 @@ void Mode_Query_Work(void)
 	}
 		
 	LED_All_Off();	
-
+	
 	switch(Volt_Class)
 	{
 		case 4:{LED_Green_On();}break;
@@ -676,6 +676,7 @@ Charge_ERROR Mode_ChargeIn_Work(void)
 				#endif	
 
 				Charge_DIS();//充电使能关闭
+				CurrentChoice_Pin_Init();//充电电流控制脚初始化
 				LED_Flicker(RED_LED_Flicker ,6);
 				RestartTiming();//重新计时
 
@@ -685,6 +686,7 @@ Charge_ERROR Mode_ChargeIn_Work(void)
 			}
 			else if(_VIN_RealTimeValue<= ChargeVolt_MIN)//小于最小的电压
 			{
+				CurrentChoice_Pin_Init();//充电电流控制脚初始化
 				delay_bybletask(500);//等待电压稳定再进行测量
 				_VIN_RealTimeValue =  ADC_CHANGE_Volt();
 				
@@ -754,6 +756,7 @@ Charge_ERROR Mode_ChargeIn_Work(void)
 					#endif
 						
 					RestartTiming();//重新计时	
+					CurrentChoice_Pin_Init();//充电电流控制脚初始化
 					
 					Volt_Class=4;//主程序电量为最高级					
 					Volt_Class_Fresh = ENABLED;
@@ -779,10 +782,12 @@ Charge_ERROR Mode_ChargeIn_Work(void)
 					#ifdef DEBUG_PRINT
 						//printf("\r\n 电池电压小于2.5");
 					#endif
-						
+					
+					CurrentChoice_Pin_Init();//充电电流控制脚初始化	
 					RestartTiming();//重新计时	
 					Volt_Class_Fresh = ENABLED;
 					Volt_Class=0;//主程序电量为最低等级
+					
 					return BatterVolt_too_low;	
 				}		
 			}
@@ -816,7 +821,8 @@ Charge_ERROR Mode_ChargeIn_Work(void)
 			#ifdef DEBUG_PRINT
 				//printf("\r\n charge outtime");
 			#endif	
-
+			
+			CurrentChoice_Pin_Init();//充电电流控制脚初始化
 			LED_Flicker(RED_LED_Flicker ,3);
 			RestartTiming();//重新计时
 			Volt_Class_Fresh = ENABLED;
@@ -838,6 +844,7 @@ Charge_ERROR Mode_ChargeIn_Work(void)
 					ChargeIn_Flag = DISABLED;
 
 					Charge_DIS();//充电使能关闭	
+					CurrentChoice_Pin_Init();//充电电流控制脚初始化
 					LED_All_Off();
 					RestartTiming();//重新计时	
 
@@ -993,7 +1000,8 @@ Charge_ERROR Mode_ChargeIn_Work(void)
 			CurrentChoice_MIN();
 		}
 	}
-	Charge_DIS();//充电与NTC使能关闭	
+	Charge_DIS();//充电与NTC使能关闭
+	CurrentChoice_Pin_Init();//充电电流控制脚初始化
 	LED_All_Off();
 	RestartTiming();//重新计时
 	delay_bybletask(100);//
@@ -1106,8 +1114,6 @@ Smokemode_ERROR Mode_Smoke_Work(void)
 				}
 
 				Differ_Press = DPS310_Standard-(float)pressure ;
-				
-				Differ_Press =2.0f;
 				
 				#ifdef DEBUG_PRINT
 					//printf("绝对气压: %d Pa\t基准值: %d Pa\t相对负压: %d Pa\r\n",(unsigned int)(pressure*100),(int)(DPS310_Standard*100),(int)((-1)*Differ_Press*100));	
@@ -1487,8 +1493,7 @@ void Fault_OverTemp_Work(void)
 		//printf("\r\nworking mode res is too high");
 	#endif
 	
-	LED_All_Off();
-	//LED_Flicker(LED_All ,5);	
+	LED_Flicker(WHITE_LED_Flicker ,5);	
 
 	Idle_Flag=ENABLED;
 	Heater_OverTemp_Flag=DISABLED;	
@@ -1587,7 +1592,8 @@ void RestartTiming(void)
 void EnterPowerSleepMode(void)
 {
 	ReadyForSleepMode();
-	   
+	//POWER_EnterPowerDown(0);
+	//POWER_EnterSleep();
 	WakeUpFormSleepMode();	
 }
 
@@ -1607,7 +1613,13 @@ void ReadyForSleepMode(void)
 	NTC_DIS();
 	ChargeIn_Pin_Init();
 	CurrentChoice_Pin_Init();
+	TEST_LED_Pin_Init();
 	
+	CTIMER_StopTimer(CTIMER1);
+	CTIMER_StopTimer(CTIMER2);
+	CTIMER_StopTimer(CTIMER3);
+	
+	//USER_ToSleep_Intend();
 	
 	Key_DownCount=0;
 	Key_HodeOnTime=0;
@@ -1626,11 +1638,10 @@ void WakeUpFormSleepMode(void)
 {	
 	int ret=0;
 	
-//	cnn.read_byte=&test_read_byte;
-//	cnn.read_block=&test_read_block;
-//	cnn.write_byte=&test_write_byte;
-//	cnn.delay_ms  = &test_wait_ms;
+	//USER_WakeupRestore();
 	
+	ADC_Pin_init();
+	LED_Pin_Init();//RGB_PWM_init();
 	Key_Init();
 	IIC_IO_Confing();	
 	LoadRESTest_Pin_Init();	
@@ -1639,6 +1650,12 @@ void WakeUpFormSleepMode(void)
 	Charge_Init();
 	ChargeStart_Init();
 	CurrentChoice_Pin_Init();	
+	
+	TEST_LED_Pin_Init();
+	
+	Time1_Init(SYS_FREQUENCY);
+	Time2_Init(2);
+	Time3_Init(2);
 	
 	do
 	{

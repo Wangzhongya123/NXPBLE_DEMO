@@ -41,10 +41,11 @@ typedef struct LED_RGB_config
 #define	YELLOW_LED_Flicker	4
 #define	WHITE_LED_Flicker	5
 
-void LED_Pin_Init(void);
-void LED_Close(void);
 void RGB_PWM_init(void);
 void PWM_DutyPercet_Change(led_rgb_set led_color);
+void LED_Breath(unsigned char duty);
+
+void LED_Pin_Init(void);
 
 void LED_Red_On(void);
 void LED_Blue_On(void);
@@ -52,13 +53,12 @@ void LED_Green_On(void);
 void LED_Yellow_On(void);
 void LED_All_On(void);
 
-void LED_Breath(unsigned char duty);
-
 void LED_Red_Off(void);
 void LED_Blue_Off(void);
 void LED_Green_Off(void);
 void LED_Yellow_Off(void);
 void LED_All_Off(void);
+void LED_Close(void);
 
 void LED_Flicker(unsigned char led_colour,unsigned char num);
 

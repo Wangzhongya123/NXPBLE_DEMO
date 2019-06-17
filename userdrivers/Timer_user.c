@@ -145,7 +145,7 @@ void TEST_LED_Pin_Init(void)
 	/* Enable GPIO clock */    
     CLOCK_EnableClock(kCLOCK_Gpio);
 
-    GPIO_PinInit(GPIOA, TEST_PIN_IDX, &(gpio_pin_config_t){kGPIO_DigitalOutput, 1U});
+    GPIO_PinInit(GPIOA, TEST_PIN_IDX, &(gpio_pin_config_t){kGPIO_DigitalOutput, 0U});
 }
 
 /*******************************************************************************
