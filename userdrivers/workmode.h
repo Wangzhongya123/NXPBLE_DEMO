@@ -150,9 +150,9 @@ extern volatile unsigned char LowvMode_Worked;//用于标志是否执行过了过放警示，如
 extern volatile unsigned char ChargeOutTime;//用于判定充电是否超时
 
 extern volatile unsigned char Volt_Clas_Overalls;//全局的电压等级标示
-extern volatile unsigned char Output_start;//输出过程中，用于标志测电阻的窗口
-extern volatile unsigned char Power_out_start;//开始输出功率
-extern volatile unsigned char Read_ADC_I_DET_Flag;//读电阻窗口
+extern volatile unsigned char Output_start;//输出过程中，标识有电压输出的阶段
+extern volatile unsigned char Power_out_start;//开始输出功率 //用于标识量电池的电压
+extern volatile unsigned char Read_ADC_I_DET_Flag;//读电阻窗串口用于标志测电阻的窗口
 
 extern volatile unsigned char LED_Blue_Toggle_Flag;//蓝灯闪烁标志
 extern volatile unsigned char LED_Red_Toggle_Flag;//红灯闪烁标志

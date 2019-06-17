@@ -48,7 +48,7 @@ volatile unsigned char ChargeVoltTooLow_Flag=0;//充电器电压太低，无法使用
 volatile unsigned char ChargeVoltTooHigh_Flag=0;//充电器电压太高，无法使用
 volatile unsigned char Smoke_battemptoohigh_Flag=0;//使用过程电池温度过高
 
-volatile unsigned char Power_out_start=0;//开始输出功率
+volatile unsigned char Power_out_start=0;//开始输出功率  //用于标识量电池的电压
 volatile unsigned char Output_start=0;//输出过程中，用于标志测电阻的窗口
 static volatile unsigned short int ResR_EDT_i[2]={0};//输出过程中R—DET上的电压值
 
@@ -1107,6 +1107,8 @@ Smokemode_ERROR Mode_Smoke_Work(void)
 
 				Differ_Press = DPS310_Standard-(float)pressure ;
 				
+				Differ_Press =2.0f;
+				
 				#ifdef DEBUG_PRINT
 					//printf("绝对气压: %d Pa\t基准值: %d Pa\t相对负压: %d Pa\r\n",(unsigned int)(pressure*100),(int)(DPS310_Standard*100),(int)((-1)*Differ_Press*100));	
 					//printf("Absolute_Atmosphere:%dPa\tCalibration_value:%dPa\tD_value:%dPa\r\n",(unsigned int)(pressure*100),(int)(DPS310_Standard*100),(int)((-1)*Differ_Press*100));	
@@ -1139,6 +1141,9 @@ Smokemode_ERROR Mode_Smoke_Work(void)
 					TargerPower = 0;
 					Smoke_output = DISABLED;//停止吸气				
 					Smoke_Flag = ENABLED;
+					QuitSmoke_Work();
+					
+					return Smoke_Normal;
 				}
 				
 				#ifdef DEBUG_PRINT				
@@ -1153,7 +1158,7 @@ Smokemode_ERROR Mode_Smoke_Work(void)
 		
 		if(Smoke_output == ENABLED)//输出过程中，已经在输出功率
 		{
-			if(Power_out_start == 1)
+			if(Power_out_start == 1)//用于标识量电池的电压
 			{
 				if(rdet_read==0)
 				{
@@ -1209,7 +1214,7 @@ Smokemode_ERROR Mode_Smoke_Work(void)
 						//Gpio_SetIO(3,5,1); //PWMOUT_DIS();
 						//Gpio_SetIO(0,3,1);//LoadRESTest_DIS();
 						LED_All_Off();
-						Smoke_Flag=DISABLED;
+						Smoke_Flag	=DISABLED;
 						Smoke_output=DISABLED;
 						Output_start=DISABLED;
 						ShortCircuit_Flag=ENABLED;//短路标志置位	
@@ -1327,6 +1332,12 @@ DPS310_respiratory DPS310_Respiratory(void)
 /**********************************************/	
 void QuitSmoke_Work(void)
 {
+	Smoke_Flag = DISABLED;	
+	PWMOUT_DIS();
+	LoadRESTest_DIS();	
+	CTIMER_StopTimer(CTIMER2);
+	Charge_DIS();//充电与NTC使能关闭
+	
 	LED_All_Off();	
 	
 	if(SmokeTimeOut_Flag==1)
@@ -1334,12 +1345,7 @@ void QuitSmoke_Work(void)
 		LED_Flicker(RED_LED_Flicker ,8);
 		ON_OFF_Flag = DISABLED;//进入关机状态	
 	}
-						
-	Smoke_Flag = DISABLED;	
-	PWMOUT_DIS();
-	LoadRESTest_DIS();
-	Charge_DIS();//充电与NTC使能关闭
-	
+
 	Smoke_output=DISABLED;
 	Smoke_Sec_Time=0;
 	Read_ADC_I_DET_Flag=0;

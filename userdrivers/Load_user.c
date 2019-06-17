@@ -23,7 +23,7 @@ void LoadRESTest_Pin_Init(void)
 	IOCON_PinMuxSet(IOCON, PORT_LOAD_TEST_IDX, LOAD_TEST_GPIO_PIN, LOADTEST_PIN_config); 
 
 	GPIO_PinInit(GPIOA, LOAD_TEST_GPIO_PIN, &(gpio_pin_config_t){kGPIO_DigitalOutput, 0U});	
-	//GPIO_WritePinOutput(GPIOA, LOAD_TEST_GPIO_PIN, 0);//默认关闭
+	GPIO_WritePinOutput(GPIOA, LOAD_TEST_GPIO_PIN, 0);//默认关闭
 }
 
 void LoadRESTest_EN(void)
@@ -53,7 +53,7 @@ void PWMOUT_Pin_Init(void)
 	IOCON_PinMuxSet(IOCON, PORT_LOAD_PWM_IDX, LOAD_PWM_GPIO_PIN, LOADTEST_PIN_config); 
 
 	GPIO_PinInit(GPIOA, LOAD_PWM_GPIO_PIN, &(gpio_pin_config_t){kGPIO_DigitalOutput, 0U});	
-	//GPIO_WritePinOutput(GPIOA, LOAD_PWM_GPIO_PIN, 0);//默认关闭	
+	GPIO_WritePinOutput(GPIOA, LOAD_PWM_GPIO_PIN, 0);//默认关闭	
 }
 
 void PWMOUT_EN(void)
@@ -178,12 +178,12 @@ void CalculatePWMDuty(float TargerPower,float Resistant_Smoke,float Realtime_Bat
 {
 	double _duty=0;
 	
-	_duty = (double)((TargerPower * Resistant_Smoke)/(Realtime_BatVolt*Realtime_BatVolt))*60000;
+	_duty = (double)((TargerPower * Resistant_Smoke)/(Realtime_BatVolt*Realtime_BatVolt))*100U;
 	
-	if(_duty<=99)
-		_duty =100;
-	else if(_duty>=55901)
-		_duty = 55900;
+	if(_duty <= 5u)
+		_duty =5u;
+	else if(_duty >= 90u)
+		_duty = 90u;
 	else;
 		
 	PWM_Duty =(unsigned short int)_duty;

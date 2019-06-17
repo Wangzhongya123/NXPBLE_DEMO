@@ -118,17 +118,6 @@ char Send_Str[SENDDATA_NUMBER];
 char DPS310_Send_Str[SENDDATA_NUMBER];
 char Receive_Str[RECEIVEDATA_NUMBER];
 
-
-void hello(void *pParam)
-{
-	//float test1;
-	
-	//test1 = ADC_BAT_Volt();
-	//memset(Send_Str,0,SENDDATA_NUMBER);
-	//sprintf(Send_Str,"%.3fv\r\n", test1);	
-	//USER_SendDateToAir((char *)Send_Str);	
-}
-
 void SYS_Init(void)
 {
 	cnn.read_byte  = &i2c_read_byte,
@@ -235,15 +224,7 @@ int user_main(void)
 
 		if(tick==0)   	WorkMode_0=WorkMode;	
 		else			WorkMode_1=WorkMode;
-		
-		if(i>=300)
-		{
-			i=0;
-			hello(NULL);
-		}
-		else
-			i++;
-		
+			
 		if(WorkMode_0==WorkMode_1);
 		else
 		{		
@@ -312,6 +293,17 @@ int user_main(void)
 }
 
 
+	//void hello(void *pParam)
+	//{
+	//	//float test1;
+	//	
+	//	//test1 = ADC_BAT_Volt();
+	//	//memset(Send_Str,0,SENDDATA_NUMBER);
+	//	//sprintf(Send_Str,"%.3fv\r\n", test1);	
+	//	//USER_SendDateToAir((char *)Send_Str);	
+	//}
+
+
 	//unsigned int j=0,k=0;
 	//BLE_DataDecode_out usart_out;
 	//BLE_DataDecode_ERROR usart_error;
@@ -368,16 +360,3 @@ int user_main(void)
 		//	else
 		//		j++;			
 		//}
-
-
-
-
-
-
-
-
-
-
-
-
-
