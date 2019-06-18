@@ -74,6 +74,9 @@ bleResult_t Qpp_Unsubscribe()
     return gBleSuccess_c;
 }
 
+/************************************************************************************
+	通用数据发送
+************************************************************************************/
 bleResult_t Qpp_SendData (uint8_t deviceId, uint16_t serviceHandle,uint16_t length, uint8_t *testData)
 {
     uint16_t  handle;
@@ -99,6 +102,9 @@ bleResult_t Qpp_SendData (uint8_t deviceId, uint16_t serviceHandle,uint16_t leng
     return result;
 }
 
+/************************************************************************************
+	310发送的数据
+************************************************************************************/
 bleResult_t USER_DPS310_SendData (uint8_t deviceId, uint16_t serviceHandle,uint16_t length, uint8_t *testData)//modify by wzy 
 {
     uint16_t  handle;
@@ -124,6 +130,9 @@ bleResult_t USER_DPS310_SendData (uint8_t deviceId, uint16_t serviceHandle,uint1
     return result;
 }
 
+/************************************************************************************
+	当前使用的能量
+************************************************************************************/
 bleResult_t SmokeEnergy_SendData (uint8_t deviceId, uint16_t serviceHandle,uint16_t length, uint8_t *testData)//modify by wzy 发送抽烟使用的能量
 {
     uint16_t  handle;
@@ -149,6 +158,9 @@ bleResult_t SmokeEnergy_SendData (uint8_t deviceId, uint16_t serviceHandle,uint1
     return result;
 }
 
+/************************************************************************************
+	当前抽烟功率
+************************************************************************************/
 bleResult_t SmokePower_SendData (uint8_t deviceId, uint16_t serviceHandle,uint16_t length, uint8_t *testData)//modify by wzy 发送抽烟时的发热丝的功率
 {
     uint16_t  handle;
@@ -172,4 +184,48 @@ bleResult_t SmokePower_SendData (uint8_t deviceId, uint16_t serviceHandle,uint16
         result = GattServer_SendInstantValueNotification(deviceId, handle, length, testData);
 
     return result;
+}
+
+/************************************************************************************
+	发送当前工作状态
+************************************************************************************/
+bleResult_t WorkMode_SendData (uint8_t deviceId, uint16_t serviceHandle, uint8_t mode)
+{
+    uint16_t  handle;
+    bleResult_t result;
+	
+    bleUuid_t uuid;
+    FLib_MemCpy(uuid.uuid128, uuid_workmode_characteristics_tx, 16);
+
+    /* Get handle of  characteristic */
+    result = GattDb_FindCharValueHandleInService(serviceHandle,gBleUuidType128_c, &uuid, &handle);
+    if (result != gBleSuccess_c)
+        return result;
+
+    /* Update characteristic value and send notification */
+    result = GattDb_WriteAttribute(handle, sizeof(uint8_t), &mode);
+
+    if (result != gBleSuccess_c)
+        return result;
+
+    WorkMode_SendNotifications(deviceId,handle);
+
+    return gBleSuccess_c;
+}
+
+static void WorkMode_SendNotifications(uint8_t deviceId,uint16_t handle)
+{
+    uint16_t  handleCccd;
+    bool_t    isNotifActive;
+	bleResult_t result;
+	
+    /* Get handle of CCCD */
+    if (GattDb_FindCccdHandleForCharValueHandle(handle, &handleCccd) != gBleSuccess_c)
+    {
+        return;
+    }
+	
+    result = Gap_CheckNotificationStatus(deviceId, handleCccd, &isNotifActive);
+    if ((gBleSuccess_c == result) && (TRUE == isNotifActive))
+        GattServer_SendNotification(deviceId, handle);
 }

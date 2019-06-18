@@ -611,7 +611,7 @@ static void BleApp_GattServerCallback (deviceId_t deviceId, gattServerEvent_t* p
         {
             handle = pServerEvent->eventData.charCccdWrittenEvent.handle;
             if ((handle == cccd_qpps_tx) || (handle ==cccd_dsp310_tx) ||(handle ==cccd_energy_tx) \
-				||(handle ==cccd_ecig_data_tx)||(handle ==cccd_ecig_command_tx)||(handle ==cccd_power_tx))//modify by wzy
+				||(handle ==cccd_ecig_data_tx)||(handle ==cccd_ecig_command_tx)||(handle ==cccd_power_tx)||(handle ==cccd_workmode_tx))//modify by wzy
             {
 				pServerEvent->eventData.charCccdWrittenEvent.newCccd = gCccdNotification_c;
                 mPeerInformation[deviceId].ntf_cfg = pServerEvent->eventData.charCccdWrittenEvent.newCccd;
@@ -763,6 +763,43 @@ static void DPS310_Data_TxCallback(void * pParam)
 void DPS310SentDataToAir(void* pParam)//modify by wzy
 {
 	App_PostCallbackMessage(DPS310_Data_TxCallback, pParam);
+}
+
+/*! *********************************************************************************
+* \brief        user command callback.
+*
+* \param[in]    pParam        Calback parameters.  //modify by wzy
+********************************************************************************** */
+static void WorkMode_TxCallback(void * pParam)
+{
+      uint8_t tx_data = 0;
+      uint8_t i;
+      bleResult_t result;
+
+      for (i = 0; i < gAppMaxConnections_c; i++)
+      {
+          if ((mPeerInformation[i].deviceId != gInvalidDeviceId_c) && (mPeerInformation[i].ntf_cfg == QPPS_VALUE_NTF_ON))
+          {
+			  
+			  tx_data = (uint8_t)pParam ;
+			  result = WorkMode_SendData (mPeerInformation[i].deviceId, service_qpps, tx_data);
+
+              if(result == gBleSuccess_c)
+              {
+                  mPeerInformation[i].bytsSentPerInterval += mQppsTestDataLength;
+              }
+              else if (result == gBleOverflow_c)
+              {
+                  /* Tx overflow. Stop Tx and restart when gTxEntryAvailable_c event is received. */
+                  mPeerInformation[i].ntf_cfg = QPPS_VALUE_NTF_OFF;
+              }
+          }
+      }
+}
+
+void WorkMode_SendToAir(void* pParam)//modify by wzy
+{
+	App_PostCallbackMessage(WorkMode_TxCallback, pParam);
 }
 
 /*! *********************************************************************************

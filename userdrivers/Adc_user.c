@@ -11,19 +11,19 @@ void ADC_Pin_init(void)
     CLOCK_EnableClock(kCLOCK_Gpio);
 	
 	const uint32_t ADC_BATDET_PIN_config = (IOCON_FUNC1 | IOCON_MODE_HIGHZ | IOCON_DRIVE_LOW );     
-	IOCON_PinMuxSet(IOCON, 0, BAT_DET, ADC_BATDET_PIN_config); /**/
+	IOCON_PinMuxSet(IOCON, 0, BAT_DET_PIN, ADC_BATDET_PIN_config); /**/
 	
 	const uint32_t ADC_RDET_1_PIN_config = (IOCON_FUNC1 | IOCON_MODE_HIGHZ | IOCON_DRIVE_LOW );     
-	IOCON_PinMuxSet(IOCON, 0, R_DET_1, ADC_RDET_1_PIN_config); /**/	
+	IOCON_PinMuxSet(IOCON, 0, R_DET_1_PIN, ADC_RDET_1_PIN_config); /**/	
 	
 	const uint32_t ADC_RDET_PIN_config = (IOCON_FUNC1 | IOCON_MODE_HIGHZ | IOCON_DRIVE_LOW );     
-	IOCON_PinMuxSet(IOCON, 0, R_DET, ADC_RDET_PIN_config); /**/
+	IOCON_PinMuxSet(IOCON, 0, R_DET_PIN, ADC_RDET_PIN_config); /**/
 	
 	const uint32_t ADC_CHARGEDET_PIN_config = (IOCON_FUNC1 | IOCON_MODE_HIGHZ | IOCON_DRIVE_LOW );     
-	IOCON_PinMuxSet(IOCON, 0, CHARGE_DET, ADC_CHARGEDET_PIN_config); /**/
+	IOCON_PinMuxSet(IOCON, 0, CHARGE_DET_PIN, ADC_CHARGEDET_PIN_config); /**/
 	
 	const uint32_t ADC_NTCDET_config = (IOCON_FUNC1 | IOCON_MODE_HIGHZ | IOCON_DRIVE_LOW );     
-	IOCON_PinMuxSet(IOCON, 0, NTC_DET, ADC_NTCDET_config); /**/
+	IOCON_PinMuxSet(IOCON, 0, NTC_DET_PIN, ADC_NTCDET_config); /**/
 }
 
 
@@ -54,7 +54,8 @@ void ADC_Configuration(void)
 	adcConfigStruct.refSource = USER_DEFAULT_ADC_REFSOURCE;
     ADC_Init(ADC, &adcConfigStruct);
 
-	#define USER_DEFAULT_SD_VINNSELECT       kADC_VinnSelectAvss
+	//#define USER_DEFAULT_SD_VINNSELECT       kADC_VinnSelectAvss
+	#define USER_DEFAULT_SD_VINNSELECT       kADC_VinnSelectVref0P75
 	#define USER_DEFAULT_SD_REFGAIN			 kADC_RefGain1
 	
     /* Initial ADC Sigma Delta(SD) configuration */
@@ -117,7 +118,7 @@ static float ADC_Channel_Result(unsigned char ADC_CHANNEL)
 	#else
 		vref = 	LDO_V;
 	#endif	
-		
+
 	fresult = ADC_ConversionResult2Mv(ADC, ADC_CHANNEL, USER_DEFAULT_ADC_CFG_IDX, vref, g_AdcVinn,adcConvResult);	
 	
 	if(fresult<0)

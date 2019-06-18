@@ -19,6 +19,7 @@ extern char Receive_Str[RECEIVEDATA_NUMBER];
 extern void USER_SendDateToAir(void *pData);
 extern void USER_Serial_Printf(void * pParam);//modify by wzy
 extern void DPS310SentDataToAir(void* pParam);//modify by wzy
+extern void WorkMode_SendToAir(void* pParam);//modify by wzy
 extern void ble_task(void);
 extern void ble_task_init(void);
 

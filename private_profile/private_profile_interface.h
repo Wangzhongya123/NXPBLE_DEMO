@@ -21,6 +21,8 @@
 * Include
 *************************************************************************************
 ************************************************************************************/
+#include "ble_general.h"
+
 
 /************************************************************************************
 *************************************************************************************
@@ -48,6 +50,13 @@ typedef struct tmcConfig_tag
     uint16_t    hTxCccd;
     uint16_t    hRxData;
 } qppConfig_t;
+
+
+/*! workmode - Configuration */
+typedef struct workmode_tag
+{
+    uint8_t	workmode;
+} WorkMode_Config_t;
 
 /************************************************************************************
 *************************************************************************************
@@ -113,11 +122,16 @@ bleResult_t Qpp_Unsubscribe(void);
 ************************************************************************************/
 bleResult_t Qpp_SendData (uint8_t deviceId, uint16_t serviceHandle, uint16_t length, uint8_t *testData);
 
+bleResult_t user_command_SendData (uint8_t deviceId, uint16_t serviceHandle,uint16_t length, uint8_t *testData);
+
 bleResult_t USER_DPS310_SendData (uint8_t deviceId, uint16_t serviceHandle,uint16_t length, uint8_t *testData);
 
 bleResult_t SmokeEnergy_SendData (uint8_t deviceId, uint16_t serviceHandle,uint16_t length, uint8_t *testData);//modify by wzy 发送抽烟使用的能量
 
 bleResult_t SmokePower_SendData (uint8_t deviceId, uint16_t serviceHandle,uint16_t length, uint8_t *testData);//modify by wzy 发送抽烟时的发热丝的功率
+
+bleResult_t WorkMode_SendData (uint8_t deviceId, uint16_t serviceHandle , uint8_t mode);
+static void WorkMode_SendNotifications(uint8_t deviceId,uint16_t handle);
 
 #ifdef __cplusplus
 }

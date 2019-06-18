@@ -609,11 +609,11 @@ Charge_ERROR Mode_ChargeIn_Work(void)
 			{
 				dps_test_time=0;
 				DPS310_Respiratory_Flag = DPS310_Respiratory();
-				if(DPS310_Respiratory_Flag == 100)
+				if(DPS310_Respiratory_Flag == DPS_smoke_ok)
 				{
-					DPS310_Respiratory_Flag=0;
-					Smokemode_start=1;
-					ChargeIn_Flag=0;
+					DPS310_Respiratory_Flag = DPS_smoke_no;
+					Smokemode_start = ENABLED;
+					ChargeIn_Flag = DISABLED;
 					
 					Charge_DIS();//充电使能关闭
 					LED_All_Off();

@@ -31,14 +31,14 @@ Channel index Register bit Positive input Vin+ Negative input Vin-
 21~31 reserved reserved
  ******************************************************************************/
 
-#define ADC0_PA00 	4
-#define ADC1_PA01 	5
-#define ADC2_PA04 	6
-#define ADC3_PA05 	7
-#define ADC4_PA08 	8
-#define ADC5_PA09 	9
-#define ADC6_PA10 	10
-#define ADC7_PA11 	11
+#define ADC0_PA00 	4u
+#define ADC1_PA01 	5u
+#define ADC2_PA04 	6u
+#define ADC3_PA05 	7u
+#define ADC4_PA08 	8u
+#define ADC5_PA09 	9u
+#define ADC6_PA10 	10u
+#define ADC7_PA11 	11u
 
 #define BAT_DET 	ADC3_PA05
 #define R_DET_1 	ADC2_PA04
@@ -46,7 +46,13 @@ Channel index Register bit Positive input Vin+ Negative input Vin-
 #define CHARGE_DET 	ADC0_PA00
 #define NTC_DET 	ADC5_PA09
 
-#define EXRef_LDOVolt 2800
+#define BAT_DET_PIN 	5U
+#define R_DET_1_PIN 	4U
+#define R_DET_PIN 		1U
+#define CHARGE_DET_PIN 	0U
+#define NTC_DET_PIN 	9U
+
+#define EXRef_LDOVolt 2800u
 
 void ADC_Pin_init(void);
 void ADC_Configuration(void);

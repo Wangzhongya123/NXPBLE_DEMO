@@ -45,6 +45,7 @@
 #include "Load_user.h"
 #include "BatCharge_user.h"
 #include "userapp.h"
+#include "private_profile_interface.h"
 
 #define BUS_CLK_FREQ CLOCK_GetFreq(kCLOCK_ApbClk)
 
@@ -231,7 +232,10 @@ int user_main(void)
 			
 		if(WorkMode_0==WorkMode_1);
 		else
-		{		
+		{	
+
+			WorkMode_SendToAir((uint8_t *)WorkMode );
+			
 			switch(WorkMode)
 			{
 			//²éÑ¯Ä£Ê½////////////////////////////////////////////////////////////////////////////////////		

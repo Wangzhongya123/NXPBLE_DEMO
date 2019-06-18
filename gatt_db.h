@@ -28,7 +28,9 @@ PRIMARY_SERVICE_UUID128(service_qpps, uuid_service_qpps)
 	CHARACTERISTIC_UUID128(char_power_tx, uuid_power_characteristics_tx, (gGattCharPropNotify_c))//modify by wzy  抽烟能量数据 上传
         VALUE_UUID128_VARLEN(value_power_tx, uuid_power_characteristics_tx, (gPermissionNone_c), 64, 2, 0x00, 0x00)	//modify by wzy	抽烟能量数据 上传
         CCCD(cccd_power_tx)	
-
+	CHARACTERISTIC_UUID128(char_workmode_tx, uuid_workmode_characteristics_tx, (gGattCharPropNotify_c | gGattCharPropRead_c))//modify by wzy 当前工作状态 上传
+        VALUE_UUID128_VARLEN(value_workmode_tx, uuid_workmode_characteristics_tx, (gPermissionNone_c), 64, 2, 0x00, 0x00)	//modify by wzy	当前工作状态  上传
+        CCCD(cccd_workmode_tx)			
 
 PRIMARY_SERVICE_UUID128(service_ecig, uuid_service_ecig)
     CHARACTERISTIC_UUID128(char_ecig_command_rx, uuid_ecig_command_characteristics_rx, (gGattCharPropWrite_c) )//modify by wzy
