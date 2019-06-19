@@ -184,15 +184,11 @@ void Fault_OverTemp_Work(void);
 void Fault_BatTemp_Work(void);
 void Fault_BatVoltTooLow_Work(void);
 DPS310_respiratory DPS310_Respiratory(void);
-//void LvdIrqCallback(void);
-//void Lvdfunc_init(void);
-//void VcIrqCallback(void);
-//void VCfunc_init(void);
 void RestartTiming(void);//重新开始计时
-//short test_read_byte(unsigned char address);
-//short test_read_block(unsigned char address, unsigned char length, unsigned char *read_buffer);
-//short test_write_byte(unsigned char address, unsigned char data);
-//void test_wait_ms(unsigned char delay);
+
+void APP_SaveBleReg(void);
+void APP_RestoreBleReg(void);
+
 void EnterPowerSleepMode(void);
 void ReadyForSleepMode(void);
 void WakeUpFormSleepMode(void);

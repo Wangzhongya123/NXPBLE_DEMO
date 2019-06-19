@@ -156,6 +156,8 @@ void Time1_Init(unsigned int freq)
 	ctimer_config_t 		config;
 	ctimer_match_config_t 	matchConfig0;/* Match Configuration for Channel 1 */
 	
+	CLOCK_EnableClock(kCLOCK_Ctimer1);
+	
     CTIMER_GetDefaultConfig(&config);
     CTIMER_Init(CTIMER1, &config);
 
@@ -182,6 +184,8 @@ void Time2_Init(unsigned int freq)
 	/* Match Configuration for Channel 0 */
 	static ctimer_match_config_t matchConfig0;
 	
+	CLOCK_EnableClock(kCLOCK_Ctimer2);
+	
     CTIMER_GetDefaultConfig(&config);
     CTIMER_Init(CTIMER2, &config);
 
@@ -207,6 +211,8 @@ void Time3_Init(unsigned int freq)
  	ctimer_config_t config;
 	/* Match Configuration for Channel 0 */
 	static ctimer_match_config_t matchConfig0;
+	
+	CLOCK_EnableClock(kCLOCK_Ctimer3);
 	
     CTIMER_GetDefaultConfig(&config);
     CTIMER_Init(CTIMER3, &config);

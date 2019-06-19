@@ -1,6 +1,7 @@
 #ifndef __BatCharge_user_H
 #define	__BatCharge_user_H
 
+#include "fsl_common.h"
 #include "pin_mux.h"
 #include "fsl_iocon.h"
 #include "pin_mux.h"

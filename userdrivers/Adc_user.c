@@ -39,7 +39,7 @@ void ADC_Configuration(void)
 	#define USER_DEFAULT_ADC_REFSOURCE 		kADC_RefSourceVccWithDriver
 	#define USER_DEFAULT_ADC_CLOCK          kADC_Clock2M
 	#define LDO_V							EXRef_LDOVolt
-	#define SDADC_DOWNSAMPLE				kADC_DownSample32
+	#define SDADC_DOWNSAMPLE				kADC_DownSample64
 	
 	/* Power on ADC */
     POWER_EnableADC(true);
@@ -54,7 +54,6 @@ void ADC_Configuration(void)
 	adcConfigStruct.refSource = USER_DEFAULT_ADC_REFSOURCE;
     ADC_Init(ADC, &adcConfigStruct);
 
-	//#define USER_DEFAULT_SD_VINNSELECT       kADC_VinnSelectAvss
 	#define USER_DEFAULT_SD_VINNSELECT       kADC_VinnSelectVref0P75
 	#define USER_DEFAULT_SD_REFGAIN			 kADC_RefGain1
 	
@@ -139,6 +138,7 @@ void ADC_AllClose(void)
 {
     /* Enable ADC */
     ADC_Enable(ADC, false);
+	POWER_EnableADC(false);
 }
 
 /*********************************************************

@@ -17,6 +17,8 @@
 #include "LED_user.h"
 #include "userapp.h"
 
+#include "fsl_power.h"
+
 #ifdef DEBUG_PRINT
 	
 #endif
@@ -1584,7 +1586,6 @@ void RestartTiming(void)
 	Sec_Flag=0;
 }
 
-
 /**********************************************/
 /* 函数功能；进入睡眠模式	                  */
 /* 入口参数：无                               */
@@ -1592,9 +1593,23 @@ void RestartTiming(void)
 void EnterPowerSleepMode(void)
 {
 	ReadyForSleepMode();
-	//POWER_EnterPowerDown(0);
-	//POWER_EnterSleep();
+	POWER_EnterPowerDown(0);
 	WakeUpFormSleepMode();	
+}
+
+static void switch_to_OSC32M(void)
+{
+    POWER_WritePmuCtrl1(SYSCON, SYSCON_PMU_CTRL1_OSC32M_DIS_MASK, SYSCON_PMU_CTRL1_OSC32M_DIS(0U));
+    SYSCON->CLK_CTRL = (SYSCON->CLK_CTRL & ~SYSCON_CLK_CTRL_SYS_CLK_SEL_MASK) | SYSCON_CLK_CTRL_SYS_CLK_SEL(0U);
+}
+
+static void switch_to_XTAL(void)
+{
+    /* switch to XTAL after it is stable */
+    while (!(SYSCON_SYS_MODE_CTRL_XTAL_RDY_MASK & SYSCON->SYS_MODE_CTRL)) ;
+       
+    SYSCON->CLK_CTRL = (SYSCON->CLK_CTRL & ~SYSCON_CLK_CTRL_SYS_CLK_SEL_MASK) | SYSCON_CLK_CTRL_SYS_CLK_SEL(1U);
+    POWER_WritePmuCtrl1(SYSCON, SYSCON_PMU_CTRL1_OSC32M_DIS_MASK, SYSCON_PMU_CTRL1_OSC32M_DIS(1U));
 }
 
 /**********************************************/
@@ -1603,6 +1618,8 @@ void EnterPowerSleepMode(void)
 /**********************************************/
 void ReadyForSleepMode(void)
 {	
+	uint32_t msk, val;
+	
 	dps310_standby(&drv_state);		
 	
 	LED_All_Off();
@@ -1611,15 +1628,55 @@ void ReadyForSleepMode(void)
 	LoadRESTest_DIS();
 	ADC_AllClose();
 	NTC_DIS();
+	IIC_IO_Confing();
 	ChargeIn_Pin_Init();
+	ChargeStart_Init();
 	CurrentChoice_Pin_Init();
 	TEST_LED_Pin_Init();
+	
+	APP_SaveBleReg();
 	
 	CTIMER_StopTimer(CTIMER1);
 	CTIMER_StopTimer(CTIMER2);
 	CTIMER_StopTimer(CTIMER3);
 	
-	//USER_ToSleep_Intend();
+	/* Power down affects calibration's FSM, turn it off before power down.
+     * Turn off Ble core's high frequency clock before power down.*/  
+    SYSCON->CLK_DIS = SYSCON_CLK_DIS_CLK_CAL_DIS_MASK | SYSCON_CLK_DIS_CLK_BLE_DIS_MASK;	
+	//CLOCK_DisableClock(kCLOCK_Ble);
+	CLOCK_DisableClock(kCLOCK_Ctimer1);
+	CLOCK_DisableClock(kCLOCK_Ctimer2);
+	CLOCK_DisableClock(kCLOCK_Ctimer3);
+	
+	POWER_EnableDCDC(false);
+	
+	__disable_irq();	
+	
+	msk = SYSCON_PMU_CTRL1_XTAL32K_PDM_DIS_MASK | SYSCON_PMU_CTRL1_RCO32K_PDM_DIS_MASK |
+          SYSCON_PMU_CTRL1_XTAL32K_DIS_MASK | SYSCON_PMU_CTRL1_RCO32K_DIS_MASK;
+	
+	val = SYSCON_PMU_CTRL1_XTAL32K_PDM_DIS(1U)  /* switch off XTAL32K during power down */
+	  | SYSCON_PMU_CTRL1_RCO32K_PDM_DIS(1U) /* switch on RCO32K during power down */
+	  | SYSCON_PMU_CTRL1_XTAL32K_DIS(1U)    /* switch off XTAL32K at all time */
+	  | SYSCON_PMU_CTRL1_RCO32K_DIS(1U);    /* switch on RCO32K */
+
+	POWER_WritePmuCtrl1(SYSCON, msk, val);
+	
+	/* Enable GPIO wakeup */
+	SYSCON->PIO_WAKEUP_LVL0 = SYSCON->PIO_WAKEUP_LVL0 | USER_SW1_GPIO_PIN_MASK;
+    SYSCON->PIO_WAKEUP_EN0 = SYSCON->PIO_WAKEUP_EN0 | USER_SW1_GPIO_PIN_MASK;
+	
+	POWER_EnableSwdWakeup();//通过swd口进行唤醒
+	
+    NVIC_ClearPendingIRQ(EXT_GPIO_WAKEUP_IRQn);
+    NVIC_EnableIRQ(EXT_GPIO_WAKEUP_IRQn);	
+	
+	/* Enable OSC_EN wakeup */
+    NVIC_ClearPendingIRQ(OSC_IRQn);
+    NVIC_EnableIRQ(OSC_IRQn);
+		
+	POWER_LatchIO();
+	switch_to_OSC32M();
 	
 	Key_DownCount=0;
 	Key_HodeOnTime=0;
@@ -1637,9 +1694,22 @@ void ReadyForSleepMode(void)
 void WakeUpFormSleepMode(void)
 {	
 	int ret=0;
+
+	switch_to_XTAL();
+	BOARD_BootClockHSRUN();
+    SystemCoreClockUpdate();/* Update SystemCoreClock if default clock value (16MHz) has changed */
 	
-	//USER_WakeupRestore();
+	POWER_RestoreIO();
+	POWER_EnableDCDC(true);
 	
+	POWER_RestoreSwd();//
+	//CLOCK_EnableClock(kCLOCK_Ble);
+	
+	NVIC_DisableIRQ(EXT_GPIO_WAKEUP_IRQn);
+	NVIC_ClearPendingIRQ(EXT_GPIO_WAKEUP_IRQn);
+	CLOCK_EnableClock(kCLOCK_Ble);
+
+	ADC_Configuration();
 	ADC_Pin_init();
 	LED_Pin_Init();//RGB_PWM_init();
 	Key_Init();
@@ -1650,8 +1720,9 @@ void WakeUpFormSleepMode(void)
 	Charge_Init();
 	ChargeStart_Init();
 	CurrentChoice_Pin_Init();	
-	
 	TEST_LED_Pin_Init();
+	
+	__enable_irq();	
 	
 	Time1_Init(SYS_FREQUENCY);
 	Time2_Init(2);

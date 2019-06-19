@@ -175,59 +175,16 @@ void CurrentChoice_MID(void)
 /* 函数功能：电池的低功耗功能 设置			  */					     
 /* 入口参数:                              	  */
 /**********************************************/
-static void switch_to_OSC32M(void)
-{
-    POWER_WritePmuCtrl1(SYSCON, SYSCON_PMU_CTRL1_OSC32M_DIS_MASK, SYSCON_PMU_CTRL1_OSC32M_DIS(0U));
-    SYSCON->CLK_CTRL = (SYSCON->CLK_CTRL & ~SYSCON_CLK_CTRL_SYS_CLK_SEL_MASK) | SYSCON_CLK_CTRL_SYS_CLK_SEL(0U);
-}
-
-static void switch_to_XTAL(void)
-{
-    /* switch to XTAL after it is stable */
-    while (!(SYSCON_SYS_MODE_CTRL_XTAL_RDY_MASK & SYSCON->SYS_MODE_CTRL))
-        ;
-    SYSCON->CLK_CTRL = (SYSCON->CLK_CTRL & ~SYSCON_CLK_CTRL_SYS_CLK_SEL_MASK) | SYSCON_CLK_CTRL_SYS_CLK_SEL(1U);
-    POWER_WritePmuCtrl1(SYSCON, SYSCON_PMU_CTRL1_OSC32M_DIS_MASK, SYSCON_PMU_CTRL1_OSC32M_DIS(1U));
-}
 
 /* Reinitialize peripherals after waked up from PD, 
 	this function will be called in critical area */
 void USER_WakeupRestore(void)
 {
-	POWER_RestoreIO();
-	switch_to_XTAL();
 
-	NVIC_DisableIRQ(EXT_GPIO_WAKEUP_IRQn);
-	NVIC_ClearPendingIRQ(EXT_GPIO_WAKEUP_IRQn);
-
-	
-	__enable_irq();
 }
 
 /* 进入睡眠前的准备工作,  */
 void USER_ToSleep_Intend(void)
 {
-	uint32_t msk, val;
 	
-	msk = SYSCON_PMU_CTRL1_XTAL32K_PDM_DIS_MASK | SYSCON_PMU_CTRL1_RCO32K_PDM_DIS_MASK |
-          SYSCON_PMU_CTRL1_XTAL32K_DIS_MASK | SYSCON_PMU_CTRL1_RCO32K_DIS_MASK;
-	
-	val = SYSCON_PMU_CTRL1_XTAL32K_PDM_DIS(1U)  /* switch off XTAL32K during power down */
-	  | SYSCON_PMU_CTRL1_RCO32K_PDM_DIS(1U) /* switch off RCO32K during power down */
-	  | SYSCON_PMU_CTRL1_XTAL32K_DIS(1U)    /* switch off XTAL32K at all time */
-	  | SYSCON_PMU_CTRL1_RCO32K_DIS(1U);    /* switch off RCO32K */
-
-	POWER_WritePmuCtrl1(SYSCON, msk, val);
-	
-	/* Enable GPIO wakeup */
-    NVIC_ClearPendingIRQ(EXT_GPIO_WAKEUP_IRQn);
-    NVIC_EnableIRQ(EXT_GPIO_WAKEUP_IRQn);
-
-	SYSCON->PIO_WAKEUP_LVL0 = SYSCON->PIO_WAKEUP_LVL0 | USER_SW1_GPIO_PIN_MASK;
-    SYSCON->PIO_WAKEUP_EN0 = SYSCON->PIO_WAKEUP_EN0 | USER_SW1_GPIO_PIN_MASK;
-	
-	__disable_irq();
-	
-	POWER_LatchIO();
-    CLOCK_DisableClock(kCLOCK_Flexcomm0);
 }
