@@ -98,6 +98,13 @@ extern void ble_task(void);//执行蓝牙消息队列检查
 extern void USER_SendDateToAir(void *pData);
 extern void USER_Serial_Printf(void * pParam);//modify by wzy
 extern void BleApp_Start(void);
+extern void BleApp_Init(void);
+extern osaStatus_t OSA_Init(void);
+extern void hardware_init(void);
+extern void OSA_TimeInit(void);
+extern void main_task(uint32_t param);
+extern void ble_task_init(void);
+extern void BOARD_InitPins(void);
 
 char str[20]={0};//临时使用
 
@@ -199,6 +206,9 @@ WORK_MODE CheckWorkMode(void)
 			ON_OFF_Flag = ENABLED;//开机标志位
 			Query_Flag  = ENABLED;
 			WakeupBykey = ENABLED;//使用按键唤醒
+			
+			BOARD_InitPins();	
+			BleApp_Init();
 			
 			BleApp_Start();
 			
@@ -1633,6 +1643,7 @@ void ReadyForSleepMode(void)
 {	
 	uint32_t msk, val;
 	
+	BleApp_HandleKeys(gKBD_EventLongPB1_c);	
 	dps310_standby(&drv_state);		
 	
 	LED_All_Off();
@@ -1640,6 +1651,7 @@ void ReadyForSleepMode(void)
 	PWMOUT_DIS();
 	LoadRESTest_DIS();
 	ADC_AllClose();
+	LED_Pin_Init();
 	NTC_DIS();
 	IIC_IO_Confing();
 	ChargeIn_Pin_Init();
@@ -1647,30 +1659,30 @@ void ReadyForSleepMode(void)
 	CurrentChoice_Pin_Init();
 	TEST_LED_Pin_Init();
 	
-	BleApp_HandleKeys(gKBD_EventLongPB1_c);
-	
 	CTIMER_StopTimer(CTIMER1);
 	CTIMER_StopTimer(CTIMER2);
 	CTIMER_StopTimer(CTIMER3);
+	
+	CLOCK_DisableClock(kCLOCK_Ctimer1);
+	CLOCK_DisableClock(kCLOCK_Ctimer2);
+	CLOCK_DisableClock(kCLOCK_Ctimer3);	
+	CLOCK_DisableClock(kCLOCK_Flexcomm0);
+	
+	__disable_irq();	
 	
 	/* Power down affects calibration's FSM, turn it off before power down.
      * Turn off Ble core's high frequency clock before power down.*/  
     //SYSCON->CLK_DIS = SYSCON_CLK_DIS_CLK_CAL_DIS_MASK | SYSCON_CLK_DIS_CLK_BLE_DIS_MASK;	
 	//CLOCK_DisableClock(kCLOCK_Ble);
-	CLOCK_DisableClock(kCLOCK_Ctimer1);
-	CLOCK_DisableClock(kCLOCK_Ctimer2);
-	CLOCK_DisableClock(kCLOCK_Ctimer3);
-	
-	//POWER_EnableDCDC(false);
-	
-	__disable_irq();	
+	POWER_EnableDCDC(false);
+	APP_SaveBleReg();
 	
 	POWER_Init();
-	//POWER_EnablePD(kPDRUNCFG_PD_FIR);
-    //POWER_EnablePD(kPDRUNCFG_PD_FSP);
-    //POWER_EnablePD(kPDRUNCFG_PD_OSC32M);
-	
-	APP_SaveBleReg();	
+	POWER_EnablePD(kPDRUNCFG_PD_ADC_VCM);
+	POWER_EnablePD(kPDRUNCFG_PD_CAP_SEN);
+	POWER_EnablePD(kPDRUNCFG_PD_MEM9);
+    POWER_EnablePD(kPDRUNCFG_PD_MEM8);
+    POWER_EnablePD(kPDRUNCFG_PD_MEM7);	
 	
 	msk = SYSCON_PMU_CTRL1_XTAL32K_PDM_DIS_MASK | SYSCON_PMU_CTRL1_RCO32K_PDM_DIS_MASK |
           SYSCON_PMU_CTRL1_XTAL32K_DIS_MASK | SYSCON_PMU_CTRL1_RCO32K_DIS_MASK;
@@ -1685,7 +1697,6 @@ void ReadyForSleepMode(void)
 	/* Enable GPIO wakeup */
 	SYSCON->PIO_WAKEUP_LVL0 = SYSCON->PIO_WAKEUP_LVL0 | USER_SW1_GPIO_PIN_MASK;
     SYSCON->PIO_WAKEUP_EN0 = SYSCON->PIO_WAKEUP_EN0 | USER_SW1_GPIO_PIN_MASK;
-	
 	POWER_EnableSwdWakeup();//通过swd口进行唤醒
 	
     NVIC_ClearPendingIRQ(EXT_GPIO_WAKEUP_IRQn);
@@ -1707,13 +1718,6 @@ void ReadyForSleepMode(void)
 /* 函数功能；从睡眠模式中唤醒后再配置一次     */
 /* 入口参数：无                               */
 /**********************************************/
-extern void BleApp_Init(void);
-extern osaStatus_t OSA_Init(void);
-extern void hardware_init(void);
-extern void OSA_TimeInit(void);
-extern void main_task(uint32_t param);
-extern void ble_task_init(void);
-
 void WakeUpFormSleepMode(void)
 {	
 	int ret=0;
@@ -1723,23 +1727,20 @@ void WakeUpFormSleepMode(void)
     SystemCoreClockUpdate();/* Update SystemCoreClock if default clock value (16MHz) has changed */
 	
 	POWER_RestoreIO();
-	//POWER_EnableDCDC(true);
-	//CLOCK_EnableClock(kCLOCK_Ble);	
+	
+	POWER_EnableDCDC(true);
+    POWER_EnableADC(true);
+	
+	CLOCK_EnableClock(kCLOCK_Ble);	
+	CLOCK_EnableClock(kCLOCK_Flexcomm0);	
 	
 	POWER_RestoreSwd();//
 
 	NVIC_DisableIRQ(EXT_GPIO_WAKEUP_IRQn);
 	NVIC_ClearPendingIRQ(EXT_GPIO_WAKEUP_IRQn);
-
-	//OSA_Init();
-	//hardware_init();
-	//OSA_TimeInit();
-    //OSA_TaskCreate(OSA_TASK(main_task),NULL);
-	//ble_task_init();
-	//ble_task();
 	
-	ADC_Configuration();
 	ADC_Pin_init();
+	//ADC_Configuration();
 	LED_Pin_Init();//RGB_PWM_init();
 	Key_Init();
 	IIC_IO_Confing();	
@@ -1750,15 +1751,15 @@ void WakeUpFormSleepMode(void)
 	ChargeStart_Init();
 	CurrentChoice_Pin_Init();	
 	TEST_LED_Pin_Init();
+	BOARD_InitPins();
 	
 	__enable_irq();	
 	
 	Time1_Init(SYS_FREQUENCY);
 	Time2_Init(2);
-	Time3_Init(2);
+	//Time3_Init(2);
 	
-	BleApp_Init();
-	delay_bybletask(20);
+	delay_bybletask(40);
 	
 	do
 	{
