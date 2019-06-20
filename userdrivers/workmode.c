@@ -18,6 +18,11 @@
 #include "userapp.h"
 
 #include "fsl_power.h"
+#include "Keyboard.h"
+
+#include "fsl_os_abstraction.h"
+#include "fsl_os_abstraction_bm.h"
+
 
 #ifdef DEBUG_PRINT
 	
@@ -92,6 +97,7 @@ extern void ble_task(void);//执行蓝牙消息队列检查
 
 extern void USER_SendDateToAir(void *pData);
 extern void USER_Serial_Printf(void * pParam);//modify by wzy
+extern void BleApp_Start(void);
 
 char str[20]={0};//临时使用
 
@@ -193,6 +199,8 @@ WORK_MODE CheckWorkMode(void)
 			ON_OFF_Flag = ENABLED;//开机标志位
 			Query_Flag  = ENABLED;
 			WakeupBykey = ENABLED;//使用按键唤醒
+			
+			BleApp_Start();
 			
 			return Mode_Query;
 		}	
@@ -408,7 +416,10 @@ void Mode_Query_Work(void)
 		for(i=0;i<10;i++)
 		{
 			do
+			{
+				ble_task();
 				ret = dps310_get_processed_data (&drv_state,&pressure,&temperature);//pressure和temperature是全局变量
+			}	
 			while(ret<0);
 			
 			pressure_i[i] = (float)pressure;
@@ -1616,6 +1627,8 @@ static void switch_to_XTAL(void)
 /* 函数功能；进入睡眠模式的准备               */
 /* 入口参数：无                               */
 /**********************************************/
+extern void BleApp_HandleKeys(key_event_t events);
+
 void ReadyForSleepMode(void)
 {	
 	uint32_t msk, val;
@@ -1634,7 +1647,7 @@ void ReadyForSleepMode(void)
 	CurrentChoice_Pin_Init();
 	TEST_LED_Pin_Init();
 	
-	APP_SaveBleReg();
+	BleApp_HandleKeys(gKBD_EventLongPB1_c);
 	
 	CTIMER_StopTimer(CTIMER1);
 	CTIMER_StopTimer(CTIMER2);
@@ -1642,15 +1655,22 @@ void ReadyForSleepMode(void)
 	
 	/* Power down affects calibration's FSM, turn it off before power down.
      * Turn off Ble core's high frequency clock before power down.*/  
-    SYSCON->CLK_DIS = SYSCON_CLK_DIS_CLK_CAL_DIS_MASK | SYSCON_CLK_DIS_CLK_BLE_DIS_MASK;	
+    //SYSCON->CLK_DIS = SYSCON_CLK_DIS_CLK_CAL_DIS_MASK | SYSCON_CLK_DIS_CLK_BLE_DIS_MASK;	
 	//CLOCK_DisableClock(kCLOCK_Ble);
 	CLOCK_DisableClock(kCLOCK_Ctimer1);
 	CLOCK_DisableClock(kCLOCK_Ctimer2);
 	CLOCK_DisableClock(kCLOCK_Ctimer3);
 	
-	POWER_EnableDCDC(false);
+	//POWER_EnableDCDC(false);
 	
 	__disable_irq();	
+	
+	POWER_Init();
+	//POWER_EnablePD(kPDRUNCFG_PD_FIR);
+    //POWER_EnablePD(kPDRUNCFG_PD_FSP);
+    //POWER_EnablePD(kPDRUNCFG_PD_OSC32M);
+	
+	APP_SaveBleReg();	
 	
 	msk = SYSCON_PMU_CTRL1_XTAL32K_PDM_DIS_MASK | SYSCON_PMU_CTRL1_RCO32K_PDM_DIS_MASK |
           SYSCON_PMU_CTRL1_XTAL32K_DIS_MASK | SYSCON_PMU_CTRL1_RCO32K_DIS_MASK;
@@ -1671,12 +1691,8 @@ void ReadyForSleepMode(void)
     NVIC_ClearPendingIRQ(EXT_GPIO_WAKEUP_IRQn);
     NVIC_EnableIRQ(EXT_GPIO_WAKEUP_IRQn);	
 	
-	/* Enable OSC_EN wakeup */
-    NVIC_ClearPendingIRQ(OSC_IRQn);
-    NVIC_EnableIRQ(OSC_IRQn);
-		
-	POWER_LatchIO();
 	switch_to_OSC32M();
+	POWER_LatchIO();
 	
 	Key_DownCount=0;
 	Key_HodeOnTime=0;
@@ -1691,6 +1707,13 @@ void ReadyForSleepMode(void)
 /* 函数功能；从睡眠模式中唤醒后再配置一次     */
 /* 入口参数：无                               */
 /**********************************************/
+extern void BleApp_Init(void);
+extern osaStatus_t OSA_Init(void);
+extern void hardware_init(void);
+extern void OSA_TimeInit(void);
+extern void main_task(uint32_t param);
+extern void ble_task_init(void);
+
 void WakeUpFormSleepMode(void)
 {	
 	int ret=0;
@@ -1700,15 +1723,21 @@ void WakeUpFormSleepMode(void)
     SystemCoreClockUpdate();/* Update SystemCoreClock if default clock value (16MHz) has changed */
 	
 	POWER_RestoreIO();
-	POWER_EnableDCDC(true);
+	//POWER_EnableDCDC(true);
+	//CLOCK_EnableClock(kCLOCK_Ble);	
 	
 	POWER_RestoreSwd();//
-	//CLOCK_EnableClock(kCLOCK_Ble);
-	
+
 	NVIC_DisableIRQ(EXT_GPIO_WAKEUP_IRQn);
 	NVIC_ClearPendingIRQ(EXT_GPIO_WAKEUP_IRQn);
-	CLOCK_EnableClock(kCLOCK_Ble);
 
+	//OSA_Init();
+	//hardware_init();
+	//OSA_TimeInit();
+    //OSA_TaskCreate(OSA_TASK(main_task),NULL);
+	//ble_task_init();
+	//ble_task();
+	
 	ADC_Configuration();
 	ADC_Pin_init();
 	LED_Pin_Init();//RGB_PWM_init();
@@ -1727,6 +1756,9 @@ void WakeUpFormSleepMode(void)
 	Time1_Init(SYS_FREQUENCY);
 	Time2_Init(2);
 	Time3_Init(2);
+	
+	BleApp_Init();
+	delay_bybletask(20);
 	
 	do
 	{
