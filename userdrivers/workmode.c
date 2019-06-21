@@ -33,7 +33,7 @@
 //workmode flag/////////////////////////////////////////
 volatile unsigned char Query_Flag=0;
 volatile unsigned char Smoke_Flag=0;
-volatile unsigned char Smokemode_start=0;
+volatile unsigned char Smokemode_start=0; //从其实状态直接进入抽烟状态
 volatile unsigned char ChargeIn_Flag=0;
 volatile unsigned char Sleep_Flag=0;
 volatile unsigned char Lock_Unlock_byBLE_Flag=0;
@@ -95,10 +95,13 @@ volatile unsigned char DPS310_Respiratory_Flag=0;//全局型
 volatile float DPS310_CurrentData=0;//dps310实时值
 volatile float DPS310_Standard=0;//dps310标准值
 
+float SmokeEnergy=0;//单次抽烟使用的能量
+
 extern void ble_task(void);//执行蓝牙消息队列检查
 
 extern void USER_SendDateToAir(void *pData);
 extern void USER_Serial_Printf(void * pParam);//modify by wzy
+
 extern void BleApp_Start(void);
 extern void BleApp_Init(void);
 extern void BleApp_Config(void);
@@ -247,7 +250,7 @@ WORK_MODE CheckWorkMode(void)
 		{
 			return Mode_Query;
 		}			
-		else if(Smokemode_start == ENABLED)//进入抽烟状态,从充电状态下进入抽烟模式
+		else if(Smokemode_start == ENABLED)//进入抽烟状态,从其它状态可直接进入 抽烟
 		{
 			return Mode_Smoke;
 		}
@@ -310,7 +313,7 @@ WORK_MODE CheckWorkMode(void)
 			Sec_Flag = 0;
 
 			LoadRESTest_EN();	
-			delay_bybletask(20);
+			//delay_bybletask(20);
 			error_code = CalculateResistant_Value(&res,&ntc_res);
 
 			memset(str,'\0',15);
@@ -484,7 +487,7 @@ void Mode_Query_Work(void)
 				{
 					DPS310_Respiratory_Flag = DPS_smoke_no;
 					Query_Flag = DISABLED;
-					Smokemode_start = ENABLED;
+					Smokemode_start = ENABLED; //从查询状态直接进入抽烟状态
 				}			
 			}
 			else
@@ -631,7 +634,7 @@ Charge_ERROR Mode_ChargeIn_Work(void)
 				if(DPS310_Respiratory_Flag == DPS_smoke_ok)
 				{
 					DPS310_Respiratory_Flag = DPS_smoke_no;
-					Smokemode_start = ENABLED;
+					Smokemode_start = ENABLED; //从充电状态直接进入抽烟状态
 					ChargeIn_Flag = DISABLED;
 					
 					Charge_DIS();//充电使能关闭
@@ -1055,18 +1058,18 @@ Smokemode_ERROR Mode_Smoke_Work(void)
 	float NTC_Res=0;
 	int ret=0;
 	Res_Test_Error res_ret=Normal;
-	
+	unsigned int _send_power_data=0;
 	float TargerPower=0;
 	float Differ_Press=0;
 	float Resistant_Smoke=0;//电热丝的阻值
 	float res_ntc =0;
 	
-	float energy=0;//单次抽烟使用的能量
+
 	
 	unsigned short int u16AdcResult=0;
 
 	ChargeOK_Flag=0;
-	Smokemode_start=0;//在其它任务中进入抽烟状态
+	Smokemode_start = DISABLED;//在其它任务中进入抽烟状态标志清零
 	Charge_DIS();
 	
 	if(ADC_BAT_Volt()<=3.4f)
@@ -1095,6 +1098,7 @@ Smokemode_ERROR Mode_Smoke_Work(void)
 	Smoke_output = DISABLED;
 	SmokeTimeOut_Flag = DISABLED;
 	m20_Sec_Flag = 1;
+	SmokeEnergy = 0;
 	
 	LoadRESTest_EN();
 	CalculateResistant_Value(&Resistant_Smoke,&res_ntc);	
@@ -1122,6 +1126,8 @@ Smokemode_ERROR Mode_Smoke_Work(void)
 		
 		if(m20_Sec_Flag==1)
 		{
+			_send_power_data++;
+			
 			m20_Sec_Flag=0;
 			{
 				ret = dps310_get_processed_data (&drv_state,&pressure,&temperature);//pressure和temperature是全局变量
@@ -1142,7 +1148,6 @@ Smokemode_ERROR Mode_Smoke_Work(void)
 				if( Differ_Press >= 2.0f)
 				{
 					LED_All_On();
-					RestartTiming();
 					Smoke_output = ENABLED;
 					RestartTiming();
 					{
@@ -1158,7 +1163,7 @@ Smokemode_ERROR Mode_Smoke_Work(void)
 					
 					CalculatePWMDuty( TargerPower ,Resistant_Smoke,RDET_Vlot_ave);	
 					
-					energy	+=	TargerPower*0.02f;
+					SmokeEnergy	+=	TargerPower*0.02f;
 				}
 				else
 				{
@@ -1181,6 +1186,15 @@ Smokemode_ERROR Mode_Smoke_Work(void)
 			}
 		}
 		
+		if(_send_power_data >= 12)
+		{
+			_send_power_data = 0;
+			
+			memset(SmokePower_Send_Str,'\0',SmokePower_SENDDATA_NUMBER);
+			sprintf(SmokePower_Send_Str,"%.2f W",TargerPower);	
+			SmokePower_DataToAir((char *)SmokePower_Send_Str);	
+		}
+
 		if(Smoke_output == ENABLED)//输出过程中，已经在输出功率
 		{
 			if(Power_out_start == 1)//用于标识量电池的电压
@@ -1365,15 +1379,20 @@ void QuitSmoke_Work(void)
 	
 	LED_All_Off();	
 	
+	Smoke_output=DISABLED;
+	Smoke_Sec_Time=0;
+	Read_ADC_I_DET_Flag=0;	
+	
+	memset(SmokeEnergy_Send_Str,'\0',SmokeEnergy_SENDDATA_NUMBER);
+	sprintf(SmokeEnergy_Send_Str,"%.1f",SmokeEnergy);	
+	SmokeEnergy_DataToAir((char *)SmokeEnergy_Send_Str);	
+
 	if(SmokeTimeOut_Flag==1)
 	{
 		LED_Flicker(RED_LED_Flicker ,8);
 		ON_OFF_Flag = DISABLED;//进入关机状态	
 	}
-
-	Smoke_output=DISABLED;
-	Smoke_Sec_Time=0;
-	Read_ADC_I_DET_Flag=0;
+	
 	RestartTiming();	
 }
 

@@ -118,6 +118,8 @@ BLE_DataDecode_ERROR Decoding_data_from_BLE(uint8_t *pBuf,BLE_DataDecode_out *ou
 char Send_Str[SENDDATA_NUMBER];
 char DPS310_Send_Str[SENDDATA_NUMBER];
 char Receive_Str[RECEIVEDATA_NUMBER];
+char SmokePower_Send_Str[SmokePower_SENDDATA_NUMBER];
+char SmokeEnergy_Send_Str[SmokeEnergy_SENDDATA_NUMBER];
 
 void SYS_Init(void)
 {

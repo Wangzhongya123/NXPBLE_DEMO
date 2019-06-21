@@ -126,16 +126,11 @@ static uint16_t cpHandles[4] = {value_qpps_rx,value_locking_rx,value_ecig_comman
 
 static txInfo_t mTxInfo;
 
-static tmrTimerID_t mAdvTimerId;
-static tmrTimerID_t mBatteryMeasurementTimerId;
-static tmrTimerID_t mQppsThroughputStatisticsTimerId;
-//#if mQppsTxInterval_c
-//static tmrTimerID_t mQppsTxTimerId;
-//#endif
-static appPeerInfo_t mPeerInformation[gAppMaxConnections_c];
-//static uint8_t printBuffer[100];
-
-static uint8_t mQppsTestDataLength = (gAttDefaultMtu_c-3);
+static tmrTimerID_t 	mAdvTimerId;
+static tmrTimerID_t 	mBatteryMeasurementTimerId;
+static tmrTimerID_t 	mQppsThroughputStatisticsTimerId;
+static appPeerInfo_t 	mPeerInformation[gAppMaxConnections_c];
+static uint8_t 			mQppsTestDataLength = (gAttDefaultMtu_c-3);
 
 /************************************************************************************
 *************************************************************************************
@@ -153,9 +148,7 @@ void BleApp_Config(void);
 static void AdvertisingTimerCallback (void *);
 static void BatteryMeasurementTimerCallback (void *);
 static void QppsThoughputStatisticsTimerCallback(void* pParam);
-//#if mQppsTxInterval_c
-//static void QppsTxTimerCallback(void* pParam);
-//#endif
+
 static void TxPrintCallback(void* pParam);
 static void QppsTxCallback(void * pParam);
 
@@ -232,6 +225,7 @@ void BleApp_HandleKeys(key_event_t events)
               if (mPeerInformation[i].deviceId == gInvalidDeviceId_c)
                 break;
             }
+			
             if(i < gAppMaxConnections_c)
               BleApp_Start();
             break;
@@ -241,15 +235,13 @@ void BleApp_HandleKeys(key_event_t events)
             for (i = 0; i < gAppMaxConnections_c; i++)
             {
 				if(mAdvState.advOn)
-				{
 					Gap_StopAdvertising();
-				}
-
-              if (mPeerInformation[i].deviceId != gInvalidDeviceId_c)
-                Gap_Disconnect(mPeerInformation[i].deviceId);
+				
+				if (mPeerInformation[i].deviceId != gInvalidDeviceId_c)
+					Gap_Disconnect(mPeerInformation[i].deviceId);
 			  
-			  mAdvState.advOn = FALSE;
-			  mRestartAdv = TRUE;
+				mAdvState.advOn = FALSE;
+				mRestartAdv = TRUE;
             }
             break;
         }
@@ -287,10 +279,6 @@ void BleApp_GenericCallback (gapGenericEvent_t* pGenericEvent)
         break;
 
     case gTxEntryAvailable_c:
-		//#if mQppsTxInterval_c == 0
-		//        mPeerInformation[pGenericEvent->eventData.deviceId].ntf_cfg = QPPS_VALUE_NTF_ON;
-				//App_PostCallbackMessage(QppsTxCallback, NULL);//modify by wzy 关闭模拟数据发送
-		//#endif
         break;
 
     default:
@@ -370,7 +358,7 @@ static void BleApp_Advertise(void)
         }
         break;
     }
-
+	
     /* Set advertising parameters*/
     Gap_SetAdvertisingParameters(&gAdvParams);
 }
@@ -561,15 +549,11 @@ static void BleApp_GattServerCallback (deviceId_t deviceId, gattServerEvent_t* p
 				
 				if((memcmp((char *)(pServerEvent->eventData.attributeWrittenEvent.aValue),"lock",pServerEvent->eventData.attributeWrittenEvent.cValueLength))==0)
 				{
-					//LED_StopFlashingAllLeds();	//modify by wzy
-					//Led2Flashing();				//modify by wzy
 					Lock_Unlock_byBLE_Flag = lock;	//modify by wzy
 				}
 				
 				if((memcmp((char *)(pServerEvent->eventData.attributeWrittenEvent.aValue),"unlock",pServerEvent->eventData.attributeWrittenEvent.cValueLength))==0)
 				{
-					    //LED_StopFlashingAllLeds();	//modify by wzy
-						//Led1On();						//modify by wzy
 					Lock_Unlock_byBLE_Flag = unlock;	//modify by wzy
 				}	
 			 }	
@@ -616,9 +600,6 @@ static void BleApp_GattServerCallback (deviceId_t deviceId, gattServerEvent_t* p
             {
 				pServerEvent->eventData.charCccdWrittenEvent.newCccd = gCccdNotification_c;
                 mPeerInformation[deviceId].ntf_cfg = pServerEvent->eventData.charCccdWrittenEvent.newCccd;
-			//#if (mQppsTxInterval_c == 0)
-							//App_PostCallbackMessage(QppsTxCallback, NULL);//modify by wzy 关闭模拟数据发送
-			//#endif
             }
         }
         break;
@@ -804,6 +785,94 @@ void WorkMode_SendToAir(void* pParam)//modify by wzy
 }
 
 /*! *********************************************************************************
+* \brief        抽烟功率发送
+*
+* \param[in]    pParam        Calback parameters.  //modify by wzy
+********************************************************************************** */
+static void SmokePower_TxCallback(void * pParam)
+{
+      char *tx_data = NULL;
+      uint8_t i;
+      bleResult_t result;
+
+      for (i = 0; i < gAppMaxConnections_c; i++)
+      {
+          if ((mPeerInformation[i].deviceId != gInvalidDeviceId_c) && (mPeerInformation[i].ntf_cfg == QPPS_VALUE_NTF_ON))
+          {
+			  tx_data = MEM_BufferAlloc(strlen((char *)pParam));
+			  
+			  if(tx_data ==NULL)
+				  return;
+			  
+			  memcpy(tx_data,(char *)pParam,strlen((char *)pParam) );
+			  
+              result = SmokePower_SendData(mPeerInformation[i].deviceId, service_qpps, strlen((char *)pParam), (uint8_t *)tx_data);
+
+              if(result == gBleSuccess_c)
+              {
+                  mPeerInformation[i].bytsSentPerInterval += mQppsTestDataLength;
+              }
+              else if (result == gBleOverflow_c)
+              {
+                  /* Tx overflow. Stop Tx and restart when gTxEntryAvailable_c event is received. */
+                  mPeerInformation[i].ntf_cfg = QPPS_VALUE_NTF_OFF;
+              }
+				
+			  MEM_BufferFree(tx_data);/* Free Buffer */
+          }
+      }
+}
+
+void SmokePower_DataToAir(void* pParam)//modify by wzy
+{
+	App_PostCallbackMessage(SmokePower_TxCallback, pParam);
+}
+
+/*! *********************************************************************************
+* \brief        抽烟功率发送
+*
+* \param[in]    pParam        Calback parameters.  //modify by wzy
+********************************************************************************** */
+static void SmokeEnergy_TxCallback(void * pParam)
+{
+      char *tx_data = NULL;
+      uint8_t i;
+      bleResult_t result;
+
+      for (i = 0; i < gAppMaxConnections_c; i++)
+      {
+          if ((mPeerInformation[i].deviceId != gInvalidDeviceId_c) && (mPeerInformation[i].ntf_cfg == QPPS_VALUE_NTF_ON))
+          {
+			  tx_data = MEM_BufferAlloc(strlen((char *)pParam));
+			  
+			  if(tx_data ==NULL)
+				  return;
+			  
+			  memcpy(tx_data,(char *)pParam,strlen((char *)pParam) );
+			  
+              result = SmokeEnergy_SendData(mPeerInformation[i].deviceId, service_qpps, strlen((char *)pParam), (uint8_t *)tx_data);
+
+              if(result == gBleSuccess_c)
+              {
+                  mPeerInformation[i].bytsSentPerInterval += mQppsTestDataLength;
+              }
+              else if (result == gBleOverflow_c)
+              {
+                  /* Tx overflow. Stop Tx and restart when gTxEntryAvailable_c event is received. */
+                  mPeerInformation[i].ntf_cfg = QPPS_VALUE_NTF_OFF;
+              }
+				
+			  MEM_BufferFree(tx_data);/* Free Buffer */
+          }
+      }
+}
+
+void SmokeEnergy_DataToAir(void* pParam)//modify by wzy
+{
+	App_PostCallbackMessage(SmokeEnergy_TxCallback, pParam);
+}
+
+/*! *********************************************************************************
 * \brief        Handles advertising timer callback.
 *
 * \param[in]    pParam        Calback parameters.
@@ -891,9 +960,6 @@ static void QppsTxCallback(void * pParam)
       if (txCnt > 0)
       {
           index++;
-		//#if (mQppsTxInterval_c == 0)
-				  //App_PostCallbackMessage(QppsTxCallback, NULL);//modify by wzy 关闭数据模拟发送
-		//#endif
       }
 }
 
