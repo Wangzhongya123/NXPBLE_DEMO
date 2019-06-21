@@ -147,7 +147,7 @@ static uint8_t mQppsTestDataLength = (gAttDefaultMtu_c-3);
 static void BleApp_AdvertisingCallback (gapAdvertisingEvent_t* pAdvertisingEvent);
 static void BleApp_ConnectionCallback (deviceId_t peerDeviceId, gapConnectionEvent_t* pConnectionEvent);
 static void BleApp_GattServerCallback (deviceId_t deviceId, gattServerEvent_t* pServerEvent);
-static void BleApp_Config(void);
+void BleApp_Config(void);
 
 /* Timer Callbacks */
 static void AdvertisingTimerCallback (void *);
@@ -240,8 +240,16 @@ void BleApp_HandleKeys(key_event_t events)
         {
             for (i = 0; i < gAppMaxConnections_c; i++)
             {
+				if(mAdvState.advOn)
+				{
+					Gap_StopAdvertising();
+				}
+
               if (mPeerInformation[i].deviceId != gInvalidDeviceId_c)
                 Gap_Disconnect(mPeerInformation[i].deviceId);
+			  
+			  mAdvState.advOn = FALSE;
+			  mRestartAdv = TRUE;
             }
             break;
         }
@@ -295,7 +303,7 @@ void BleApp_GenericCallback (gapGenericEvent_t* pGenericEvent)
 *               configuring advertising, scanning, white list, services, et al.
 *
 ********************************************************************************** */
-static void BleApp_Config()
+void BleApp_Config()
 {
     /* Configure as GAP peripheral */
     BleConnManager_GapPeripheralConfig();
@@ -463,13 +471,6 @@ static void BleApp_ConnectionCallback (deviceId_t peerDeviceId, gapConnectionEve
                 TMR_StartLowPowerTimer(mQppsThroughputStatisticsTimerId, gTmrLowPowerIntervalMillisTimer_c,
                                        mQppsThroughputStatisticsInterval_c, QppsThoughputStatisticsTimerCallback, NULL);
             }
-			//#if mQppsTxInterval_c
-			//			if(!TMR_IsTimerActive(mQppsTxTimerId))
-			//            {
-			//                TMR_StartLowPowerTimer(mQppsTxTimerId, gTmrLowPowerIntervalMillisTimer_c,
-			//                                       mQppsTxInterval_c, QppsTxTimerCallback, NULL);
-			//            }
-			//#endif
         }
         break;
 

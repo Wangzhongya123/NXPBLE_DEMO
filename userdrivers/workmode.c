@@ -22,6 +22,8 @@
 
 #include "fsl_os_abstraction.h"
 #include "fsl_os_abstraction_bm.h"
+#include "controller_interface.h"
+#include "aes_reg_access.h"
 
 
 #ifdef DEBUG_PRINT
@@ -99,11 +101,7 @@ extern void USER_SendDateToAir(void *pData);
 extern void USER_Serial_Printf(void * pParam);//modify by wzy
 extern void BleApp_Start(void);
 extern void BleApp_Init(void);
-extern osaStatus_t OSA_Init(void);
-extern void hardware_init(void);
-extern void OSA_TimeInit(void);
-extern void main_task(uint32_t param);
-extern void ble_task_init(void);
+extern void BleApp_Config(void);
 extern void BOARD_InitPins(void);
 
 char str[20]={0};//临时使用
@@ -207,10 +205,8 @@ WORK_MODE CheckWorkMode(void)
 			Query_Flag  = ENABLED;
 			WakeupBykey = ENABLED;//使用按键唤醒
 			
-			BOARD_InitPins();	
-			BleApp_Init();
-			
 			BleApp_Start();
+			//BleApp_Config();
 			
 			return Mode_Query;
 		}	
@@ -1638,6 +1634,7 @@ static void switch_to_XTAL(void)
 /* 入口参数：无                               */
 /**********************************************/
 extern void BleApp_HandleKeys(key_event_t events);
+extern uint8_t  xtalDivRestore;
 
 void ReadyForSleepMode(void)
 {	
@@ -1668,23 +1665,29 @@ void ReadyForSleepMode(void)
 	CLOCK_DisableClock(kCLOCK_Ctimer3);	
 	CLOCK_DisableClock(kCLOCK_Flexcomm0);
 	
-	__disable_irq();	
+	Key_DownCount=0;
+	Key_HodeOnTime=0;
+	Key_RleaseTime=0;
+	Key_RleaseTime_onetime=0;
+	KeyValue=Key_Invalid;
 	
-	/* Power down affects calibration's FSM, turn it off before power down.
-     * Turn off Ble core's high frequency clock before power down.*/  
-    //SYSCON->CLK_DIS = SYSCON_CLK_DIS_CLK_CAL_DIS_MASK | SYSCON_CLK_DIS_CLK_BLE_DIS_MASK;	
-	//CLOCK_DisableClock(kCLOCK_Ble);
-	POWER_EnableDCDC(false);
-	APP_SaveBleReg();
+	RestartTiming();	
+
+	__disable_irq();	
 	
 	POWER_Init();
 	POWER_EnablePD(kPDRUNCFG_PD_ADC_VCM);
 	POWER_EnablePD(kPDRUNCFG_PD_CAP_SEN);
 	POWER_EnablePD(kPDRUNCFG_PD_MEM9);
     POWER_EnablePD(kPDRUNCFG_PD_MEM8);
-    POWER_EnablePD(kPDRUNCFG_PD_MEM7);	
+	POWER_EnablePD(kPDRUNCFG_PD_MEM7);	
 	
-	msk = SYSCON_PMU_CTRL1_XTAL32K_PDM_DIS_MASK | SYSCON_PMU_CTRL1_RCO32K_PDM_DIS_MASK |
+	POWER_EnableDCDC(false);
+	NVIC_ClearPendingIRQ(OSC_IRQn);
+    NVIC_EnableIRQ(OSC_IRQn);
+	APP_SaveBleReg();
+	
+	msk = SYSCON_PMU_CTRL1_XTAL32K_PDM_DIS_MASK | SYSCON_PMU_CTRL1_RCO32K_PDM_DIS_MASK |   \
           SYSCON_PMU_CTRL1_XTAL32K_DIS_MASK | SYSCON_PMU_CTRL1_RCO32K_DIS_MASK;
 	
 	val = SYSCON_PMU_CTRL1_XTAL32K_PDM_DIS(1U)  /* switch off XTAL32K during power down */
@@ -1694,39 +1697,49 @@ void ReadyForSleepMode(void)
 
 	POWER_WritePmuCtrl1(SYSCON, msk, val);
 	
-	/* Enable GPIO wakeup */
-	SYSCON->PIO_WAKEUP_LVL0 = SYSCON->PIO_WAKEUP_LVL0 | USER_SW1_GPIO_PIN_MASK;
-    SYSCON->PIO_WAKEUP_EN0 = SYSCON->PIO_WAKEUP_EN0 | USER_SW1_GPIO_PIN_MASK;
-	POWER_EnableSwdWakeup();//通过swd口进行唤醒
+	/* power on OSC32M and switch to it */
+	switch_to_OSC32M();
+    /* Set Xtal divider before the crystal is ready */
+    if ((SYSCON->XTAL_CTRL & SYSCON_XTAL_CTRL_XTAL_DIV_MASK) == 0)
+    {
+        xtalDivRestore = 1;
+        SYSCON->XTAL_CTRL |= SYSCON_XTAL_CTRL_XTAL_DIV_MASK;
+    }
+	
+	//POWER_WritePmuCtrl1(SYSCON, SYSCON_PMU_CTRL1_XTAL32K_DIS_MASK, SYSCON_PMU_CTRL1_XTAL32K_DIS(1U));
 	
     NVIC_ClearPendingIRQ(EXT_GPIO_WAKEUP_IRQn);
     NVIC_EnableIRQ(EXT_GPIO_WAKEUP_IRQn);	
 	
-	switch_to_OSC32M();
+	/*Enable GPIO wakeup */
+	SYSCON->PIO_WAKEUP_LVL0 = SYSCON->PIO_WAKEUP_LVL0 | USER_SW1_GPIO_PIN_MASK;
+    SYSCON->PIO_WAKEUP_EN0 = SYSCON->PIO_WAKEUP_EN0 | USER_SW1_GPIO_PIN_MASK;
+	POWER_EnableSwdWakeup();//通过swd口进行唤醒	
+	
 	POWER_LatchIO();
 	
-	Key_DownCount=0;
-	Key_HodeOnTime=0;
-	Key_RleaseTime=0;
-	Key_RleaseTime_onetime=0;
-	KeyValue=Key_Invalid;
-	
-	RestartTiming();	
+	SYSCON->CLK_DIS = SYSCON_CLK_DIS_CLK_CAL_DIS_MASK | SYSCON_CLK_DIS_CLK_BLE_DIS_MASK;
 }
 
 /**********************************************/
 /* 函数功能；从睡眠模式中唤醒后再配置一次     */
 /* 入口参数：无                               */
 /**********************************************/
+extern void TMR_SyncLpmTimers(uint32_t sleepDurationTmrTicks);
+
 void WakeUpFormSleepMode(void)
 {	
 	int ret=0;
 
 	switch_to_XTAL();
 	BOARD_BootClockHSRUN();
-    SystemCoreClockUpdate();/* Update SystemCoreClock if default clock value (16MHz) has changed */
+	SystemCoreClockUpdate();/* Update SystemCoreClock if default clock value (16MHz) has changed */
 	
-	POWER_RestoreIO();
+	SYSCON->CLK_EN = SYSCON_CLK_EN_CLK_CAL_EN_MASK /* | SYSCON_CLK_DIS_CLK_BLE_DIS_MASK */;
+    /* imr = 1 */
+    CALIB->VCO_MOD_CFG |= CALIB_VCO_MOD_CFG_IMR_MASK;
+    /* AA error */
+    BLEDP->DP_AA_ERROR_CTRL = 0x0000000EU;
 	
 	POWER_EnableDCDC(true);
     POWER_EnableADC(true);
@@ -1734,10 +1747,53 @@ void WakeUpFormSleepMode(void)
 	CLOCK_EnableClock(kCLOCK_Ble);	
 	CLOCK_EnableClock(kCLOCK_Flexcomm0);	
 	
+	POWER_RestoreIO();
 	POWER_RestoreSwd();//
+	
+	/* To generate a pending interrupt for GPIO wakeup source */
+    NVIC_DisableIRQ(EXT_GPIO_WAKEUP_IRQn);
+    NVIC_ClearPendingIRQ(EXT_GPIO_WAKEUP_IRQn);
+	
+	SYSCON->ANA_CTRL1 = SYSCON->ANA_CTRL1 | SYSCON_ANA_CTRL1_X32_SMT_EN_MASK;
+    POWER_WritePmuCtrl1(SYSCON, SYSCON_PMU_CTRL1_RCO32K_DIS_MASK | SYSCON_PMU_CTRL1_XTAL32K_DIS_MASK, \
+                          SYSCON_PMU_CTRL1_RCO32K_DIS(0U) | SYSCON_PMU_CTRL1_XTAL32K_DIS(0U));
+						  
+    CLOCK_AttachClk(kRCO32K_to_32K_CLK);
+    //PWRLib_Start_32kXTAL_ready_timer();
+    /* Prevent BLE sleep */
+    BLE_disable_sleep();
+	
+	APP_RestoreBleReg();
+    NVIC_DisableIRQ(OSC_IRQn);
+    if (NVIC_GetPendingIRQ(OSC_IRQn))
+    {
+        NVIC_ClearPendingIRQ(OSC_IRQn);
+        /* BLE wakeup is onging */
+        BLE_prevent_sleep_on_wakeup();
+    }
 
-	NVIC_DisableIRQ(EXT_GPIO_WAKEUP_IRQn);
-	NVIC_ClearPendingIRQ(EXT_GPIO_WAKEUP_IRQn);
+    /* wait until XTAL is ready, and switch to it */
+    NVIC_ClearPendingIRQ(XTAL_READY_IRQn);
+    NVIC_EnableIRQ(XTAL_READY_IRQn);
+
+    while (!(SYSCON_SYS_MODE_CTRL_XTAL_RDY_MASK & SYSCON->SYS_MODE_CTRL))
+    {
+        POWER_EnterSleep();
+    }
+
+    NVIC_DisableIRQ(XTAL_READY_IRQn);
+    NVIC_ClearPendingIRQ(XTAL_READY_IRQn);
+
+	if (xtalDivRestore)	
+		SYSCON->XTAL_CTRL &= ~SYSCON_XTAL_CTRL_XTAL_DIV_MASK;	
+	TMR_SyncLpmTimers(0);
+	
+    /* Check if BLE is in sleep mode */
+    if(SYSCON->SYS_STAT & SYSCON_SYS_STAT_CLK_STATUS_MASK)
+    {
+        ble_soft_wakeup_req_setf(1);/* request BLE soft wakeup */
+        while (!(SYSCON->SYS_STAT & SYSCON_SYS_STAT_OSC_EN_MASK)){;};/* wait until BLE LL is up and running */
+    }
 	
 	ADC_Pin_init();
 	//ADC_Configuration();
@@ -1759,7 +1815,10 @@ void WakeUpFormSleepMode(void)
 	Time2_Init(2);
 	//Time3_Init(2);
 	
-	delay_bybletask(40);
+	BOARD_InitPins();	
+	BleApp_Init();	
+	//BleApp_Start();
+	delay_bybletask(20);
 	
 	do
 	{
