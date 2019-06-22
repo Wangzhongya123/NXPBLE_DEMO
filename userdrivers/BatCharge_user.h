@@ -22,7 +22,8 @@
 #define BATTERY_FULL_VOLTAGE   4.2f /* milliVolts */
 #define BATTERY_MIN_VOLTAGE    2.8f /* milliVolts */
 
-#define USER_SW1_GPIO_PIN_MASK (1U << USER_SW1_GPIO_PIN)
+#define USER_SW1_GPIO_PIN_MASK 		(1U << USER_SW1_GPIO_PIN)
+#define USER_CHARGE_GPIO_PIN_MASK 	(1U << CHARGE_DET_PIN)
 
 void NTCPin_Init(void);
 void NTC_EN(void);

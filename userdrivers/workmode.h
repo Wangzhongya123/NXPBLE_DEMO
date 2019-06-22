@@ -81,7 +81,6 @@ typedef enum _dps310_respiratory
 	
 }DPS310_respiratory;
 
-
 //-------- <<< Use Configuration Wizard in Context Menu >>> -----------------
 //
 // <h>充电器电压Configuration
@@ -116,6 +115,16 @@ typedef enum _dps310_respiratory
 //   <o>空闲状态下DPS310的灵敏度调整
 //   <i> Default: 3
 #define DSP_Sensibility 3
+
+// </h>
+
+
+// <h>LED---Configuration
+// =======================
+//
+//   <o>是否使用PWM LED
+//   <i> Default: 0
+#define  LED_PWM  1
 
 // </h>
 
@@ -175,6 +184,9 @@ void Mode_Query_Work(void);
 Charge_ERROR  Mode_ChargeIn_Work(void);//
 Smokemode_ERROR  Mode_Smoke_Work(void);
 void QuitSmoke_Work(void);
+#if LED_PWM
+	void QuitSmoke_Work_break(void);
+#endif
 void Mode_Sleep_Work(void);
 void Mode_Lowv_Work(void);
 void Mode_Idle_Work(void);

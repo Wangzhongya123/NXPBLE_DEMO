@@ -135,7 +135,7 @@ void SYS_Init(void)
 	
 	Time1_Init(SYS_FREQUENCY);
 	Time2_Init(2);
-	Time3_Init(2);
+	//Time3_Init(2);
 	ADC_Pin_init();
 	ADC_Configuration();
 	LED_Pin_Init();//RGB_PWM_init();
@@ -148,7 +148,7 @@ void SYS_Init(void)
 	ChargeStart_Init();
 	CurrentChoice_Pin_Init();
 	
-	TEST_LED_Pin_Init();
+	//TEST_LED_Pin_Init();
 
 	LED_Flicker(GREEN_LED_Flicker,3);
 	
@@ -364,7 +364,7 @@ int user_main(void)
 		//		if(k>=99) k=0;
 		//		else k++;
 		//		
-		//		//LED_Breath(k);
+		//		//LED_White_Breath(k);
 		//		//usart_error = Decoding_data_from_BLE((uint8_t *)Receive_Str,&usart_out);
 		//	}
 		//	else

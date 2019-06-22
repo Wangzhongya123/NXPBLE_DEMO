@@ -43,7 +43,15 @@ typedef struct LED_RGB_config
 
 void RGB_PWM_init(void);
 void PWM_DutyPercet_Change(led_rgb_set led_color);
-void LED_Breath(unsigned char duty);
+
+void LED_Red_PWM_On(void);
+void LED_Blue_PWM_On(void);
+void LED_Green_PWM_On(void);
+void LED_Yellow_PWM_On(void);
+void LED_All_PWM_On(void);
+void LED_All_PWM_Off(void);
+void LED_White_Breath(unsigned char duty);
+void LED_Breath(led_rgb_set LED_DUTY);
 
 void LED_Pin_Init(void);
 

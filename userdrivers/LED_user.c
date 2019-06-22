@@ -89,7 +89,74 @@ void PWM_DutyPercet_Change(led_rgb_set led_color)
 /* 函数功能：	呼吸使用			          */
 /* 入口参数:                              	  */
 /**********************************************/
-void LED_Breath(unsigned char duty)
+void LED_Red_PWM_On(void)
+{
+	led_rgb_set led_set={
+		.LED_BLUE_Duty	=	1,
+		.LED_RED_Duty 	=	100,
+		.LED_GREEN_Duty =	1,
+	};
+
+	PWM_DutyPercet_Change(led_set);
+}
+void LED_Blue_PWM_On(void)
+{
+	led_rgb_set led_set={
+		.LED_BLUE_Duty	=	100,
+		.LED_RED_Duty 	=	1,
+		.LED_GREEN_Duty =	1,	
+	};
+
+	PWM_DutyPercet_Change(led_set);
+}
+void LED_Green_PWM_On(void)
+{
+	led_rgb_set led_set={
+		.LED_BLUE_Duty	=	1,
+		.LED_RED_Duty 	=	1,
+		.LED_GREEN_Duty =	100,	
+	};
+	
+	PWM_DutyPercet_Change(led_set);
+}
+void LED_Yellow_PWM_On(void)
+{
+	led_rgb_set led_set={
+		.LED_BLUE_Duty	=	1,
+		.LED_RED_Duty 	=	100,
+		.LED_GREEN_Duty =	100,	
+	};
+	
+	PWM_DutyPercet_Change(led_set);
+}
+void LED_All_PWM_On(void)
+{
+	led_rgb_set led_set={
+		.LED_BLUE_Duty	=	100,
+		.LED_RED_Duty 	=	100,
+		.LED_GREEN_Duty =	100,	
+	};
+	
+	PWM_DutyPercet_Change(led_set);
+}
+
+void LED_Breath(led_rgb_set LED_DUTY)
+{
+	PWM_DutyPercet_Change(LED_DUTY);
+}
+
+void LED_All_PWM_Off(void)
+{
+	led_rgb_set led_set={
+		.LED_BLUE_Duty	=	1,
+		.LED_RED_Duty 	=	1,
+		.LED_GREEN_Duty =	1,	
+	};
+	
+	PWM_DutyPercet_Change(led_set);
+}
+
+void LED_White_Breath(unsigned char duty)
 {
 	led_rgb_set led_set={
 		.LED_BLUE_Duty	=	duty,

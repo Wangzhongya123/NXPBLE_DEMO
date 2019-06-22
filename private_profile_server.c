@@ -59,13 +59,15 @@
 
 #include "Timer_user.h"
 
+extern unsigned char USER_GetBatteryLevel(void);
+
 /************************************************************************************
 *************************************************************************************
 * Private macros
 *************************************************************************************
 ************************************************************************************/
 #define mBatteryLevelReportInterval_c                (1)          /* battery level report interval in seconds  */
-#define mQppsThroughputStatisticsInterval_c          (10000)      /* Throughput Statistics interval in miliseconds  */
+//#define mQppsThroughputStatisticsInterval_c          (10000)      /* Throughput Statistics interval in miliseconds  */
 //#define mQppsTxInterval_c                          (0)          /* Qpps send data interval in miliseconds  */
 #define mQppsMaxTestDataLength_c                     (244)        /* the length of data that Qpps send every time*/
 
@@ -123,12 +125,11 @@ static ecigarettesConfig_t 	ecigServiceConfig = {service_ecig};//modify by wzy
 static uint16_t cpHandles[4] = {value_qpps_rx,value_locking_rx,value_ecig_command_rx,value_ecig_data_rx};//收到的常规数据  ，收到的锁定数据
 
 /* Application specific data*/
-
-static txInfo_t mTxInfo;
+//static txInfo_t mTxInfo;
 
 static tmrTimerID_t 	mAdvTimerId;
 static tmrTimerID_t 	mBatteryMeasurementTimerId;
-static tmrTimerID_t 	mQppsThroughputStatisticsTimerId;
+//static tmrTimerID_t 	mQppsThroughputStatisticsTimerId;
 static appPeerInfo_t 	mPeerInformation[gAppMaxConnections_c];
 static uint8_t 			mQppsTestDataLength = (gAttDefaultMtu_c-3);
 
@@ -137,7 +138,6 @@ static uint8_t 			mQppsTestDataLength = (gAttDefaultMtu_c-3);
 * Private functions prototypes
 *************************************************************************************
 ************************************************************************************/
-
 /* Gatt and Att callbacks */
 static void BleApp_AdvertisingCallback (gapAdvertisingEvent_t* pAdvertisingEvent);
 static void BleApp_ConnectionCallback (deviceId_t peerDeviceId, gapConnectionEvent_t* pConnectionEvent);
@@ -147,19 +147,13 @@ void BleApp_Config(void);
 /* Timer Callbacks */
 static void AdvertisingTimerCallback (void *);
 static void BatteryMeasurementTimerCallback (void *);
-static void QppsThoughputStatisticsTimerCallback(void* pParam);
+//static void QppsThoughputStatisticsTimerCallback(void* pParam);
 
-static void TxPrintCallback(void* pParam);
-static void QppsTxCallback(void * pParam);
+//static void TxPrintCallback(void* pParam);
+//static void QppsTxCallback(void * pParam);
 
 static void BleApp_Advertise(void);
-
-static void BleApp_ReceivedDataHandler
-(
-    deviceId_t  deviceId,
-    uint8_t*    aValue,
-    uint16_t    valueLength
-);
+static void BleApp_ReceivedDataHandler(deviceId_t deviceId, uint8_t* aValue,uint16_t valueLength);
 
 /************************************************************************************
 *************************************************************************************
@@ -178,10 +172,8 @@ void BleApp_Init(void)
 
     /* UI */
     SerialManager_Init();
-
     /* Register Serial Manager interface */
     Serial_InitInterface(&gAppSerMgrIf, APP_SERIAL_INTERFACE_TYPE, APP_SERIAL_INTERFACE_INSTANCE);
-
     Serial_SetBaudRate(gAppSerMgrIf, gUARTBaudRate115200_c);
 }
 
@@ -239,7 +231,20 @@ void BleApp_HandleKeys(key_event_t events)
 				
 				if (mPeerInformation[i].deviceId != gInvalidDeviceId_c)
 					Gap_Disconnect(mPeerInformation[i].deviceId);
-			  
+				
+				Bas_Unsubscribe(&basServiceConfig, i);
+				/* qpps Unsubscribe client */
+				Qpp_Unsubscribe();
+				ECig_Unsubscribe();
+				mPeerInformation[i].bytsReceivedPerInterval = 0;
+				mPeerInformation[i].bytsSentPerInterval = 0;
+				mPeerInformation[i].ntf_cfg = QPPS_VALUE_NTF_OFF;
+				mPeerInformation[i].deviceId = gInvalidDeviceId_c;
+				
+				TMR_StopTimer(mBatteryMeasurementTimerId);
+                //TMR_StopTimer(mQppsThroughputStatisticsTimerId);
+				
+				mPeerInformation[i].deviceId= gInvalidDeviceId_c;
 				mAdvState.advOn = FALSE;
 				mRestartAdv = TRUE;
             }
@@ -306,7 +311,7 @@ void BleApp_Config()
         mPeerInformation[i].deviceId= gInvalidDeviceId_c;
     }
 
-    basServiceConfig.batteryLevel = BOARD_GetBatteryLevel();
+    basServiceConfig.batteryLevel = USER_GetBatteryLevel();
     Bas_Start(&basServiceConfig);
     Dis_Start(&disServiceConfig);
     Qpp_Start (&qppServiceConfig);
@@ -314,7 +319,8 @@ void BleApp_Config()
     /* Allocate application timers */
     mAdvTimerId = TMR_AllocateTimer();
     mBatteryMeasurementTimerId = TMR_AllocateTimer();
-    mQppsThroughputStatisticsTimerId = TMR_AllocateTimer();
+    //mQppsThroughputStatisticsTimerId = TMR_AllocateTimer();//modify by wzy
+	
     /* UI */
     //Serial_Print(gAppSerMgrIf, "\r\nPress ADVSW to connect to a QPP Client!\r\n", gNoBlock_d);//modify by wzy
 	
@@ -361,6 +367,9 @@ static void BleApp_Advertise(void)
 	
     /* Set advertising parameters*/
     Gap_SetAdvertisingParameters(&gAdvParams);
+	
+	TEST_LED_Pin_Init();//modify by wzy
+	Time3_Init(2);//start led  //modify by wzy
 }
 
 /*! *********************************************************************************
@@ -437,6 +446,7 @@ static void BleApp_ConnectionCallback (deviceId_t peerDeviceId, gapConnectionEve
             Bas_Subscribe(&basServiceConfig, peerDeviceId);
             Qpp_Subscribe(peerDeviceId);
 			ECig_Subscribe(peerDeviceId);
+			
             /* UI */
             //LED_StopFlashingAllLeds();//modify by wzy
             //Led1On();//modify by wzy
@@ -449,16 +459,17 @@ static void BleApp_ConnectionCallback (deviceId_t peerDeviceId, gapConnectionEve
             TMR_StopTimer(mAdvTimerId);
 
             /* Start battery measurements */
-            if(!TMR_IsTimerActive(mBatteryMeasurementTimerId))
+            //if(!TMR_IsTimerActive(mBatteryMeasurementTimerId))//modify by wzy
             {
                 TMR_StartLowPowerTimer(mBatteryMeasurementTimerId, gTmrLowPowerIntervalMillisTimer_c,
                                        TmrSeconds(mBatteryLevelReportInterval_c), BatteryMeasurementTimerCallback, NULL);
             }
-            if(!TMR_IsTimerActive(mQppsThroughputStatisticsTimerId))
-            {
-                TMR_StartLowPowerTimer(mQppsThroughputStatisticsTimerId, gTmrLowPowerIntervalMillisTimer_c,
-                                       mQppsThroughputStatisticsInterval_c, QppsThoughputStatisticsTimerCallback, NULL);
-            }
+			
+            //if(!TMR_IsTimerActive(mQppsThroughputStatisticsTimerId))//modify by wzy
+            //{
+            //    TMR_StartLowPowerTimer(mQppsThroughputStatisticsTimerId, gTmrLowPowerIntervalMillisTimer_c,
+            //                           mQppsThroughputStatisticsInterval_c, QppsThoughputStatisticsTimerCallback, NULL);
+            //}
         }
         break;
 
@@ -478,8 +489,8 @@ static void BleApp_ConnectionCallback (deviceId_t peerDeviceId, gapConnectionEve
             mPeerInformation[peerDeviceId].ntf_cfg = QPPS_VALUE_NTF_OFF;
             mPeerInformation[peerDeviceId].deviceId = gInvalidDeviceId_c;
 
-			TEST_LED_Pin_Init();//modify by wzy
-			Time3_Init(2);//start led  //modify by wzy
+			//TEST_LED_Pin_Init();//modify by wzy
+			//Time3_Init(2);//start led  //modify by wzy
 
             for (uint8_t i = 0; i < gAppMaxConnections_c; i++)
             {
@@ -488,7 +499,7 @@ static void BleApp_ConnectionCallback (deviceId_t peerDeviceId, gapConnectionEve
                 if(i==(gAppMaxConnections_c-1))
                 {
                     TMR_StopTimer(mBatteryMeasurementTimerId);
-                    TMR_StopTimer(mQppsThroughputStatisticsTimerId);
+                    //TMR_StopTimer(mQppsThroughputStatisticsTimerId);//modify by wzy
                 }
             }
 
@@ -924,95 +935,93 @@ static void AdvertisingTimerCallback(void * pParam)
 *
 * \param[in]    pParam        Calback parameters.
 ********************************************************************************** */
-static void QppsTxCallback(void * pParam)
-{
-      static uint8_t tx_data[mQppsMaxTestDataLength_c];
-      static uint8_t index = 0;
-      uint8_t i;
-      bleResult_t result;
-      uint8_t txCnt = 0;
+//static void QppsTxCallback(void * pParam)			//modify by wzy
+//{
+//      static uint8_t tx_data[mQppsMaxTestDataLength_c];
+//      static uint8_t index = 0;
+//      uint8_t i;
+//      bleResult_t result;
+//      uint8_t txCnt = 0;
 
-      for(i = 1; i<mQppsTestDataLength; i++)
-      {
-          tx_data[i] = i;
-      }
-      tx_data[0] = index;
+//      for(i = 1; i<mQppsTestDataLength; i++)
+//      {
+//          tx_data[i] = i;
+//      }
+//      tx_data[0] = index;
 
-      for (i = 0; i < gAppMaxConnections_c; i++)
-      {
-          if ((mPeerInformation[i].deviceId != gInvalidDeviceId_c) && (mPeerInformation[i].ntf_cfg == QPPS_VALUE_NTF_ON))
-          {
-              result = Qpp_SendData(mPeerInformation[i].deviceId, service_qpps, mQppsTestDataLength, tx_data);
+//      for (i = 0; i < gAppMaxConnections_c; i++)
+//      {
+//          if ((mPeerInformation[i].deviceId != gInvalidDeviceId_c) && (mPeerInformation[i].ntf_cfg == QPPS_VALUE_NTF_ON))
+//          {
+//              result = Qpp_SendData(mPeerInformation[i].deviceId, service_qpps, mQppsTestDataLength, tx_data);
 
-              if(result == gBleSuccess_c)
-              {
-                  mPeerInformation[i].bytsSentPerInterval += mQppsTestDataLength;
-                  txCnt++;
-              }
-              else if (result == gBleOverflow_c)
-              {
-                  /* Tx overflow. Stop Tx and restart when gTxEntryAvailable_c event is received. */
-                  mPeerInformation[i].ntf_cfg = QPPS_VALUE_NTF_OFF;
-              }
-          }
-      }
-      
-      if (txCnt > 0)
-      {
-          index++;
-      }
-}
+//              if(result == gBleSuccess_c)
+//              {
+//                  mPeerInformation[i].bytsSentPerInterval += mQppsTestDataLength;
+//                  txCnt++;
+//              }
+//              else if (result == gBleOverflow_c)
+//              {
+//                  /* Tx overflow. Stop Tx and restart when gTxEntryAvailable_c event is received. */
+//                  mPeerInformation[i].ntf_cfg = QPPS_VALUE_NTF_OFF;
+//              }
+//          }
+//      }
+//      
+//      if (txCnt > 0)
+//      {
+//          index++;
+//      }
+//}
 
 /*! *********************************************************************************
 * \brief        Handles QPPS Thoughput timer callback.
 *
 * \param[in]    pParam        Calback parameters.
 ********************************************************************************** */
-static void QppsThoughputStatisticsTimerCallback(void* pParam)
-{
-    uint8_t i;
-    bool_t print_stats = FALSE;
-    mTxInfo.TakenSeconds = mQppsThroughputStatisticsInterval_c/1000;
+//static void QppsThoughputStatisticsTimerCallback(void* pParam)   //modify by wzy
+//{
+//    uint8_t i;
+//    bool_t print_stats = FALSE;
+//    mTxInfo.TakenSeconds = mQppsThroughputStatisticsInterval_c/1000;
 
-    for (i = 0; i < gAppMaxConnections_c; i++)
-    {
-        if(mPeerInformation[i].deviceId != gInvalidDeviceId_c)
-        {
-            mTxInfo.RxSpeed[i] = (mPeerInformation[i].bytsReceivedPerInterval / mTxInfo.TakenSeconds) * 8;
-            mTxInfo.TxSpeed[i] = (mPeerInformation[i].bytsSentPerInterval / mTxInfo.TakenSeconds) * 8;
-            mPeerInformation[i].bytsReceivedPerInterval = 0;
-            mPeerInformation[i].bytsSentPerInterval = 0;
-            print_stats = TRUE;
-        }
-    }
-    
-    if (print_stats)
-    {
-        App_PostCallbackMessage(TxPrintCallback, NULL);
-    }
-}
+//    for (i = 0; i < gAppMaxConnections_c; i++)
+//    {
+//        if(mPeerInformation[i].deviceId != gInvalidDeviceId_c)
+//        {
+//            mTxInfo.RxSpeed[i] = (mPeerInformation[i].bytsReceivedPerInterval / mTxInfo.TakenSeconds) * 8;
+//            mTxInfo.TxSpeed[i] = (mPeerInformation[i].bytsSentPerInterval / mTxInfo.TakenSeconds) * 8;
+//            mPeerInformation[i].bytsReceivedPerInterval = 0;
+//            mPeerInformation[i].bytsSentPerInterval = 0;
+//            print_stats = TRUE;
+//        }
+//    }
+//    
+//    if (print_stats)
+//    {
+//        App_PostCallbackMessage(TxPrintCallback, NULL);
+//    }
+//}
 
-static void TxPrintCallback(void * pParam)
-{
-    uint8_t i;
+//static void TxPrintCallback(void * pParam)  //modify by wzy
+//{
+//    uint8_t i;
 
-    for (i = 0; i < gAppMaxConnections_c; i++)
-    {
-        if(mPeerInformation[i].deviceId != gInvalidDeviceId_c)
-        {
-            //sprintf((char*)printBuffer, "\r\n-->QPP server, deviceId = 0x%x,RX speed = %d bps,TX speed = %d bps.\r\n ",mPeerInformation[i].deviceId,mTxInfo.RxSpeed[i],mTxInfo.TxSpeed[i]);
-            //Serial_Print(gAppSerMgrIf, (char*)printBuffer, gAllowToBlock_d);
-        }
-    }
-}
+//    for (i = 0; i < gAppMaxConnections_c; i++)
+//    {
+//        if(mPeerInformation[i].deviceId != gInvalidDeviceId_c)
+//        {
+//            //sprintf((char*)printBuffer, "\r\n-->QPP server, deviceId = 0x%x,RX speed = %d bps,TX speed = %d bps.\r\n ",mPeerInformation[i].deviceId,mTxInfo.RxSpeed[i],mTxInfo.TxSpeed[i]);
+//            //Serial_Print(gAppSerMgrIf, (char*)printBuffer, gAllowToBlock_d);
+//        }
+//    }
+//}
 
 /*! *********************************************************************************
 * \brief        Handles battery measurement timer callback.
 *
 * \param[in]    pParam        Calback parameters.
 ********************************************************************************** */
-extern unsigned char USER_GetBatteryLevel(void);
-
 static void BatteryMeasurementTimerCallback(void * pParam)
 {
     //basServiceConfig.batteryLevel = BOARD_GetBatteryLevel();

@@ -106,6 +106,10 @@ extern void BleApp_Start(void);
 extern void BleApp_Init(void);
 extern void BleApp_Config(void);
 extern void BOARD_InitPins(void);
+extern void BleApp_HandleKeys(key_event_t events);
+extern uint8_t  xtalDivRestore;
+
+
 
 char str[20]={0};//临时使用
 
@@ -208,9 +212,9 @@ WORK_MODE CheckWorkMode(void)
 			Query_Flag  = ENABLED;
 			WakeupBykey = ENABLED;//使用按键唤醒
 			
-			BleApp_Start();
-			//BleApp_Config();
-			
+			BleApp_Config();
+			//BleApp_Start();
+
 			return Mode_Query;
 		}	
 		
@@ -365,9 +369,12 @@ void Batter_Refresh(void)
 void Mode_Query_Work(void)
 {
 	unsigned char ledopentime=0;
-	float realtime_VIN_volt=0;
 	int ret=0;
 	unsigned char t=0;//用于调节灵敏度使用
+	#if LED_PWM
+		unsigned int i=100u;
+		led_rgb_set LED_Color;
+	#endif
 	
 	#ifdef DEBUG_PRINT
 		
@@ -398,23 +405,36 @@ void Mode_Query_Work(void)
 		else
 			Volt_Class = Volt_Clas_Overalls;	
 	}
-		
+	
 	LED_All_Off();	
 	
-	switch(Volt_Class)
+	#if LED_PWM 
 	{
-		case 4:{LED_Green_On();}break;
-		case 3:{LED_Yellow_On();}break;
-		case 2:{LED_Red_On();}break;
-		case 1:{LED_Red_On();}break;	
-		case 0:{LED_Red_On();}break;	
-		default:Query_Flag=0;;break;
+		RGB_PWM_init();
+		switch(Volt_Class)
+		{
+			case 4:{LED_Green_PWM_On();}break;
+			case 3:{LED_Yellow_PWM_On();}break;
+			case 2:{LED_Red_PWM_On();}break;
+			case 1:{LED_Red_PWM_On();}break;	
+			case 0:{LED_Red_PWM_On();}break;	
+			default:Query_Flag=0;;break;
+		}	
+	}	
+	#else
+	{
+		switch(Volt_Class)
+		{
+			case 4:{LED_Green_On();}break;
+			case 3:{LED_Yellow_On();}break;
+			case 2:{LED_Red_On();}break;
+			case 1:{LED_Red_On();}break;	
+			case 0:{LED_Red_On();}break;	
+			default:Query_Flag=0;;break;
+		}		
 	}
+	#endif
 
-	#ifdef DEBUG_PRINT
-		
-	#endif		
-	
 	//对310进行数据重读
 	{
 		double pressure_sum=0;
@@ -462,11 +482,58 @@ void Mode_Query_Work(void)
 	{
 		ble_task();//蓝牙相关消息队列检查
 		
-		if(Sec_Time >= ledopentime)		
-			Query_Flag = DISABLED;
-
+		#if LED_PWM
+			if(Sec_Time >= ledopentime)	
+			{
+				i -=2;
+				
+				if(i>1)
+				{
+					delay_bybletask(20);
+					switch(Volt_Class)
+					{
+						case 4:
+						{
+							LED_Color.LED_BLUE_Duty = 1;
+							LED_Color.LED_RED_Duty = 1;
+							LED_Color.LED_GREEN_Duty = i;
+						}break;
+						case 3:
+						{
+							LED_Color.LED_BLUE_Duty = 1;
+							LED_Color.LED_RED_Duty = i;
+							LED_Color.LED_GREEN_Duty = i;						
+						}break;
+						default:
+						{
+							LED_Color.LED_BLUE_Duty = 1;
+							LED_Color.LED_RED_Duty = i;
+							LED_Color.LED_GREEN_Duty = 1;							
+						}break;	
+					}
+					LED_Breath(LED_Color);
+				}
+				else
+					Query_Flag = DISABLED;	
+			}
+		#else
+			if(Sec_Time >= ledopentime)		
+				Query_Flag = DISABLED;	
+		#endif
+		
 		if(KeyValue == Key_1_Time )
 		{
+			#if LED_PWM
+				i = 100u;
+			
+				switch(Volt_Class)
+				{
+					case 4:{LED_Green_PWM_On();}break;
+					case 3:{LED_Yellow_PWM_On();}break;
+					default:LED_Red_PWM_On();break;
+				}
+			#endif
+			
 			KeyValue = Key_Invalid;
 			Query_Flag = ENABLED;
 			RestartTiming();
@@ -494,8 +561,7 @@ void Mode_Query_Work(void)
 				t++;					//调节灵敏度
 		}
 		
-		realtime_VIN_volt =  ADC_CHANGE_Volt();
-		if(realtime_VIN_volt >= CHARGERVOLTMIN )
+		if(ADC_CHANGE_Volt() >= CHARGERVOLTMIN )
 		{
 			ChargeLink_Flag = ENABLED;
 			
@@ -504,6 +570,10 @@ void Mode_Query_Work(void)
 				Query_Flag = DISABLED;
 		}
 	}
+	#if LED_PWM
+		LED_All_PWM_Off();
+		LED_Pin_Init();
+	#endif
 	LED_All_Off();//	
 	WakeupBykey=0;
 	RestartTiming();
@@ -977,20 +1047,26 @@ Charge_ERROR Mode_ChargeIn_Work(void)
 		
 		if(ON_OFF_Flag == ENABLED)//开机状态下
 		{
-			if(KeyValue==Key_LongTime)	//抽烟过程中的开关机
+			if(KeyValue == Key_LongTime)	//抽烟过程中的开关机
 			{
 				KeyValue = Key_Invalid;
 				ON_OFF_Flag = DISABLED;//开关机状态反置
+				
+				BleApp_HandleKeys(gKBD_EventLongPB1_c);	
+				
 				//RestartTiming();//重新计时				
 			}		
 		}
 		else
 		{
-			if(KeyValue==Key_LongTime)	//抽烟过程中的开关机
+			if(KeyValue == Key_LongTime)	//充电过程中的开关机
 			{
 				KeyValue = Key_Invalid;
 				ON_OFF_Flag = ENABLED;//开关机状态反置
-				//RestartTiming();//重新计时				
+				//RestartTiming();//重新计时	
+				
+				BleApp_Config();//开启蓝牙广播
+				//BleApp_Start();
 			}		
 		}
 
@@ -1045,7 +1121,11 @@ float LinearMap(float val, float oriMin, float oriMax, float min, float max)
 /**********************************************/
 /* 函数功能；吸烟任务  				     	  */
 /* 入口参数：无                               */
-/**********************************************/		
+/**********************************************/	
+#if LED_PWM 
+	volatile unsigned char led_white_duty = 1;
+#endif
+
 Smokemode_ERROR Mode_Smoke_Work(void)
 {		
 	unsigned char _check=0;	
@@ -1064,10 +1144,13 @@ Smokemode_ERROR Mode_Smoke_Work(void)
 	float Resistant_Smoke=0;//电热丝的阻值
 	float res_ntc =0;
 	
-
-	
 	unsigned short int u16AdcResult=0;
 
+	#if LED_PWM 
+		unsigned char ms20_flag=0;
+		led_white_duty = 1;
+	#endif
+	
 	ChargeOK_Flag=0;
 	Smokemode_start = DISABLED;//在其它任务中进入抽烟状态标志清零
 	Charge_DIS();
@@ -1120,15 +1203,22 @@ Smokemode_ERROR Mode_Smoke_Work(void)
 		return Smoke_BatterTEMP_too_low;	
 	}
 	
+	#if LED_PWM
+		RGB_PWM_init();
+	#endif
+	
 	while(Smoke_Flag==ENABLED)
 	{
 		ble_task();//蓝牙任务的调度
 		
 		if(m20_Sec_Flag==1)
 		{
+			m20_Sec_Flag=0;
 			_send_power_data++;
 			
-			m20_Sec_Flag=0;
+			#if LED_PWM
+				ms20_flag ++;
+			#endif	
 			{
 				ret = dps310_get_processed_data (&drv_state,&pressure,&temperature);//pressure和temperature是全局变量
 				
@@ -1147,7 +1237,20 @@ Smokemode_ERROR Mode_Smoke_Work(void)
 
 				if( Differ_Press >= 2.0f)
 				{
-					LED_All_On();
+					#if LED_PWM
+						if(ms20_flag )
+						{
+							ms20_flag = 0;
+							if(led_white_duty>100)
+								led_white_duty = 100;
+							else
+								led_white_duty++;
+							
+							LED_White_Breath(led_white_duty);
+						}
+					#else
+						LED_All_On();
+					#endif
 					Smoke_output = ENABLED;
 					RestartTiming();
 					{
@@ -1167,11 +1270,18 @@ Smokemode_ERROR Mode_Smoke_Work(void)
 				}
 				else
 				{
-					LED_All_Off();	
+					#if  !LED_PWM
+						LED_All_Off();	
+					#endif
 					TargerPower = 0;
 					Smoke_output = DISABLED;//停止吸气				
 					Smoke_Flag = ENABLED;
-					QuitSmoke_Work();
+					
+					#if LED_PWM
+						QuitSmoke_Work_break();
+					#else
+						QuitSmoke_Work();
+					#endif	
 					
 					return Smoke_Normal;
 				}
@@ -1252,6 +1362,11 @@ Smokemode_ERROR Mode_Smoke_Work(void)
 					{
 						//Gpio_SetIO(3,5,1); //PWMOUT_DIS();
 						//Gpio_SetIO(0,3,1);//LoadRESTest_DIS();
+						
+						#if LED_PWM
+							LED_All_PWM_Off();
+							LED_Pin_Init();
+						#endif
 						LED_All_Off();
 						Smoke_Flag	=DISABLED;
 						Smoke_output=DISABLED;
@@ -1295,7 +1410,7 @@ Smokemode_ERROR Mode_Smoke_Work(void)
 		
 	}
 	QuitSmoke_Work();
-	return Smoke_Normal;
+	return SmokeTimeout;
 }
 
 /**********************************************/
@@ -1377,16 +1492,21 @@ void QuitSmoke_Work(void)
 	CTIMER_StopTimer(CTIMER2);
 	Charge_DIS();//充电与NTC使能关闭
 	
-	LED_All_Off();	
-	
 	Smoke_output=DISABLED;
 	Smoke_Sec_Time=0;
 	Read_ADC_I_DET_Flag=0;	
 	
 	memset(SmokeEnergy_Send_Str,'\0',SmokeEnergy_SENDDATA_NUMBER);
 	sprintf(SmokeEnergy_Send_Str,"%.1f",SmokeEnergy);	
-	SmokeEnergy_DataToAir((char *)SmokeEnergy_Send_Str);	
-
+	SmokeEnergy_DataToAir((char *)SmokeEnergy_Send_Str);		
+	
+	#if LED_PWM
+		led_white_duty = 1;
+		LED_All_PWM_Off();
+		LED_Pin_Init();
+	#endif
+	LED_All_Off();	
+	
 	if(SmokeTimeOut_Flag==1)
 	{
 		LED_Flicker(RED_LED_Flicker ,8);
@@ -1395,6 +1515,67 @@ void QuitSmoke_Work(void)
 	
 	RestartTiming();	
 }
+
+#if LED_PWM
+	void QuitSmoke_Work_break(void)
+	{
+		unsigned char led_breach=1;
+		
+		Smoke_Flag = DISABLED;	
+		PWMOUT_DIS();
+		LoadRESTest_DIS();	
+		CTIMER_StopTimer(CTIMER2);
+		Charge_DIS();//充电与NTC使能关闭
+		
+		Smoke_output=DISABLED;
+		Smoke_Sec_Time=0;
+		Read_ADC_I_DET_Flag=0;	
+		
+		memset(SmokeEnergy_Send_Str,'\0',SmokeEnergy_SENDDATA_NUMBER);
+		sprintf(SmokeEnergy_Send_Str,"%.1f",SmokeEnergy);	
+		SmokeEnergy_DataToAir((char *)SmokeEnergy_Send_Str);		
+		
+		delaytobletask= 0;
+		
+		while(led_breach)
+		{
+			ble_task();//蓝牙相关消息队列检查
+		
+			led_white_duty -=2;
+			if(led_white_duty > 1)
+			{
+				delay_bybletask(20);
+				LED_White_Breath(led_white_duty);
+			}
+			else
+				led_breach =0;
+			
+			if(KeyValue == Key_1_Time )
+			{
+				KeyValue = Key_Invalid;
+				led_breach = 0;
+			}
+			else if(KeyValue == Key_LongTime )
+				led_breach = 0;
+			else;
+			
+			if(ADC_CHANGE_Volt() >= CHARGERVOLTMIN )
+			{
+				ChargeLink_Flag = ENABLED;
+				
+				if((ChargeLink_Flag == ENABLED)&&(ChargeOK_Flag==0)&&(ChargeOutTime==0)&&(Fault_BatTemp_Flag==0)&&
+					(Smokemode_start==0)&&(BatVoltTooLow_Flag==0)&&(ChargeVoltTooLow_Flag==0)&&(ChargeVoltTooHigh_Flag==0))
+					led_breach = 0;
+			}
+		}
+		led_white_duty =1;
+		LED_All_PWM_Off();
+		LED_Pin_Init();
+		LED_All_Off();	
+
+		RestartTiming();	
+	}
+#endif
 
 /**********************************************/
 /* 函数功能:睡眠任务  				     	  */
@@ -1652,9 +1833,6 @@ static void switch_to_XTAL(void)
 /* 函数功能；进入睡眠模式的准备               */
 /* 入口参数：无                               */
 /**********************************************/
-extern void BleApp_HandleKeys(key_event_t events);
-extern uint8_t  xtalDivRestore;
-
 void ReadyForSleepMode(void)
 {	
 	uint32_t msk, val;
@@ -1725,10 +1903,14 @@ void ReadyForSleepMode(void)
         SYSCON->XTAL_CTRL |= SYSCON_XTAL_CTRL_XTAL_DIV_MASK;
     }
 	
-	//POWER_WritePmuCtrl1(SYSCON, SYSCON_PMU_CTRL1_XTAL32K_DIS_MASK, SYSCON_PMU_CTRL1_XTAL32K_DIS(1U));
-	
     NVIC_ClearPendingIRQ(EXT_GPIO_WAKEUP_IRQn);
     NVIC_EnableIRQ(EXT_GPIO_WAKEUP_IRQn);	
+	
+	//将change_det设置为唤醒口
+	IOCON_PinMuxSet(IOCON, 0U, CHARGE_DET_PIN, IOCON_FUNC0 | IOCON_MODE_PULLDOWN|IOCON_DRIVE_LOW);
+	SYSCON->PIO_WAKEUP_LVL0 &= ~USER_CHARGE_GPIO_PIN_MASK;
+    SYSCON->PIO_WAKEUP_LVL0 |= (GPIOA->DATA & USER_CHARGE_GPIO_PIN_MASK);
+	SYSCON->PIO_WAKEUP_EN0 |= USER_CHARGE_GPIO_PIN_MASK;
 	
 	/*Enable GPIO wakeup */
 	SYSCON->PIO_WAKEUP_LVL0 = SYSCON->PIO_WAKEUP_LVL0 | USER_SW1_GPIO_PIN_MASK;
@@ -1836,7 +2018,6 @@ void WakeUpFormSleepMode(void)
 	
 	BOARD_InitPins();	
 	BleApp_Init();	
-	//BleApp_Start();
 	delay_bybletask(20);
 	
 	do

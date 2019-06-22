@@ -31,7 +31,7 @@
 #define gReducedPowerMaxAdvInterval_c   960 /* 600m s */
 
 #define gFastConnAdvTime_c              10  /* s */
-#define gReducedPowerAdvTime_c          500 /* s */
+#define gReducedPowerAdvTime_c          5000 /* s */
 
 #if gAppUseBonding_d
 #define gFastConnWhiteListAdvTime_c     10 /* s */
