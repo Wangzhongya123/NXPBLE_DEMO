@@ -30,8 +30,8 @@
 #define gReducedPowerMinAdvInterval_c   480 /* 300 ms */
 #define gReducedPowerMaxAdvInterval_c   960 /* 600m s */
 
-#define gFastConnAdvTime_c              10  /* s */
-#define gReducedPowerAdvTime_c          5000 /* s */
+#define gFastConnAdvTime_c              10  /* s 快速广播的时间*/
+#define gReducedPowerAdvTime_c          500000000 /* s   停止广播的时间*/
 
 #if gAppUseBonding_d
 #define gFastConnWhiteListAdvTime_c     10 /* s */

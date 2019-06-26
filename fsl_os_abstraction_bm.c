@@ -1283,6 +1283,11 @@ void OSA_InstallIntHandler(uint32_t IRQNumber, void (*handler)(void))
 * Private functions
 *************************************************************************************
 ********************************************************************************** */
+
+extern void LoadRESTest_Pin_Init(void);
+extern void PWMOUT_Pin_Init(void);
+extern void NTCPin_Init(void);
+
 #if (osCustomStartup == 0)
 OSA_TASK_DEFINE(main_task, gMainThreadPriority_c, 1, gMainThreadStackSize_c, 0);
 
@@ -1290,6 +1295,10 @@ int main (void)
 {
     extern void hardware_init(void);
 
+	LoadRESTest_Pin_Init();//modify by wzy
+	PWMOUT_Pin_Init();//modify by wzy
+	NTCPin_Init();//modify by wzy
+	
     OSA_Init();
     
     hardware_init();

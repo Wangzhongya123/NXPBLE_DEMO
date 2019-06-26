@@ -67,7 +67,7 @@ extern unsigned char USER_GetBatteryLevel(void);
 *************************************************************************************
 ************************************************************************************/
 #define mBatteryLevelReportInterval_c                (1)          /* battery level report interval in seconds  */
-//#define mQppsThroughputStatisticsInterval_c          (10000)      /* Throughput Statistics interval in miliseconds  */
+//#define mQppsThroughputStatisticsInterval_c        (10000)      /* Throughput Statistics interval in miliseconds  */
 //#define mQppsTxInterval_c                          (0)          /* Qpps send data interval in miliseconds  */
 #define mQppsMaxTestDataLength_c                     (244)        /* the length of data that Qpps send every time*/
 
@@ -132,6 +132,8 @@ static tmrTimerID_t 	mBatteryMeasurementTimerId;
 //static tmrTimerID_t 	mQppsThroughputStatisticsTimerId;
 static appPeerInfo_t 	mPeerInformation[gAppMaxConnections_c];
 static uint8_t 			mQppsTestDataLength = (gAttDefaultMtu_c-3);
+
+static uint8_t isBatterTimerAllowed=0;//用于标识是否定时器已被申请  modify by wzy
 
 /************************************************************************************
 *************************************************************************************
@@ -316,9 +318,21 @@ void BleApp_Config()
     Dis_Start(&disServiceConfig);
     Qpp_Start (&qppServiceConfig);
 	ECig_Start (&ecigServiceConfig);//modify by wzy
-    /* Allocate application timers */
-    mAdvTimerId = TMR_AllocateTimer();
-    mBatteryMeasurementTimerId = TMR_AllocateTimer();
+	
+	if(isBatterTimerAllowed ==0)//modify by wzy
+	{
+		/* Allocate application timers */
+		mAdvTimerId = TMR_AllocateTimer();
+		mBatteryMeasurementTimerId = TMR_AllocateTimer();	
+	
+		isBatterTimerAllowed =1;
+	}
+	else
+	{
+		TMR_StartLowPowerTimer(mBatteryMeasurementTimerId, gTmrLowPowerIntervalMillisTimer_c,
+             TmrSeconds(mBatteryLevelReportInterval_c), BatteryMeasurementTimerCallback, NULL);
+	}
+
     //mQppsThroughputStatisticsTimerId = TMR_AllocateTimer();//modify by wzy
 	
     /* UI */
@@ -396,9 +410,7 @@ static void BleApp_AdvertisingCallback (gapAdvertisingEvent_t* pAdvertisingEvent
 			
             if(!mAdvState.advOn)
             {
-                //Led2Flashing();//modify by wzy
-                //Led3Flashing();
-                //Led4Flashing();
+                //Led2Flashing();//Led3Flashing();//Led4Flashing();//modify by wzy
             }
             else
             {
@@ -416,6 +428,41 @@ static void BleApp_AdvertisingCallback (gapAdvertisingEvent_t* pAdvertisingEvent
         break;
 
     default:
+        break;
+    }
+}
+
+/*! *********************************************************************************
+* \brief        Handles advertising timer callback.
+*
+* \param[in]    pParam        Calback parameters.
+********************************************************************************** */
+static void AdvertisingTimerCallback(void * pParam)
+{
+    /* Stop and restart advertising with new parameters */
+    Gap_StopAdvertising();
+
+    switch (mAdvState.advType)
+    {
+#if gAppUseBonding_d
+    case fastWhiteListAdvState_c:
+        {
+            mAdvState.advType = fastAdvState_c;
+            mRestartAdv = TRUE;
+        }
+        break;
+#endif
+    case fastAdvState_c:
+        {
+            mAdvState.advType = slowAdvState_c;
+            mRestartAdv = TRUE;
+        }
+        break;
+
+    default:
+        {
+            mRestartAdv = FALSE;
+        }
         break;
     }
 }
@@ -489,9 +536,11 @@ static void BleApp_ConnectionCallback (deviceId_t peerDeviceId, gapConnectionEve
             mPeerInformation[peerDeviceId].ntf_cfg = QPPS_VALUE_NTF_OFF;
             mPeerInformation[peerDeviceId].deviceId = gInvalidDeviceId_c;
 
-			//TEST_LED_Pin_Init();//modify by wzy
+			CTIMER_StopTimer(CTIMER3);//modify by wzy
+			TEST_LED_Pin_Init();//modify by wzy
 			//Time3_Init(2);//start led  //modify by wzy
 
+			
             for (uint8_t i = 0; i < gAppMaxConnections_c; i++)
             {
                 if(mPeerInformation[i].deviceId != gInvalidDeviceId_c)
@@ -719,38 +768,37 @@ void USER_Serial_Printf(void * pParam)//modify by wzy
 ********************************************************************************** */
 static void DPS310_Data_TxCallback(void * pParam)
 {
-      char *tx_data = NULL;
-      uint8_t i;
-      bleResult_t result;
+	char *tx_data = NULL;
+	uint8_t i;
+	bleResult_t result;
 
-      for (i = 0; i < gAppMaxConnections_c; i++)
-      {
-          if ((mPeerInformation[i].deviceId != gInvalidDeviceId_c) && (mPeerInformation[i].ntf_cfg == QPPS_VALUE_NTF_ON))
-          {
-			  
-			  tx_data = MEM_BufferAlloc(strlen((char *)pParam));
-			  
-			  if(tx_data ==NULL)
-				  return;
-			  
-			  memcpy(tx_data,(char *)pParam,strlen((char *)pParam) );
-			  
-              result = USER_DPS310_SendData(mPeerInformation[i].deviceId, service_qpps, strlen((char *)pParam), (uint8_t *)tx_data);
+	for (i = 0; i < gAppMaxConnections_c; i++)
+	{
+		if ((mPeerInformation[i].deviceId != gInvalidDeviceId_c) && (mPeerInformation[i].ntf_cfg == QPPS_VALUE_NTF_ON))
+		{
+			tx_data = MEM_BufferAlloc(strlen((char *)pParam));
 
-              if(result == gBleSuccess_c)
-              {
-                  mPeerInformation[i].bytsSentPerInterval += mQppsTestDataLength;
-              }
-              else if (result == gBleOverflow_c)
-              {
-                  /* Tx overflow. Stop Tx and restart when gTxEntryAvailable_c event is received. */
-                  mPeerInformation[i].ntf_cfg = QPPS_VALUE_NTF_OFF;
-              }
-			  
-				/* Free Buffer */
-				MEM_BufferFree(tx_data);
-          }
-      }
+			if(tx_data ==NULL)
+			  return;
+
+			memcpy(tx_data,(char *)pParam,strlen((char *)pParam) );
+
+			result = USER_DPS310_SendData(mPeerInformation[i].deviceId, service_qpps, strlen((char *)pParam), (uint8_t *)tx_data);
+
+			if(result == gBleSuccess_c)
+			{
+			  mPeerInformation[i].bytsSentPerInterval += mQppsTestDataLength;
+			}
+			else if (result == gBleOverflow_c)
+			{
+			  /* Tx overflow. Stop Tx and restart when gTxEntryAvailable_c event is received. */
+			  mPeerInformation[i].ntf_cfg = QPPS_VALUE_NTF_OFF;
+			}
+
+			/* Free Buffer */
+			MEM_BufferFree(tx_data);
+		}
+	}
 }
 
 void DPS310SentDataToAir(void* pParam)//modify by wzy
@@ -883,40 +931,6 @@ void SmokeEnergy_DataToAir(void* pParam)//modify by wzy
 	App_PostCallbackMessage(SmokeEnergy_TxCallback, pParam);
 }
 
-/*! *********************************************************************************
-* \brief        Handles advertising timer callback.
-*
-* \param[in]    pParam        Calback parameters.
-********************************************************************************** */
-static void AdvertisingTimerCallback(void * pParam)
-{
-    /* Stop and restart advertising with new parameters */
-    Gap_StopAdvertising();
-
-    switch (mAdvState.advType)
-    {
-#if gAppUseBonding_d
-    case fastWhiteListAdvState_c:
-        {
-            mAdvState.advType = fastAdvState_c;
-            mRestartAdv = TRUE;
-        }
-        break;
-#endif
-    case fastAdvState_c:
-        {
-            mAdvState.advType = slowAdvState_c;
-            mRestartAdv = TRUE;
-        }
-        break;
-
-    default:
-        {
-            mRestartAdv = FALSE;
-        }
-        break;
-    }
-}
 
 /*! *********************************************************************************
 * \brief        Handles QPP tx timer callback.
