@@ -591,7 +591,7 @@ static void BleApp_GattServerCallback (deviceId_t deviceId, gattServerEvent_t* p
     uint8_t status;
     uint8_t notifMaxPayload = 0;
 	
-	uint8_t   power[2]  ={0};
+	uint8_t   power[3]  ={0};
 	float power_rx =0;
 	
     switch (pServerEvent->eventType)
@@ -639,18 +639,24 @@ static void BleApp_GattServerCallback (deviceId_t deviceId, gattServerEvent_t* p
 			
 			if (handle == value_setgetsmokepower_tx)//开发板接收到了事件,事件的类型为带回应的可写事件
 			{
-				memcpy(power,(char *)(pServerEvent->eventData.attributeWrittenEvent.aValue),2);
+				memcpy(power,(char *)(pServerEvent->eventData.attributeWrittenEvent.aValue),3);
 				
-				power_rx = (float)((((unsigned short int)power[0])<<8) + power[1]) / 100;
+				//power_rx = (float)((((unsigned short int)power[0])<<8) + power[1]) / 100;
+				power_rx = (float)(power[0] - 0x30) +(float)(power[2] - 0x30) * 0.1f;
 				
-				if(power_rx > 7.0f)
-					power_rx =7.0f;
+				if(power_rx > 8.0f)
+					power_rx =8.0f;
 				else if(power_rx < 4.0f)
 					power_rx =4.0f;
 				else
 				{
 					SmokeOutput_MAX_Power = power_rx;
-					ReadSmokePower (0, service_qpps, power);	
+					
+					uint8_t   _power[2]  ={0};
+					_power[0] = (uint8_t)((unsigned short int)(SmokeOutput_MAX_Power * 100 ) >> 8);
+					_power[1] = (uint8_t)((unsigned short int)(SmokeOutput_MAX_Power * 100 ) & 0xff);
+					
+					ReadSmokePower (0, service_qpps, _power);	
 				}
 			}
 			
