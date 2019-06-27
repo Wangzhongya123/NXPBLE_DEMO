@@ -122,7 +122,7 @@ static disConfig_t 			disServiceConfig = {service_device_info};
 static qppsConfig_t 		qppServiceConfig = {service_qpps};
 static ecigarettesConfig_t 	ecigServiceConfig = {service_ecig};//modify by wzy
 
-static uint16_t cpHandles[4] = {value_qpps_rx,value_locking_rx,value_ecig_command_rx,value_ecig_data_rx};//收到的常规数据  ，收到的锁定数据
+static uint16_t cpHandles[] = {value_qpps_rx,value_locking_rx,value_ecig_command_rx,value_ecig_data_rx,value_setgetsmokepower_tx};//收到的常规数据  ，收到的锁定数据
 
 /* Application specific data*/
 //static txInfo_t mTxInfo;
@@ -576,6 +576,8 @@ static void BleApp_ConnectionCallback (deviceId_t peerDeviceId, gapConnectionEve
 * \param[in]    pServerEvent    Pointer to gattServerEvent_t.
 ********************************************************************************** */
 extern volatile unsigned char Lock_Unlock_byBLE_Flag;
+extern volatile float  SmokeOutput_MAX_Power;
+
 enum ecig_lock_or_unlock
 {
 	invalid=0,
@@ -588,6 +590,10 @@ static void BleApp_GattServerCallback (deviceId_t deviceId, gattServerEvent_t* p
     uint16_t handle;
     uint8_t status;
     uint8_t notifMaxPayload = 0;
+	
+	uint8_t   power[2]  ={0};
+	float power_rx =0;
+	
     switch (pServerEvent->eventType)
     {
     case gEvtMtuChanged_c:
@@ -629,6 +635,23 @@ static void BleApp_GattServerCallback (deviceId_t deviceId, gattServerEvent_t* p
 				{
 						//LED_StopFlashingAllLeds();//modify by wzy
 				}				
+			}
+			
+			if (handle == value_setgetsmokepower_tx)//开发板接收到了事件,事件的类型为带回应的可写事件
+			{
+				memcpy(power,(char *)(pServerEvent->eventData.attributeWrittenEvent.aValue),2);
+				
+				power_rx = (float)((((unsigned short int)power[0])<<8) + power[1]) / 100;
+				
+				if(power_rx > 7.0f)
+					power_rx =7.0f;
+				else if(power_rx < 4.0f)
+					power_rx =4.0f;
+				else
+				{
+					SmokeOutput_MAX_Power = power_rx;
+					ReadSmokePower (0, service_qpps, power);	
+				}
 			}
 			
             GattServer_SendAttributeWrittenStatus(deviceId, handle, status);

@@ -67,6 +67,7 @@ volatile unsigned char LED_Yellow_Toggle_Flag=0;//黄灯闪烁标志
 volatile unsigned char LED_Blue_SlowToggle_Flag=0;//蓝灯慢速闪烁
 
 volatile unsigned int  Smoke_Sec_Time=0; //每次抽烟时间
+volatile float  SmokeOutput_MAX_Power = 6.5f; //抽烟最大功率
 volatile unsigned char ChargeOutTime=0;
 
 volatile unsigned char LowvMode_Worked=0;//用于标志是否执行过了过放警示，如果=0表示还没有执行过，如果=1则表示执行过
@@ -1255,10 +1256,10 @@ Smokemode_ERROR Mode_Smoke_Work(void)
 					RestartTiming();
 					{
 						//TargerPower = 3.5  + Differ_Press * 0.75;//-200**-400
-						TargerPower = LinearMap(Differ_Press, 2, 15, 3, 6.5);
+						TargerPower = LinearMap(Differ_Press, 2, 15, 3, SmokeOutput_MAX_Power );
 						
-						if(TargerPower >6.5f)//
-							TargerPower=6.5f ;	
+						if(TargerPower > SmokeOutput_MAX_Power)//
+							TargerPower = SmokeOutput_MAX_Power ;	
 						else if(TargerPower <3.0f)//
 							TargerPower=3.0f ;
 						else;						
@@ -1454,6 +1455,9 @@ DPS310_respiratory DPS310_Respiratory(void)
 			ble_task();
 		}while(check<0);	
 	}	
+	
+	if(pressure > DPS310_Standard)
+		pressure = DPS310_Standard;
 	
 	for(i=8;i>0;i--)
 		pressure_i[i]=pressure_i[i-1];

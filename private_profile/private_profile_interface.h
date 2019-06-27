@@ -133,6 +133,8 @@ bleResult_t SmokePower_SendData (uint8_t deviceId, uint16_t serviceHandle,uint16
 bleResult_t WorkMode_SendData (uint8_t deviceId, uint16_t serviceHandle , uint8_t mode);
 static void WorkMode_SendNotifications(uint8_t deviceId,uint16_t handle);
 
+bleResult_t ReadSmokePower(uint8_t deviceId, uint16_t serviceHandle, uint8_t * power);
+
 #ifdef __cplusplus
 }
 #endif

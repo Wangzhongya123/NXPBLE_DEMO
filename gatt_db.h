@@ -13,9 +13,9 @@ PRIMARY_SERVICE(service_gap, gBleSig_GenericAccessProfile_d)
 
 PRIMARY_SERVICE_UUID128(service_qpps, uuid_service_qpps)
     CHARACTERISTIC_UUID128(char_qpps_rx, uuid_qpps_characteristics_rx, (gGattCharPropWriteWithoutRsp_c) )
-        VALUE_UUID128_VARLEN(value_qpps_rx, uuid_qpps_characteristics_rx, (gPermissionFlagWritable_c), 64, 1, 0x00)
+        VALUE_UUID128_VARLEN(value_qpps_rx, uuid_qpps_characteristics_rx, (gPermissionFlagWritable_c), 32, 1, 0x00)
     CHARACTERISTIC_UUID128(char_qpps_tx, uuid_qpps_characteristics_tx, (gGattCharPropNotify_c))
-        VALUE_UUID128_VARLEN(value_qpps_tx, uuid_qpps_characteristics_tx, (gPermissionNone_c), 64, 2, 0x00, 0xB4)	
+        VALUE_UUID128_VARLEN(value_qpps_tx, uuid_qpps_characteristics_tx, (gPermissionNone_c), 32, 2, 0x00, 0xB4)	
         CCCD(cccd_qpps_tx)		
 	CHARACTERISTIC_UUID128(char_locking_rx, uuid_locking_characteristics_rx, (gGattCharPropWrite_c) )//modify by wzy  锁定状态设置
         VALUE_UUID128_VARLEN(value_locking_rx, uuid_locking_characteristics_rx, (gPermissionFlagWritable_c), 32, 1, 0x00)//modify by wzy	锁定的状态设置	
@@ -29,19 +29,22 @@ PRIMARY_SERVICE_UUID128(service_qpps, uuid_service_qpps)
         VALUE_UUID128_VARLEN(value_power_tx, uuid_power_characteristics_tx, (gPermissionNone_c), 32, 2, 0x00, 0x00)	//modify by wzy	抽烟能量数据 上传
         CCCD(cccd_power_tx)	
 	CHARACTERISTIC_UUID128(char_workmode_tx, uuid_workmode_characteristics_tx, (gGattCharPropNotify_c | gGattCharPropRead_c))//modify by wzy 当前工作状态 上传
-        VALUE_UUID128_VARLEN(value_workmode_tx, uuid_workmode_characteristics_tx, (gPermissionFlagReadable_c), 32, 2, 0x00, 0x00)	//modify by wzy	当前工作状态  上传
+        VALUE_UUID128_VARLEN(value_workmode_tx, uuid_workmode_characteristics_tx, (gPermissionFlagReadable_c), 8, 2, 0x00, 0x00)	//modify by wzy	当前工作状态  上传
         CCCD(cccd_workmode_tx)			
+	CHARACTERISTIC_UUID128(char_setgetsmokepower_tx, uuid_setgetsmokepower_chara_rxtx, (gGattCharPropWrite_c | gGattCharPropRead_c))//modify by wzy 当前工作状态 上传		
+		VALUE_UUID128_VARLEN(value_setgetsmokepower_tx, uuid_setgetsmokepower_chara_rxtx, (gPermissionFlagReadable_c | gPermissionFlagWritable_c), 4, 2, 0x00, 0x00)	
+			
 
 PRIMARY_SERVICE_UUID128(service_ecig, uuid_service_ecig)
     CHARACTERISTIC_UUID128(char_ecig_command_rx, uuid_ecig_command_characteristics_rx, (gGattCharPropWrite_c) )//modify by wzy
-        VALUE_UUID128_VARLEN(value_ecig_command_rx, uuid_ecig_command_characteristics_rx, (gPermissionFlagWritable_c), 32, 1, 0x00)//modify by wzy
+        VALUE_UUID128_VARLEN(value_ecig_command_rx, uuid_ecig_command_characteristics_rx, (gPermissionFlagWritable_c), 16, 1, 0x00)//modify by wzy
     CHARACTERISTIC_UUID128(char_ecig_data_rx, uuid_ecig_data_characteristics_rx, (gGattCharPropWriteWithoutRsp_c) )//modify by wzy
-        VALUE_UUID128_VARLEN(value_ecig_data_rx, uuid_ecig_data_characteristics_rx, (gPermissionFlagWritable_c), 32, 1, 0x00)//modify by wzy		
+        VALUE_UUID128_VARLEN(value_ecig_data_rx, uuid_ecig_data_characteristics_rx, (gPermissionFlagWritable_c), 16, 1, 0x00)//modify by wzy		
     CHARACTERISTIC_UUID128(char_ecig_data_tx, uuid_ecig_data_characteristics_tx, (gGattCharPropNotify_c))//modify by wzy
-        VALUE_UUID128_VARLEN(value_ecig_data_tx, uuid_ecig_data_characteristics_tx, (gPermissionNone_c), 32, 2, 0x00, 0xB4)//modify by wzy
+        VALUE_UUID128_VARLEN(value_ecig_data_tx, uuid_ecig_data_characteristics_tx, (gPermissionNone_c), 16, 2, 0x00, 0xB4)//modify by wzy
 		CCCD(cccd_ecig_data_tx)
     CHARACTERISTIC_UUID128(char_ecig_command_tx, uuid_ecig_command_characteristics_tx, (gGattCharPropNotify_c))//modify by wzy
-        VALUE_UUID128_VARLEN(value_ecig_command_tx, uuid_ecig_command_characteristics_tx, (gPermissionNone_c), 32, 2, 0x00, 0x00)	//modify by wzy	
+        VALUE_UUID128_VARLEN(value_ecig_command_tx, uuid_ecig_command_characteristics_tx, (gPermissionNone_c), 16, 2, 0x00, 0x00)	//modify by wzy	
         CCCD(cccd_ecig_command_tx)	
 
 

@@ -174,7 +174,7 @@ extern volatile unsigned char Volt_Class;
 
 extern volatile unsigned char toggle;
 
-
+extern volatile float  SmokeOutput_MAX_Power; //抽烟最大功率
 
 void Batter_Refresh(void);
 void delay_dps310(unsigned int i);

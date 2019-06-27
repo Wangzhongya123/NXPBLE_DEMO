@@ -49,10 +49,17 @@ deviceId_t mQpp_SubscribedClientId;
 * Public functions
 *************************************************************************************
 ************************************************************************************/
+extern volatile float  SmokeOutput_MAX_Power;
 
 bleResult_t Qpp_Start (qppsConfig_t *pServiceConfig)
 {
-
+	bleResult_t result;
+	uint8_t   power[2]  ={0};
+	power[0] = (uint8_t)((unsigned short int)(SmokeOutput_MAX_Power * 100 ) >> 8);
+	power[1] = (uint8_t)((unsigned short int)(SmokeOutput_MAX_Power * 100 ) & 0xff);
+	
+	ReadSmokePower(0, service_qpps,power);
+	
     return gBleSuccess_c;
 }
 
@@ -228,4 +235,26 @@ static void WorkMode_SendNotifications(uint8_t deviceId,uint16_t handle)
     result = Gap_CheckNotificationStatus(deviceId, handleCccd, &isNotifActive);
     if ((gBleSuccess_c == result) && (TRUE == isNotifActive))
         GattServer_SendNotification(deviceId, handle);
+}
+
+/************************************************************************************
+	用于APP读取当前的抽烟功率设置
+************************************************************************************/
+bleResult_t ReadSmokePower(uint8_t deviceId, uint16_t serviceHandle, uint8_t * power)
+{
+    uint16_t  handle;
+    bleResult_t result;
+	
+    bleUuid_t uuid;
+    FLib_MemCpy(uuid.uuid128, uuid_setgetsmokepower_chara_rxtx, 16);
+
+    /* Get handle of  characteristic */
+    result = GattDb_FindCharValueHandleInService(serviceHandle,gBleUuidType128_c, &uuid, &handle);
+    if (result != gBleSuccess_c)
+        return result;
+
+    /* Update characteristic value and send notification */
+    result = GattDb_WriteAttribute(handle, sizeof(uint16_t), power);
+
+    return gBleSuccess_c;
 }
