@@ -33,8 +33,6 @@ ctimer_callback_t ctimer_callback_table[] = {
 
 static void ctimer_1_match0_callback(uint32_t flags)//做为主定时器使用
 {
-	GPIO_TogglePinsOutput(GPIOA, 1U << PIN_text_1_IDX);  //用做测试
-	
 	//自由运行节拍
 	if(delaytobletask > 100000u)
 		delaytobletask = 0;
@@ -114,11 +112,11 @@ static void ctimer_1_match0_callback(uint32_t flags)//做为主定时器使用
 	//////////////////////////////////////////////////////////////////////////////////////////////	
 	if((Smoke_Flag == ENABLED)&&(Smoke_output == ENABLED))
 	{
+		Time2_Init( (unsigned int)(5000u /PWM_Duty) );//注意如何频率修改，就要修改这里
 		Power_out_start=1;//用于标志测电池电量的开始 
 		Output_start=1;
 		Read_ADC_I_DET_Flag=0;
 		PWMOUT_EN();
-		Time2_Init( (unsigned int)(250u - PWM_Duty*2) );//注意如何频率修改，就要修改这里
 	}
 	
 }

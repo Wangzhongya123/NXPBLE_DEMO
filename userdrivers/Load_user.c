@@ -82,8 +82,8 @@ Res_Test_Error CalculateResistant_Value(float *Res,float *NTC_Value)
 	PWMOUT_DIS();
 	LoadRESTest_EN();	
 
-	ADC_R_DET_Volt = ADC_R_Volt();
-	ADC_R1_DET_Volt = ADC_R1_Volt();
+	ADC_R_DET_Volt = ADC_R_Volt()  + 0.023f;
+	ADC_R1_DET_Volt = ADC_R1_Volt() + 0.023f;
 	
 	Resistant = (ADC_R_DET_Volt *  R_25) / (ADC_R1_DET_Volt - ADC_R_DET_Volt ) ; // 由电压计算电阻
 
@@ -187,6 +187,7 @@ void CalculatePWMDuty(float TargerPower,float Resistant_Smoke,float Realtime_Bat
 	else;
 		
 	PWM_Duty =(unsigned short int)_duty;
+	//PWM_Duty = 50u;
 }
 
 /*********************************************************************/

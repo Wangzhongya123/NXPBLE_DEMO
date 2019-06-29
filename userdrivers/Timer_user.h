@@ -35,9 +35,7 @@ extern volatile unsigned char Half_Sec_Flag;
 
 
 #define TEST_PIN_IDX  	14U
-
-#define PIN_text_1_IDX                       8u   /*!< Pin number for pin 10 in a port */
-#define PIN_text_2_IDX                       14u   /*!< Pin number for pin 14 in a port */
+#define PIN_text_2_IDX  14u   /*!< Pin number for pin 14 in a port */
 
 void TEST_LED_Pin_Init(void);
 

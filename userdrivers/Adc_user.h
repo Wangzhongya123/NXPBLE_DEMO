@@ -52,7 +52,7 @@ Channel index Register bit Positive input Vin+ Negative input Vin-
 #define CHARGE_DET_PIN 	0U
 #define NTC_DET_PIN 	9U
 
-#define EXRef_LDOVolt 2800u
+#define EXRef_LDOVolt 	2800u
 
 void ADC_Pin_init(void);
 void ADC_Configuration(void);

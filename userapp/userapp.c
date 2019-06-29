@@ -156,6 +156,8 @@ void SYS_Init(void)
     POWER_EnablePD(kPDRUNCFG_PD_MEM8);
     POWER_EnablePD(kPDRUNCFG_PD_MEM7);	
 	
+	Batter_Refresh();
+	
 	{
 		do
 		{

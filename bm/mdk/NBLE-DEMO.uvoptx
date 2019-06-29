@@ -82,7 +82,7 @@
         <Book>
           <Number>0</Number>
           <Title>QN908X DK Schematics (QN908XDK)</Title>
-          <Path>D:\Keil_v5\ARM\PACK\NXP\QN908x_DFP\1.1.5\Documents\QN908X_DK_V1.2.pdf</Path>
+          <Path>C:\Keil\ARM\PACK\NXP\QN908x_DFP\1.1.5\Documents\QN908X_DK_V1.2.pdf</Path>
         </Book>
       </Books>
       <DebugOpt>
@@ -124,7 +124,6 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
-          <Name>杪?燩Lw杪?</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -211,7 +210,7 @@
       <DebugFlag>
         <trace>0</trace>
         <periodic>0</periodic>
-        <aLwin>0</aLwin>
+        <aLwin>1</aLwin>
         <aCover>0</aCover>
         <aSer1>0</aSer1>
         <aSer2>0</aSer2>
@@ -1114,7 +1113,7 @@
 
   <Group>
     <GroupName>board</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
