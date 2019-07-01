@@ -133,6 +133,7 @@ void SYS_Init(void)
 
 	Serial_Print(gAppSerMgrIf, "\n\r 综合外设功能测试\n\r", gAllowToBlock_d);
 	
+	BOD_init();
 	Time1_Init(SYS_FREQUENCY);
 	Time2_Init(2);
 	//Time3_Init(2);

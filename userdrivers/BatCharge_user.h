@@ -9,6 +9,8 @@
 #include "fsl_gpio.h"
 #include "fsl_power.h"
 
+#include "fsl_bod.h"
+
 #define PORT_NTCVCC_IDX    		0
 #define NTCVCC_GPIO_PIN 		10u
 
@@ -44,7 +46,6 @@ void CurrentChoice_MIN(void);
 void CurrentChoice_MAX(void);
 void CurrentChoice_MID(void);
 
-void USER_WakeupRestore(void);
-void USER_ToSleep_Intend(void);
+void BOD_init(void);
 
 #endif /* __BatCharge_user_H */

@@ -1512,16 +1512,6 @@
               <FilePath>../../../../../../../devices/QN908XC/drivers/fsl_gpio.c</FilePath>
             </File>
             <File>
-              <FileName>fsl_wdt.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../../devices/QN908XC/drivers/fsl_wdt.c</FilePath>
-            </File>
-            <File>
-              <FileName>fsl_wdt.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>../../../../../../../devices/QN908XC/drivers/fsl_wdt.h</FilePath>
-            </File>
-            <File>
               <FileName>fsl_rf.h</FileName>
               <FileType>5</FileType>
               <FilePath>../../../../../../../devices/QN908XC/drivers/fsl_rf.h</FilePath>
@@ -1637,26 +1627,6 @@
               <FilePath>../../../../../../../devices/QN908XC/drivers/fsl_inputmux_connections.h</FilePath>
             </File>
             <File>
-              <FileName>fsl_spi.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../../devices/QN908XC/drivers/fsl_spi.c</FilePath>
-            </File>
-            <File>
-              <FileName>fsl_spi.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>../../../../../../../devices/QN908XC/drivers/fsl_spi.h</FilePath>
-            </File>
-            <File>
-              <FileName>fsl_i2c.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>../../../../../../../devices/QN908XC/drivers/fsl_i2c.h</FilePath>
-            </File>
-            <File>
-              <FileName>fsl_i2c.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../../devices/QN908XC/drivers/fsl_i2c.c</FilePath>
-            </File>
-            <File>
               <FileName>fsl_pint.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\..\..\..\devices\QN908XC\drivers\fsl_pint.c</FilePath>
@@ -1665,6 +1635,21 @@
               <FileName>fsl_sctimer.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\..\..\..\devices\QN908XC\drivers\fsl_sctimer.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_bod.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\..\devices\QN908XC\drivers\fsl_bod.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_i2c.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\..\devices\QN908XC\drivers\fsl_i2c.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_spi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\..\devices\QN908XC\drivers\fsl_spi.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -3273,16 +3258,6 @@
               <FilePath>../../../../../../../devices/QN908XC/drivers/fsl_gpio.c</FilePath>
             </File>
             <File>
-              <FileName>fsl_wdt.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../../devices/QN908XC/drivers/fsl_wdt.c</FilePath>
-            </File>
-            <File>
-              <FileName>fsl_wdt.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>../../../../../../../devices/QN908XC/drivers/fsl_wdt.h</FilePath>
-            </File>
-            <File>
               <FileName>fsl_rf.h</FileName>
               <FileType>5</FileType>
               <FilePath>../../../../../../../devices/QN908XC/drivers/fsl_rf.h</FilePath>
@@ -3398,26 +3373,6 @@
               <FilePath>../../../../../../../devices/QN908XC/drivers/fsl_inputmux_connections.h</FilePath>
             </File>
             <File>
-              <FileName>fsl_spi.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../../devices/QN908XC/drivers/fsl_spi.c</FilePath>
-            </File>
-            <File>
-              <FileName>fsl_spi.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>../../../../../../../devices/QN908XC/drivers/fsl_spi.h</FilePath>
-            </File>
-            <File>
-              <FileName>fsl_i2c.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>../../../../../../../devices/QN908XC/drivers/fsl_i2c.h</FilePath>
-            </File>
-            <File>
-              <FileName>fsl_i2c.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../../../../../../../devices/QN908XC/drivers/fsl_i2c.c</FilePath>
-            </File>
-            <File>
               <FileName>fsl_pint.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\..\..\..\devices\QN908XC\drivers\fsl_pint.c</FilePath>
@@ -3426,6 +3381,21 @@
               <FileName>fsl_sctimer.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\..\..\..\devices\QN908XC\drivers\fsl_sctimer.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_bod.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\..\devices\QN908XC\drivers\fsl_bod.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_i2c.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\..\devices\QN908XC\drivers\fsl_i2c.c</FilePath>
+            </File>
+            <File>
+              <FileName>fsl_spi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\..\devices\QN908XC\drivers\fsl_spi.c</FilePath>
             </File>
           </Files>
         </Group>

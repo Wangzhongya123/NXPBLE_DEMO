@@ -1485,6 +1485,38 @@ DPS310_respiratory DPS310_Respiratory(void)
 }
 
 /**********************************************/
+/* 函数功能:低电压中断执行函数		     	  */
+/* 入口参数：无                               */
+/**********************************************/	
+void BOD_IRQHandler(void)
+{
+    NVIC_ClearPendingIRQ(BOD_IRQn);
+    
+	PWMOUT_DIS();
+	LoadRESTest_DIS();	
+	Smoke_Flag = DISABLED;	
+	CTIMER_StopTimer(CTIMER2);
+	
+	#if LED_PWM
+		led_white_duty = 1;
+		LED_All_PWM_Off();
+		LED_Pin_Init();
+	#endif
+	LED_All_Off();	
+	
+	Smoke_Flag			=DISABLED;
+	Smoke_output		=DISABLED;
+	Output_start		=DISABLED;
+	ShortCircuit_Flag	=ENABLED;//短路标志置位	
+	Smoke_Sec_Time		=0;
+	Read_ADC_I_DET_Flag	=0;	
+	
+	RestartTiming();	
+	
+    NVIC_DisableIRQ(BOD_IRQn);
+}
+
+/**********************************************/
 /* 函数功能:退出抽烟状态			     	  */
 /* 入口参数：无                               */
 /**********************************************/	
@@ -1622,6 +1654,8 @@ void Mode_Lowv_Work(void)
 		//printf("\r\n 低电量模式");//调试使用
 	#endif
 	
+	BOD_init();
+	
 	LED_All_Off();
 	LED_Flicker(RED_LED_Flicker ,3);	
 	
@@ -1666,6 +1700,8 @@ void Mode_ShortCircuit_Work(void)
 	//	printf("\r\n 短路,%d",(unsigned int)(bat*1000) );
 	//}	
 	#endif
+	
+	BOD_init();
 	
 	LED_All_Off();
 	LED_Flicker(RED_LED_Flicker ,3);	
@@ -1954,6 +1990,8 @@ void WakeUpFormSleepMode(void)
 	
 	POWER_RestoreIO();
 	POWER_RestoreSwd();//
+	
+	BOD_init();
 	
 	/* To generate a pending interrupt for GPIO wakeup source */
     NVIC_DisableIRQ(EXT_GPIO_WAKEUP_IRQn);

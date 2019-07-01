@@ -29,7 +29,7 @@ void NTCPin_Init(void)
 	const uint32_t USER_NTCVCC_config = (
 		IOCON_FUNC0 |                                            /* Selects pin function 0 */
 		IOCON_MODE_PULLUP |                                      /* Selects pull-up function */
-		IOCON_DRIVE_HIGH                                          /* Enable HIGH drive strength */
+		IOCON_DRIVE_HIGH                                         /* Enable HIGH drive strength */
 	);
 	IOCON_PinMuxSet(IOCON, PORT_NTCVCC_IDX, NTCVCC_GPIO_PIN, USER_NTCVCC_config); /* GPIOA ---NTC-vcc */
 	
@@ -172,19 +172,22 @@ void CurrentChoice_MID(void)
 }
 
 /**********************************************/
-/* 函数功能：电池的低功耗功能 设置			  */					     
+/* 函数功能：配置低电压 中断与复位			  */					     
 /* 入口参数:                              	  */
 /**********************************************/
-
-/* Reinitialize peripherals after waked up from PD, 
-	this function will be called in critical area */
-void USER_WakeupRestore(void)
+void BOD_init(void)
 {
-
-}
-
-/* 进入睡眠前的准备工作,  */
-void USER_ToSleep_Intend(void)
-{
+	bod_config_t config;
 	
+	/* Clear reset source */
+    RESET_ClearResetSource();
+	
+    BOD_GetDefaultConfig(&config);
+    config.int_thr = kBOD_InterruptThreshold2; /*2.72V   低压中断值*/
+    config.reset_thr = kBOD_ResetThreshold2;   /*2.0V	低压复位值 */
+
+    /*Init BOD module*/
+    BOD_Init(SYSCON, &config);
+    BOD_Enable(SYSCON, kBOD_InterruptEnable | kBOD_ResetEnable);//低压复位开启
+    NVIC_EnableIRQ(BOD_IRQn);
 }
