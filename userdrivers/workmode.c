@@ -1921,6 +1921,8 @@ void ReadyForSleepMode(void)
 	
 	POWER_EnableDCDC(false);
 	NVIC_ClearPendingIRQ(OSC_IRQn);
+	NVIC_ClearPendingIRQ(BOD_IRQn);
+	NVIC_DisableIRQ(BOD_IRQn);
     NVIC_EnableIRQ(OSC_IRQn);
 	APP_SaveBleReg();
 	

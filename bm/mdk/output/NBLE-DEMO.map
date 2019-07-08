@@ -2225,6 +2225,7 @@ Section Cross References
     workmode.o(i.ReadyForSleepMode) refers to fsl_power.o(i.POWER_EnablePD) for POWER_EnablePD
     workmode.o(i.ReadyForSleepMode) refers to fsl_power.o(i.POWER_EnableDCDC) for POWER_EnableDCDC
     workmode.o(i.ReadyForSleepMode) refers to workmode.o(i.NVIC_ClearPendingIRQ) for NVIC_ClearPendingIRQ
+    workmode.o(i.ReadyForSleepMode) refers to workmode.o(i.NVIC_DisableIRQ) for NVIC_DisableIRQ
     workmode.o(i.ReadyForSleepMode) refers to workmode.o(i.NVIC_EnableIRQ) for NVIC_EnableIRQ
     workmode.o(i.ReadyForSleepMode) refers to fsl_power.o(i.POWER_WritePmuCtrl1) for POWER_WritePmuCtrl1
     workmode.o(i.ReadyForSleepMode) refers to workmode.o(i.switch_to_OSC32M) for switch_to_OSC32M
@@ -8343,308 +8344,308 @@ Image Symbol Table
     i.RcvByte_DPS310                         0x00022094   Section        0  iic_user.o(i.RcvByte_DPS310)
     i.ReadSmokePower                         0x00022100   Section        0  private_profile_service.o(i.ReadSmokePower)
     i.ReadyForSleepMode                      0x00022140   Section        0  workmode.o(i.ReadyForSleepMode)
-    i.RestartTiming                          0x000222e4   Section        0  workmode.o(i.RestartTiming)
-    i.SCT0_IRQHandler                        0x00022318   Section        0  fsl_sctimer.o(i.SCT0_IRQHandler)
-    i.SCTIMER_CreateAndScheduleEvent         0x0002232c   Section        0  fsl_sctimer.o(i.SCTIMER_CreateAndScheduleEvent)
-    i.SCTIMER_EventHandleIRQ                 0x00022504   Section        0  fsl_sctimer.o(i.SCTIMER_EventHandleIRQ)
-    i.SCTIMER_GetDefaultConfig               0x00022554   Section        0  fsl_sctimer.o(i.SCTIMER_GetDefaultConfig)
-    i.SCTIMER_GetInstance                    0x000225c0   Section        0  fsl_sctimer.o(i.SCTIMER_GetInstance)
-    SCTIMER_GetInstance                      0x000225c1   Thumb Code    50  fsl_sctimer.o(i.SCTIMER_GetInstance)
-    i.SCTIMER_Init                           0x00022650   Section        0  fsl_sctimer.o(i.SCTIMER_Init)
-    i.SCTIMER_SetupOutputClearAction         0x00022788   Section        0  fsl_sctimer.o(i.SCTIMER_SetupOutputClearAction)
-    SCTIMER_SetupOutputClearAction           0x00022789   Thumb Code    30  fsl_sctimer.o(i.SCTIMER_SetupOutputClearAction)
-    i.SCTIMER_SetupOutputSetAction           0x000227a6   Section        0  fsl_sctimer.o(i.SCTIMER_SetupOutputSetAction)
-    SCTIMER_SetupOutputSetAction             0x000227a7   Thumb Code    26  fsl_sctimer.o(i.SCTIMER_SetupOutputSetAction)
-    i.SCTIMER_SetupPwm                       0x000227c0   Section        0  fsl_sctimer.o(i.SCTIMER_SetupPwm)
-    i.SCTIMER_StartTimer                     0x000229d4   Section        0  led_user.o(i.SCTIMER_StartTimer)
-    SCTIMER_StartTimer                       0x000229d5   Thumb Code    30  led_user.o(i.SCTIMER_StartTimer)
-    i.SHA256_Hash                            0x000229f2   Section        0  seclib.o(i.SHA256_Hash)
-    i.SHA256_HashFinish                      0x00022a18   Section        0  seclib.o(i.SHA256_HashFinish)
-    i.SHA256_HashUpdate                      0x00022aac   Section        0  seclib.o(i.SHA256_HashUpdate)
-    i.SHA256_Init                            0x00022b50   Section        0  seclib.o(i.SHA256_Init)
-    i.SHA256_hash_n                          0x00022b66   Section        0  seclib.o(i.SHA256_hash_n)
-    SHA256_hash_n                            0x00022b67   Thumb Code    22  seclib.o(i.SHA256_hash_n)
-    i.SYSCON_SetLoadCap                      0x00022b7c   Section        0  board.o(i.SYSCON_SetLoadCap)
-    SYSCON_SetLoadCap                        0x00022b7d   Thumb Code    44  board.o(i.SYSCON_SetLoadCap)
-    i.SYS_Init                               0x00022bb4   Section        0  userapp.o(i.SYS_Init)
-    i.SecLib_Init                            0x00022e08   Section        0  seclib.o(i.SecLib_Init)
-    i.SecLib_LeftShiftOneBit                 0x00022e0a   Section        0  seclib.o(i.SecLib_LeftShiftOneBit)
-    SecLib_LeftShiftOneBit                   0x00022e0b   Thumb Code    36  seclib.o(i.SecLib_LeftShiftOneBit)
-    i.SecLib_Padding                         0x00022e2e   Section        0  seclib.o(i.SecLib_Padding)
-    SecLib_Padding                           0x00022e2f   Thumb Code    40  seclib.o(i.SecLib_Padding)
-    i.SecLib_Xor128                          0x00022e56   Section        0  seclib.o(i.SecLib_Xor128)
-    SecLib_Xor128                            0x00022e57   Thumb Code    24  seclib.o(i.SecLib_Xor128)
-    i.SecLib_XorN                            0x00022e6e   Section        0  seclib.o(i.SecLib_XorN)
-    i.SendByte_DPS310                        0x00022e88   Section        0  iic_user.o(i.SendByte_DPS310)
-    i.SerialManagerTask                      0x00022f2c   Section        0  serialmanager.o(i.SerialManagerTask)
-    i.SerialManager_Init                     0x00023010   Section        0  serialmanager.o(i.SerialManager_Init)
-    i.SerialManager_RxNotify                 0x0002307c   Section        0  serialmanager.o(i.SerialManager_RxNotify)
-    i.SerialManager_TxNotify                 0x000230ec   Section        0  serialmanager.o(i.SerialManager_TxNotify)
-    i.Serial_AsyncWrite                      0x00023184   Section        0  serialmanager.o(i.Serial_AsyncWrite)
-    i.Serial_InitInterface                   0x00023250   Section        0  serialmanager.o(i.Serial_InitInterface)
-    i.Serial_Print                           0x00023328   Section        0  serialmanager.o(i.Serial_Print)
-    i.Serial_PrintDec                        0x00023370   Section        0  serialmanager.o(i.Serial_PrintDec)
-    i.Serial_PrintHex                        0x000233ba   Section        0  serialmanager.o(i.Serial_PrintHex)
-    i.Serial_SetBaudRate                     0x00023494   Section        0  serialmanager.o(i.Serial_SetBaudRate)
-    i.Serial_SyncWrite                       0x000234dc   Section        0  serialmanager.o(i.Serial_SyncWrite)
-    i.Serial_TxQueueMaintenance              0x00023538   Section        0  serialmanager.o(i.Serial_TxQueueMaintenance)
-    Serial_TxQueueMaintenance                0x00023539   Thumb Code   170  serialmanager.o(i.Serial_TxQueueMaintenance)
-    i.Serial_UartRxCb                        0x000235e8   Section        0  serialmanager.o(i.Serial_UartRxCb)
-    Serial_UartRxCb                          0x000235e9   Thumb Code    42  serialmanager.o(i.Serial_UartRxCb)
-    i.Serial_UartTxCb                        0x00023618   Section        0  serialmanager.o(i.Serial_UartTxCb)
-    Serial_UartTxCb                          0x00023619   Thumb Code    12  serialmanager.o(i.Serial_UartTxCb)
-    i.Serial_WriteInternal                   0x00023624   Section        0  serialmanager.o(i.Serial_WriteInternal)
-    Serial_WriteInternal                     0x00023625   Thumb Code   148  serialmanager.o(i.Serial_WriteInternal)
-    i.SmokeEnergy_DataToAir                  0x000236c0   Section        0  private_profile_server.o(i.SmokeEnergy_DataToAir)
-    i.SmokeEnergy_SendData                   0x000236d4   Section        0  private_profile_service.o(i.SmokeEnergy_SendData)
-    i.SmokeEnergy_TxCallback                 0x00023748   Section        0  private_profile_server.o(i.SmokeEnergy_TxCallback)
-    SmokeEnergy_TxCallback                   0x00023749   Thumb Code   196  private_profile_server.o(i.SmokeEnergy_TxCallback)
-    i.SmokePower_DataToAir                   0x00023814   Section        0  private_profile_server.o(i.SmokePower_DataToAir)
-    i.SmokePower_SendData                    0x00023828   Section        0  private_profile_service.o(i.SmokePower_SendData)
-    i.SmokePower_TxCallback                  0x0002389c   Section        0  private_profile_server.o(i.SmokePower_TxCallback)
-    SmokePower_TxCallback                    0x0002389d   Thumb Code   196  private_profile_server.o(i.SmokePower_TxCallback)
-    i.StackTimer_ClearIntFlag                0x00023968   Section        0  tmr_adapter.o(i.StackTimer_ClearIntFlag)
-    i.StackTimer_Disable                     0x00023980   Section        0  tmr_adapter.o(i.StackTimer_Disable)
-    i.StackTimer_Enable                      0x00023994   Section        0  tmr_adapter.o(i.StackTimer_Enable)
-    i.StackTimer_GetCounterValue             0x000239a8   Section        0  tmr_adapter.o(i.StackTimer_GetCounterValue)
-    i.StackTimer_GetInputFrequency           0x000239dc   Section        0  tmr_adapter.o(i.StackTimer_GetInputFrequency)
-    i.StackTimer_ISR                         0x000239f0   Section        0  timersmanager.o(i.StackTimer_ISR)
-    i.StackTimer_Init                        0x00023a14   Section        0  tmr_adapter.o(i.StackTimer_Init)
-    i.StackTimer_SetOffsetTicks              0x00023ab8   Section        0  tmr_adapter.o(i.StackTimer_SetOffsetTicks)
-    i.Start_I2c_DPS310                       0x00023acc   Section        0  iic_user.o(i.Start_I2c_DPS310)
-    i.Stop_I2c_DPS310                        0x00023b1c   Section        0  iic_user.o(i.Stop_I2c_DPS310)
-    i.SystemCoreClockUpdate                  0x00023b58   Section        0  system_qn908xc.o(i.SystemCoreClockUpdate)
-    i.SystemInit                             0x00023bd8   Section        0  system_qn908xc.o(i.SystemInit)
-    i.TEST_LED_Pin_Init                      0x00023cec   Section        0  timer_user.o(i.TEST_LED_Pin_Init)
-    i.TMR_AllocateTimer                      0x00023d10   Section        0  timersmanager.o(i.TMR_AllocateTimer)
-    i.TMR_EnableTimer                        0x00023d3c   Section        0  timersmanager.o(i.TMR_EnableTimer)
-    i.TMR_FreeTimer                          0x00023d98   Section        0  timersmanager.o(i.TMR_FreeTimer)
-    i.TMR_GetTimerStatus                     0x00023db4   Section        0  timersmanager.o(i.TMR_GetTimerStatus)
-    TMR_GetTimerStatus                       0x00023db5   Thumb Code    12  timersmanager.o(i.TMR_GetTimerStatus)
-    i.TMR_GetTimerType                       0x00023dc4   Section        0  timersmanager.o(i.TMR_GetTimerType)
-    TMR_GetTimerType                         0x00023dc5   Thumb Code    12  timersmanager.o(i.TMR_GetTimerType)
-    i.TMR_Init                               0x00023dd4   Section        0  timersmanager.o(i.TMR_Init)
-    i.TMR_IsTimerActive                      0x00023e44   Section        0  timersmanager.o(i.TMR_IsTimerActive)
-    i.TMR_IsTimerReady                       0x00023e5a   Section        0  timersmanager.o(i.TMR_IsTimerReady)
-    i.TMR_NotifyClkChanged                   0x00023e70   Section        0  timersmanager.o(i.TMR_NotifyClkChanged)
-    i.TMR_SetTimerStatus                     0x00023ea4   Section        0  timersmanager.o(i.TMR_SetTimerStatus)
-    TMR_SetTimerStatus                       0x00023ea5   Thumb Code    16  timersmanager.o(i.TMR_SetTimerStatus)
-    i.TMR_SetTimerType                       0x00023eb8   Section        0  timersmanager.o(i.TMR_SetTimerType)
-    TMR_SetTimerType                         0x00023eb9   Thumb Code    16  timersmanager.o(i.TMR_SetTimerType)
-    i.TMR_StartLowPowerTimer                 0x00023ecc   Section        0  timersmanager.o(i.TMR_StartLowPowerTimer)
-    i.TMR_StartSingleShotTimer               0x00023ef2   Section        0  timersmanager.o(i.TMR_StartSingleShotTimer)
-    i.TMR_StartTimer                         0x00023f0c   Section        0  timersmanager.o(i.TMR_StartTimer)
-    i.TMR_StopTimer                          0x00023f90   Section        0  timersmanager.o(i.TMR_StopTimer)
-    i.TMR_SyncLpmTimers                      0x00024020   Section        0  timersmanager.o(i.TMR_SyncLpmTimers)
-    i.TMR_Task                               0x00024034   Section        0  timersmanager.o(i.TMR_Task)
-    i.Time1_Init                             0x00024258   Section        0  timer_user.o(i.Time1_Init)
-    i.Time2_Init                             0x000242c0   Section        0  timer_user.o(i.Time2_Init)
-    i.Time3_Init                             0x00024328   Section        0  timer_user.o(i.Time3_Init)
-    i.TmrTicksFromMilliseconds               0x0002438c   Section        0  timersmanager.o(i.TmrTicksFromMilliseconds)
-    i.TxSerial_Printf                        0x000243ac   Section        0  private_profile_server.o(i.TxSerial_Printf)
-    TxSerial_Printf                          0x000243ad   Thumb Code    18  private_profile_server.o(i.TxSerial_Printf)
-    i.USART_ClearStatusFlags                 0x000243c4   Section        0  uart_adapter.o(i.USART_ClearStatusFlags)
-    USART_ClearStatusFlags                   0x000243c5   Thumb Code    10  uart_adapter.o(i.USART_ClearStatusFlags)
-    i.USART_EnableInterrupts                 0x000243ce   Section        0  uart_adapter.o(i.USART_EnableInterrupts)
-    USART_EnableInterrupts                   0x000243cf   Thumb Code    10  uart_adapter.o(i.USART_EnableInterrupts)
-    i.USART_GetDefaultConfig                 0x000243d8   Section        0  fsl_usart.o(i.USART_GetDefaultConfig)
-    i.USART_GetStatusFlags                   0x00024454   Section        0  uart_adapter.o(i.USART_GetStatusFlags)
-    USART_GetStatusFlags                     0x00024455   Thumb Code     8  uart_adapter.o(i.USART_GetStatusFlags)
-    i.USART_ISR                              0x0002445c   Section        0  uart_adapter.o(i.USART_ISR)
-    USART_ISR                                0x0002445d   Thumb Code   208  uart_adapter.o(i.USART_ISR)
-    i.USART_Init                             0x00024538   Section        0  fsl_usart.o(i.USART_Init)
-    i.USART_Initialize                       0x00024694   Section        0  uart_adapter.o(i.USART_Initialize)
-    i.USART_InstallRxCalback                 0x00024758   Section        0  uart_adapter.o(i.USART_InstallRxCalback)
-    i.USART_InstallTxCalback                 0x0002477c   Section        0  uart_adapter.o(i.USART_InstallTxCalback)
-    i.USART_IsTxActive                       0x000247a0   Section        0  uart_adapter.o(i.USART_IsTxActive)
-    i.USART_SendData                         0x000247d4   Section        0  uart_adapter.o(i.USART_SendData)
-    i.USART_SetBaudRate                      0x0002485c   Section        0  fsl_usart.o(i.USART_SetBaudRate)
-    i.USART_SetBaudrate                      0x00024970   Section        0  uart_adapter.o(i.USART_SetBaudrate)
-    i.USART_WriteByte                        0x000249a4   Section        0  uart_adapter.o(i.USART_WriteByte)
-    USART_WriteByte                          0x000249a5   Thumb Code     6  uart_adapter.o(i.USART_WriteByte)
-    i.USER_DPS310_SendData                   0x000249ac   Section        0  private_profile_service.o(i.USER_DPS310_SendData)
-    i.USER_GetBatteryLevel                   0x00024a20   Section        0  batcharge_user.o(i.USER_GetBatteryLevel)
-    i.USER_SendDateToAir                     0x00024a70   Section        0  private_profile_server.o(i.USER_SendDateToAir)
-    i.USER_Serial_Printf                     0x00024a84   Section        0  private_profile_server.o(i.USER_Serial_Printf)
-    i.USER_serial_tx                         0x00024a98   Section        0  private_profile_server.o(i.USER_serial_tx)
-    USER_serial_tx                           0x00024a99   Thumb Code    14  private_profile_server.o(i.USER_serial_tx)
-    i.User_KeyScan                           0x00024aac   Section        0  key_user.o(i.User_KeyScan)
-    i.WakeUpFormSleepMode                    0x00024bac   Section        0  workmode.o(i.WakeUpFormSleepMode)
-    i.WorkMode_SendData                      0x00024dc8   Section        0  private_profile_service.o(i.WorkMode_SendData)
-    i.WorkMode_SendNotifications             0x00024e18   Section        0  private_profile_service.o(i.WorkMode_SendNotifications)
-    WorkMode_SendNotifications               0x00024e19   Thumb Code    54  private_profile_service.o(i.WorkMode_SendNotifications)
-    i.WorkMode_SendToAir                     0x00024e50   Section        0  private_profile_server.o(i.WorkMode_SendToAir)
-    i.WorkMode_TxCallback                    0x00024e64   Section        0  private_profile_server.o(i.WorkMode_TxCallback)
-    WorkMode_TxCallback                      0x00024e65   Thumb Code   134  private_profile_server.o(i.WorkMode_TxCallback)
-    i.__0sprintf                             0x00024ef4   Section        0  printfa.o(i.__0sprintf)
-    i.__ARM_fpclassify                       0x00024f1c   Section        0  fpclassify.o(i.__ARM_fpclassify)
-    i.__aeabi_assert                         0x00024f4c   Section        0  fsl_common.o(i.__aeabi_assert)
-    i.__hardfp_modf                          0x00024f90   Section        0  modf.o(i.__hardfp_modf)
-    i.__hardfp_pow                           0x00025060   Section        0  pow.o(i.__hardfp_pow)
-    i.__kernel_poly                          0x00025cb0   Section        0  poly.o(i.__kernel_poly)
-    i.__mathlib_dbl_divzero                  0x00025da8   Section        0  dunder.o(i.__mathlib_dbl_divzero)
-    i.__mathlib_dbl_infnan2                  0x00025dd8   Section        0  dunder.o(i.__mathlib_dbl_infnan2)
-    i.__mathlib_dbl_invalid                  0x00025df0   Section        0  dunder.o(i.__mathlib_dbl_invalid)
-    i.__mathlib_dbl_overflow                 0x00025e10   Section        0  dunder.o(i.__mathlib_dbl_overflow)
-    i.__mathlib_dbl_underflow                0x00025e30   Section        0  dunder.o(i.__mathlib_dbl_underflow)
-    i.__scatterload_copy                     0x00025e50   Section       14  handlers.o(i.__scatterload_copy)
-    i.__scatterload_null                     0x00025e5e   Section        2  handlers.o(i.__scatterload_null)
-    i.__scatterload_zeroinit                 0x00025e60   Section       14  handlers.o(i.__scatterload_zeroinit)
-    i.__set_errno                            0x00025e70   Section        0  errno.o(i.__set_errno)
-    i._fp_digits                             0x00025e7c   Section        0  printfa.o(i._fp_digits)
-    _fp_digits                               0x00025e7d   Thumb Code   334  printfa.o(i._fp_digits)
-    i._printf_core                           0x00025fe0   Section        0  printfa.o(i._printf_core)
-    _printf_core                             0x00025fe1   Thumb Code  1744  printfa.o(i._printf_core)
-    i._printf_post_padding                   0x000266bc   Section        0  printfa.o(i._printf_post_padding)
-    _printf_post_padding                     0x000266bd   Thumb Code    36  printfa.o(i._printf_post_padding)
-    i._printf_pre_padding                    0x000266e0   Section        0  printfa.o(i._printf_pre_padding)
-    _printf_pre_padding                      0x000266e1   Thumb Code    46  printfa.o(i._printf_pre_padding)
-    i._sputc                                 0x0002670e   Section        0  printfa.o(i._sputc)
-    _sputc                                   0x0002670f   Thumb Code    10  printfa.o(i._sputc)
-    i.ble_task                               0x00026718   Section        0  fsl_os_abstraction_bm.o(i.ble_task)
-    i.ble_task_init                          0x00026758   Section        0  fsl_os_abstraction_bm.o(i.ble_task_init)
-    i.ctimer_1_match0_callback               0x0002676c   Section        0  timer_user.o(i.ctimer_1_match0_callback)
-    ctimer_1_match0_callback                 0x0002676d   Thumb Code   362  timer_user.o(i.ctimer_1_match0_callback)
-    i.ctimer_2_match0_callback               0x00026938   Section        0  timer_user.o(i.ctimer_2_match0_callback)
-    ctimer_2_match0_callback                 0x00026939   Thumb Code    42  timer_user.o(i.ctimer_2_match0_callback)
-    i.ctimer_3_match0_callback               0x0002696c   Section        0  timer_user.o(i.ctimer_3_match0_callback)
-    ctimer_3_match0_callback                 0x0002696d   Thumb Code    20  timer_user.o(i.ctimer_3_match0_callback)
-    i.delay_bybletask                        0x00026984   Section        0  workmode.o(i.delay_bybletask)
-    i.delay_us                               0x000269b0   Section        0  iic_user.o(i.delay_us)
-    i.dps310_config                          0x000269ba   Section        0  dps310.o(i.dps310_config)
-    i.dps310_get_processed_data              0x00026a64   Section        0  dps310.o(i.dps310_get_processed_data)
-    i.dps310_get_scaling_coef                0x00026d10   Section        0  dps310.o(i.dps310_get_scaling_coef)
-    dps310_get_scaling_coef                  0x00026d11   Thumb Code    76  dps310.o(i.dps310_get_scaling_coef)
-    i.dps310_init                            0x00026d5c   Section        0  dps310.o(i.dps310_init)
-    i.dps310_read_calib_coeffs               0x00026e1a   Section        0  dps310.o(i.dps310_read_calib_coeffs)
-    dps310_read_calib_coeffs                 0x00026e1b   Thumb Code   406  dps310.o(i.dps310_read_calib_coeffs)
-    i.dps310_resume                          0x00026fb0   Section        0  dps310.o(i.dps310_resume)
-    i.dps310_standby                         0x00026fdc   Section        0  dps310.o(i.dps310_standby)
-    i.fabs                                   0x00027008   Section        0  fabs.o(i.fabs)
-    i.hardware_init                          0x00027020   Section        0  board.o(i.hardware_init)
-    i.i2c_read_block                         0x0002708c   Section        0  iic_user.o(i.i2c_read_block)
-    i.i2c_read_byte                          0x0002713c   Section        0  iic_user.o(i.i2c_read_byte)
-    i.i2c_write_byte                         0x000271bc   Section        0  iic_user.o(i.i2c_write_byte)
-    i.main                                   0x00027228   Section        0  fsl_os_abstraction_bm.o(i.main)
-    i.main_task                              0x00027250   Section        0  applmain.o(i.main_task)
-    i.osObjectAlloc                          0x000272f4   Section        0  fsl_os_abstraction_bm.o(i.osObjectAlloc)
-    osObjectAlloc                            0x000272f5   Thumb Code    36  fsl_os_abstraction_bm.o(i.osObjectAlloc)
-    i.osObjectIsAllocated                    0x00027318   Section        0  fsl_os_abstraction_bm.o(i.osObjectIsAllocated)
-    osObjectIsAllocated                      0x00027319   Thumb Code    44  fsl_os_abstraction_bm.o(i.osObjectIsAllocated)
-    i.panic                                  0x00027344   Section        0  panic.o(i.panic)
-    i.sqrt                                   0x00027346   Section        0  sqrt_full.o(i.sqrt)
-    i.switch_to_OSC32M                       0x000273b4   Section        0  workmode.o(i.switch_to_OSC32M)
-    switch_to_OSC32M                         0x000273b5   Thumb Code    30  workmode.o(i.switch_to_OSC32M)
-    i.switch_to_XTAL                         0x000273d2   Section        0  workmode.o(i.switch_to_XTAL)
-    switch_to_XTAL                           0x000273d3   Thumb Code    50  workmode.o(i.switch_to_XTAL)
-    i.task_init                              0x00027404   Section        0  fsl_os_abstraction_bm.o(i.task_init)
-    i.userBOARD_InitPins                     0x00027448   Section        0  userapp.o(i.userBOARD_InitPins)
-    i.user_main                              0x00027454   Section        0  userapp.o(i.user_main)
-    i.user_serial_printf                     0x00027514   Section        0  private_profile_server.o(i.user_serial_printf)
-    user_serial_printf                       0x00027515   Thumb Code    26  private_profile_server.o(i.user_serial_printf)
-    .constdata                               0x00027538   Section        6  board.o(.constdata)
-    .constdata                               0x00027540   Section       40  fsl_os_abstraction_bm.o(.constdata)
-    .constdata                               0x00027568   Section       56  app_config.o(.constdata)
-    adData0                                  0x00027568   Data           1  app_config.o(.constdata)
-    advScanStruct                            0x0002756c   Data          24  app_config.o(.constdata)
-    masterSecurity                           0x00027584   Data           4  app_config.o(.constdata)
-    serviceSecurity                          0x00027588   Data          24  app_config.o(.constdata)
-    .constdata                               0x000275a0   Section       24  gpio_adapter.o(.constdata)
-    gpioPinsPerPort                          0x000275a0   Data           5  gpio_adapter.o(.constdata)
-    maPortBases                              0x000275a8   Data           8  gpio_adapter.o(.constdata)
-    maGpioBases                              0x000275b0   Data           8  gpio_adapter.o(.constdata)
-    .constdata                               0x000275b8   Section       10  ble_controller_task.o(.constdata)
-    .constdata                               0x000275c4   Section      144  controller_config.o(.constdata)
-    .constdata                               0x00027654   Section       16  battery_service.o(.constdata)
-    .constdata                               0x00027664   Section      144  device_info_service.o(.constdata)
-    .constdata                               0x000276f4   Section       28  fsl_ctimer.o(.constdata)
-    s_ctimerBases                            0x000276f4   Data          16  fsl_ctimer.o(.constdata)
-    s_ctimerClocks                           0x00027704   Data           4  fsl_ctimer.o(.constdata)
-    s_ctimerResets                           0x00027708   Data           4  fsl_ctimer.o(.constdata)
-    s_ctimerIRQ                              0x0002770c   Data           4  fsl_ctimer.o(.constdata)
-    .constdata                               0x00027710   Section       24  fsl_flexcomm.o(.constdata)
-    s_flexcommBaseAddrs                      0x00027714   Data          16  fsl_flexcomm.o(.constdata)
-    s_flexcommClocks                         0x00027724   Data           4  fsl_flexcomm.o(.constdata)
-    .constdata                               0x00027728   Section      224  fsl_adc.o(.constdata)
-    s_adcBases                               0x00027728   Data           4  fsl_adc.o(.constdata)
-    s_adcClocks                              0x0002772c   Data           1  fsl_adc.o(.constdata)
-    s_adcResets                              0x0002772d   Data           1  fsl_adc.o(.constdata)
-    s_adcScanInterval                        0x0002772e   Data           8  fsl_adc.o(.constdata)
-    s_adcVrefVinnBias                        0x00027736   Data           8  fsl_adc.o(.constdata)
-    s_adcClock                               0x0002773e   Data           8  fsl_adc.o(.constdata)
-    s_adcBias                                0x00027748   Data          32  fsl_adc.o(.constdata)
-    s_adcPgaBias                             0x00027768   Data         160  fsl_adc.o(.constdata)
-    .constdata                               0x00027808   Section        6  fsl_sctimer.o(.constdata)
-    s_sctBases                               0x00027808   Data           4  fsl_sctimer.o(.constdata)
-    s_sctClocks                              0x0002780c   Data           1  fsl_sctimer.o(.constdata)
-    s_sctResets                              0x0002780d   Data           1  fsl_sctimer.o(.constdata)
-    .constdata                               0x00027810   Section       14  iic_user.o(.constdata)
-    .constdata                               0x00027820   Section       82  led_user.o(.constdata)
-    .constdata                               0x00027874   Section        2  timer_user.o(.constdata)
-    .constdata                               0x00027878   Section       18  batcharge_user.o(.constdata)
-    .constdata                               0x0002788c   Section        6  load_user.o(.constdata)
-    .constdata                               0x00027898   Section      136  pow.o(.constdata)
-    bp                                       0x00027898   Data          16  pow.o(.constdata)
-    dp_h                                     0x000278a8   Data          16  pow.o(.constdata)
-    dp_l                                     0x000278b8   Data          16  pow.o(.constdata)
-    L                                        0x000278c8   Data          48  pow.o(.constdata)
-    P                                        0x000278f8   Data          40  pow.o(.constdata)
-    .constdata                               0x00027920   Section        8  qnan.o(.constdata)
-    .conststring                             0x00027928   Section       10  fsl_os_abstraction_bm.o(.conststring)
-    .conststring                             0x00027934   Section        9  app_config.o(.conststring)
-    .conststring                             0x00027940   Section       18  serialmanager.o(.conststring)
-    .conststring                             0x00027954   Section        9  timersmanager.o(.conststring)
-    .conststring                             0x00027960   Section       10  ble_host_tasks.o(.conststring)
-    .conststring                             0x0002796c   Section       15  ble_controller_task.o(.conststring)
-    .rodata6                                 0x0002797c   Section        0  ecdh.o(.rodata)
-    [Anonymous Symbol]                       0x00027980   Section        0  h4tl.o(.rodata)
-    .rodata6                                 0x00027984   Section        0  ec_p_256.o(.rodata)
-    .rodata_23                               0x000279a4   Number         0  ec_p_256.o(.rodata)
-    .rodata_24                               0x000279c4   Number         0  ec_p_256.o(.rodata)
-    .rodata_25                               0x000279e4   Number         0  ec_p_256.o(.rodata)
-    [Anonymous Symbol]                       0x00027a04   Section        0  sm_crypto.o(.rodata)
-    [Anonymous Symbol]                       0x00027a18   Section        0  gatt_db_att.o(.rodata.BASE_UUID)
-    BASE_UUID                                0x00027a18   Data          16  gatt_db_att.o(.rodata.BASE_UUID)
-    [Anonymous Symbol]                       0x00027a28   Section        0  sm_states.o(.rodata.CSWTCH.14)
-    CSWTCH.14                                0x00027a28   Data          25  sm_states.o(.rodata.CSWTCH.14)
-    [Anonymous Symbol]                       0x00027a41   Section        0  sm_states.o(.rodata.CSWTCH.56)
-    CSWTCH.56                                0x00027a41   Data           4  sm_states.o(.rodata.CSWTCH.56)
-    [Anonymous Symbol]                       0x00027a45   Section        0  llm.o(.rodata.CSWTCH.59)
-    CSWTCH.59                                0x00027a45   Data           7  llm.o(.rodata.CSWTCH.59)
-    [Anonymous Symbol]                       0x00027a4c   Section        0  ecc_p256.o(.rodata.bigHexP256)
-    [Anonymous Symbol]                       0x00027a78   Section        0  ecc_p256.o(.rodata.ecc_Jacobian_InfinityPoint256)
-    [Anonymous Symbol]                       0x00027afc   Section        0  device_db.o(.rodata.gActiveDevicesEntrySize)
-    [Anonymous Symbol]                       0x00027afe   Section        0  att.o(.rodata.gAttConnEntrySize)
-    [Anonymous Symbol]                       0x00027b00   Section        0  h4tl.o(.rodata.h4tl_msgtype2hdrlen)
-    h4tl_msgtype2hdrlen                      0x00027b00   Data           6  h4tl.o(.rodata.h4tl_msgtype2hdrlen)
-    [Anonymous Symbol]                       0x00027b08   Section        0  hci_msg.o(.rodata.hci_cmd_desc_root_tab)
-    [Anonymous Symbol]                       0x00027b38   Section        0  hci_msg.o(.rodata.hci_cmd_desc_tab_le)
-    [Anonymous Symbol]                       0x00027da8   Section        0  llc_task.o(.rodata.llc_default_handler)
-    [Anonymous Symbol]                       0x00027db0   Section        0  llc_task.o(.rodata.llc_default_state)
-    llc_default_state                        0x00027db0   Data         144  llc_task.o(.rodata.llc_default_state)
-    [Anonymous Symbol]                       0x00027e40   Section        0  llc_llcp.o(.rodata.llcp_pdu_handler)
-    llcp_pdu_handler                         0x00027e40   Data         208  llc_llcp.o(.rodata.llcp_pdu_handler)
-    [Anonymous Symbol]                       0x00027f10   Section        0  lld_pdu.o(.rodata.lld_pdu_llcp_pk_desc_tab)
-    lld_pdu_llcp_pk_desc_tab                 0x00027f10   Data         312  lld_pdu.o(.rodata.lld_pdu_llcp_pk_desc_tab)
-    [Anonymous Symbol]                       0x00028048   Section        0  llm_task.o(.rodata.llm_default_handler)
-    [Anonymous Symbol]                       0x00028050   Section        0  llm_task.o(.rodata.llm_default_state)
-    llm_default_state                        0x00028050   Data          64  llm_task.o(.rodata.llm_default_state)
-    [Anonymous Symbol]                       0x00028090   Section        0  llm_hci.o(.rodata.llm_hci_command_handler_tab)
-    llm_hci_command_handler_tab              0x00028090   Data         416  llm_hci.o(.rodata.llm_hci_command_handler_tab)
-    [Anonymous Symbol]                       0x00028230   Section        0  sm_states.o(.rodata.smStateTable)
-    smStateTable                             0x00028230   Data         120  sm_states.o(.rodata.smStateTable)
-    [Anonymous Symbol]                       0x000282a8   Section        0  sm_states.o(.rodata.smpLeLegacyIoCapToPairingMethodTable)
-    smpLeLegacyIoCapToPairingMethodTable     0x000282a8   Data          25  sm_states.o(.rodata.smpLeLegacyIoCapToPairingMethodTable)
-    [Anonymous Symbol]                       0x000282c1   Section        0  sm_states.o(.rodata.smpLeScIoCapToPairingMethodTable)
-    smpLeScIoCapToPairingMethodTable         0x000282c1   Data          25  sm_states.o(.rodata.smpLeScIoCapToPairingMethodTable)
-    [Anonymous Symbol]                       0x000282da   Section        0  sm_states.o(.rodata.smpOpcodeToKeyDistBitMaskTable.9932)
-    smpOpcodeToKeyDistBitMaskTable.9932      0x000282da   Data          11  sm_states.o(.rodata.smpOpcodeToKeyDistBitMaskTable.9932)
-    [Anonymous Symbol]                       0x000282e5   Section        0  sm_packet_op.o(.rodata.smpPacketTypeLengthTable)
-    smpPacketTypeLengthTable                 0x000282e5   Data          15  sm_packet_op.o(.rodata.smpPacketTypeLengthTable)
-    [Anonymous Symbol]                       0x000282f4   Section        0  lld_pdu.o(.rodata.str1.1)
-    [Anonymous Symbol]                       0x00028328   Section        0  hci_msg.o(.rodata.str1.1)
-    [Anonymous Symbol]                       0x00028384   Section        0  ecc_p256.o(.rodata.veryBigHexP256)
-    VERSION_TAGS                             0x00028404   Section        3  ble_globals.o(VERSION_TAGS)
+    i.RestartTiming                          0x000222f0   Section        0  workmode.o(i.RestartTiming)
+    i.SCT0_IRQHandler                        0x00022324   Section        0  fsl_sctimer.o(i.SCT0_IRQHandler)
+    i.SCTIMER_CreateAndScheduleEvent         0x00022338   Section        0  fsl_sctimer.o(i.SCTIMER_CreateAndScheduleEvent)
+    i.SCTIMER_EventHandleIRQ                 0x00022510   Section        0  fsl_sctimer.o(i.SCTIMER_EventHandleIRQ)
+    i.SCTIMER_GetDefaultConfig               0x00022560   Section        0  fsl_sctimer.o(i.SCTIMER_GetDefaultConfig)
+    i.SCTIMER_GetInstance                    0x000225cc   Section        0  fsl_sctimer.o(i.SCTIMER_GetInstance)
+    SCTIMER_GetInstance                      0x000225cd   Thumb Code    50  fsl_sctimer.o(i.SCTIMER_GetInstance)
+    i.SCTIMER_Init                           0x0002265c   Section        0  fsl_sctimer.o(i.SCTIMER_Init)
+    i.SCTIMER_SetupOutputClearAction         0x00022794   Section        0  fsl_sctimer.o(i.SCTIMER_SetupOutputClearAction)
+    SCTIMER_SetupOutputClearAction           0x00022795   Thumb Code    30  fsl_sctimer.o(i.SCTIMER_SetupOutputClearAction)
+    i.SCTIMER_SetupOutputSetAction           0x000227b2   Section        0  fsl_sctimer.o(i.SCTIMER_SetupOutputSetAction)
+    SCTIMER_SetupOutputSetAction             0x000227b3   Thumb Code    26  fsl_sctimer.o(i.SCTIMER_SetupOutputSetAction)
+    i.SCTIMER_SetupPwm                       0x000227cc   Section        0  fsl_sctimer.o(i.SCTIMER_SetupPwm)
+    i.SCTIMER_StartTimer                     0x000229e0   Section        0  led_user.o(i.SCTIMER_StartTimer)
+    SCTIMER_StartTimer                       0x000229e1   Thumb Code    30  led_user.o(i.SCTIMER_StartTimer)
+    i.SHA256_Hash                            0x000229fe   Section        0  seclib.o(i.SHA256_Hash)
+    i.SHA256_HashFinish                      0x00022a24   Section        0  seclib.o(i.SHA256_HashFinish)
+    i.SHA256_HashUpdate                      0x00022ab8   Section        0  seclib.o(i.SHA256_HashUpdate)
+    i.SHA256_Init                            0x00022b5c   Section        0  seclib.o(i.SHA256_Init)
+    i.SHA256_hash_n                          0x00022b72   Section        0  seclib.o(i.SHA256_hash_n)
+    SHA256_hash_n                            0x00022b73   Thumb Code    22  seclib.o(i.SHA256_hash_n)
+    i.SYSCON_SetLoadCap                      0x00022b88   Section        0  board.o(i.SYSCON_SetLoadCap)
+    SYSCON_SetLoadCap                        0x00022b89   Thumb Code    44  board.o(i.SYSCON_SetLoadCap)
+    i.SYS_Init                               0x00022bc0   Section        0  userapp.o(i.SYS_Init)
+    i.SecLib_Init                            0x00022e14   Section        0  seclib.o(i.SecLib_Init)
+    i.SecLib_LeftShiftOneBit                 0x00022e16   Section        0  seclib.o(i.SecLib_LeftShiftOneBit)
+    SecLib_LeftShiftOneBit                   0x00022e17   Thumb Code    36  seclib.o(i.SecLib_LeftShiftOneBit)
+    i.SecLib_Padding                         0x00022e3a   Section        0  seclib.o(i.SecLib_Padding)
+    SecLib_Padding                           0x00022e3b   Thumb Code    40  seclib.o(i.SecLib_Padding)
+    i.SecLib_Xor128                          0x00022e62   Section        0  seclib.o(i.SecLib_Xor128)
+    SecLib_Xor128                            0x00022e63   Thumb Code    24  seclib.o(i.SecLib_Xor128)
+    i.SecLib_XorN                            0x00022e7a   Section        0  seclib.o(i.SecLib_XorN)
+    i.SendByte_DPS310                        0x00022e94   Section        0  iic_user.o(i.SendByte_DPS310)
+    i.SerialManagerTask                      0x00022f38   Section        0  serialmanager.o(i.SerialManagerTask)
+    i.SerialManager_Init                     0x0002301c   Section        0  serialmanager.o(i.SerialManager_Init)
+    i.SerialManager_RxNotify                 0x00023088   Section        0  serialmanager.o(i.SerialManager_RxNotify)
+    i.SerialManager_TxNotify                 0x000230f8   Section        0  serialmanager.o(i.SerialManager_TxNotify)
+    i.Serial_AsyncWrite                      0x00023190   Section        0  serialmanager.o(i.Serial_AsyncWrite)
+    i.Serial_InitInterface                   0x0002325c   Section        0  serialmanager.o(i.Serial_InitInterface)
+    i.Serial_Print                           0x00023334   Section        0  serialmanager.o(i.Serial_Print)
+    i.Serial_PrintDec                        0x0002337c   Section        0  serialmanager.o(i.Serial_PrintDec)
+    i.Serial_PrintHex                        0x000233c6   Section        0  serialmanager.o(i.Serial_PrintHex)
+    i.Serial_SetBaudRate                     0x000234a0   Section        0  serialmanager.o(i.Serial_SetBaudRate)
+    i.Serial_SyncWrite                       0x000234e8   Section        0  serialmanager.o(i.Serial_SyncWrite)
+    i.Serial_TxQueueMaintenance              0x00023544   Section        0  serialmanager.o(i.Serial_TxQueueMaintenance)
+    Serial_TxQueueMaintenance                0x00023545   Thumb Code   170  serialmanager.o(i.Serial_TxQueueMaintenance)
+    i.Serial_UartRxCb                        0x000235f4   Section        0  serialmanager.o(i.Serial_UartRxCb)
+    Serial_UartRxCb                          0x000235f5   Thumb Code    42  serialmanager.o(i.Serial_UartRxCb)
+    i.Serial_UartTxCb                        0x00023624   Section        0  serialmanager.o(i.Serial_UartTxCb)
+    Serial_UartTxCb                          0x00023625   Thumb Code    12  serialmanager.o(i.Serial_UartTxCb)
+    i.Serial_WriteInternal                   0x00023630   Section        0  serialmanager.o(i.Serial_WriteInternal)
+    Serial_WriteInternal                     0x00023631   Thumb Code   148  serialmanager.o(i.Serial_WriteInternal)
+    i.SmokeEnergy_DataToAir                  0x000236cc   Section        0  private_profile_server.o(i.SmokeEnergy_DataToAir)
+    i.SmokeEnergy_SendData                   0x000236e0   Section        0  private_profile_service.o(i.SmokeEnergy_SendData)
+    i.SmokeEnergy_TxCallback                 0x00023754   Section        0  private_profile_server.o(i.SmokeEnergy_TxCallback)
+    SmokeEnergy_TxCallback                   0x00023755   Thumb Code   196  private_profile_server.o(i.SmokeEnergy_TxCallback)
+    i.SmokePower_DataToAir                   0x00023820   Section        0  private_profile_server.o(i.SmokePower_DataToAir)
+    i.SmokePower_SendData                    0x00023834   Section        0  private_profile_service.o(i.SmokePower_SendData)
+    i.SmokePower_TxCallback                  0x000238a8   Section        0  private_profile_server.o(i.SmokePower_TxCallback)
+    SmokePower_TxCallback                    0x000238a9   Thumb Code   196  private_profile_server.o(i.SmokePower_TxCallback)
+    i.StackTimer_ClearIntFlag                0x00023974   Section        0  tmr_adapter.o(i.StackTimer_ClearIntFlag)
+    i.StackTimer_Disable                     0x0002398c   Section        0  tmr_adapter.o(i.StackTimer_Disable)
+    i.StackTimer_Enable                      0x000239a0   Section        0  tmr_adapter.o(i.StackTimer_Enable)
+    i.StackTimer_GetCounterValue             0x000239b4   Section        0  tmr_adapter.o(i.StackTimer_GetCounterValue)
+    i.StackTimer_GetInputFrequency           0x000239e8   Section        0  tmr_adapter.o(i.StackTimer_GetInputFrequency)
+    i.StackTimer_ISR                         0x000239fc   Section        0  timersmanager.o(i.StackTimer_ISR)
+    i.StackTimer_Init                        0x00023a20   Section        0  tmr_adapter.o(i.StackTimer_Init)
+    i.StackTimer_SetOffsetTicks              0x00023ac4   Section        0  tmr_adapter.o(i.StackTimer_SetOffsetTicks)
+    i.Start_I2c_DPS310                       0x00023ad8   Section        0  iic_user.o(i.Start_I2c_DPS310)
+    i.Stop_I2c_DPS310                        0x00023b28   Section        0  iic_user.o(i.Stop_I2c_DPS310)
+    i.SystemCoreClockUpdate                  0x00023b64   Section        0  system_qn908xc.o(i.SystemCoreClockUpdate)
+    i.SystemInit                             0x00023be4   Section        0  system_qn908xc.o(i.SystemInit)
+    i.TEST_LED_Pin_Init                      0x00023cf8   Section        0  timer_user.o(i.TEST_LED_Pin_Init)
+    i.TMR_AllocateTimer                      0x00023d1c   Section        0  timersmanager.o(i.TMR_AllocateTimer)
+    i.TMR_EnableTimer                        0x00023d48   Section        0  timersmanager.o(i.TMR_EnableTimer)
+    i.TMR_FreeTimer                          0x00023da4   Section        0  timersmanager.o(i.TMR_FreeTimer)
+    i.TMR_GetTimerStatus                     0x00023dc0   Section        0  timersmanager.o(i.TMR_GetTimerStatus)
+    TMR_GetTimerStatus                       0x00023dc1   Thumb Code    12  timersmanager.o(i.TMR_GetTimerStatus)
+    i.TMR_GetTimerType                       0x00023dd0   Section        0  timersmanager.o(i.TMR_GetTimerType)
+    TMR_GetTimerType                         0x00023dd1   Thumb Code    12  timersmanager.o(i.TMR_GetTimerType)
+    i.TMR_Init                               0x00023de0   Section        0  timersmanager.o(i.TMR_Init)
+    i.TMR_IsTimerActive                      0x00023e50   Section        0  timersmanager.o(i.TMR_IsTimerActive)
+    i.TMR_IsTimerReady                       0x00023e66   Section        0  timersmanager.o(i.TMR_IsTimerReady)
+    i.TMR_NotifyClkChanged                   0x00023e7c   Section        0  timersmanager.o(i.TMR_NotifyClkChanged)
+    i.TMR_SetTimerStatus                     0x00023eb0   Section        0  timersmanager.o(i.TMR_SetTimerStatus)
+    TMR_SetTimerStatus                       0x00023eb1   Thumb Code    16  timersmanager.o(i.TMR_SetTimerStatus)
+    i.TMR_SetTimerType                       0x00023ec4   Section        0  timersmanager.o(i.TMR_SetTimerType)
+    TMR_SetTimerType                         0x00023ec5   Thumb Code    16  timersmanager.o(i.TMR_SetTimerType)
+    i.TMR_StartLowPowerTimer                 0x00023ed8   Section        0  timersmanager.o(i.TMR_StartLowPowerTimer)
+    i.TMR_StartSingleShotTimer               0x00023efe   Section        0  timersmanager.o(i.TMR_StartSingleShotTimer)
+    i.TMR_StartTimer                         0x00023f18   Section        0  timersmanager.o(i.TMR_StartTimer)
+    i.TMR_StopTimer                          0x00023f9c   Section        0  timersmanager.o(i.TMR_StopTimer)
+    i.TMR_SyncLpmTimers                      0x0002402c   Section        0  timersmanager.o(i.TMR_SyncLpmTimers)
+    i.TMR_Task                               0x00024040   Section        0  timersmanager.o(i.TMR_Task)
+    i.Time1_Init                             0x00024264   Section        0  timer_user.o(i.Time1_Init)
+    i.Time2_Init                             0x000242cc   Section        0  timer_user.o(i.Time2_Init)
+    i.Time3_Init                             0x00024334   Section        0  timer_user.o(i.Time3_Init)
+    i.TmrTicksFromMilliseconds               0x00024398   Section        0  timersmanager.o(i.TmrTicksFromMilliseconds)
+    i.TxSerial_Printf                        0x000243b8   Section        0  private_profile_server.o(i.TxSerial_Printf)
+    TxSerial_Printf                          0x000243b9   Thumb Code    18  private_profile_server.o(i.TxSerial_Printf)
+    i.USART_ClearStatusFlags                 0x000243d0   Section        0  uart_adapter.o(i.USART_ClearStatusFlags)
+    USART_ClearStatusFlags                   0x000243d1   Thumb Code    10  uart_adapter.o(i.USART_ClearStatusFlags)
+    i.USART_EnableInterrupts                 0x000243da   Section        0  uart_adapter.o(i.USART_EnableInterrupts)
+    USART_EnableInterrupts                   0x000243db   Thumb Code    10  uart_adapter.o(i.USART_EnableInterrupts)
+    i.USART_GetDefaultConfig                 0x000243e4   Section        0  fsl_usart.o(i.USART_GetDefaultConfig)
+    i.USART_GetStatusFlags                   0x00024460   Section        0  uart_adapter.o(i.USART_GetStatusFlags)
+    USART_GetStatusFlags                     0x00024461   Thumb Code     8  uart_adapter.o(i.USART_GetStatusFlags)
+    i.USART_ISR                              0x00024468   Section        0  uart_adapter.o(i.USART_ISR)
+    USART_ISR                                0x00024469   Thumb Code   208  uart_adapter.o(i.USART_ISR)
+    i.USART_Init                             0x00024544   Section        0  fsl_usart.o(i.USART_Init)
+    i.USART_Initialize                       0x000246a0   Section        0  uart_adapter.o(i.USART_Initialize)
+    i.USART_InstallRxCalback                 0x00024764   Section        0  uart_adapter.o(i.USART_InstallRxCalback)
+    i.USART_InstallTxCalback                 0x00024788   Section        0  uart_adapter.o(i.USART_InstallTxCalback)
+    i.USART_IsTxActive                       0x000247ac   Section        0  uart_adapter.o(i.USART_IsTxActive)
+    i.USART_SendData                         0x000247e0   Section        0  uart_adapter.o(i.USART_SendData)
+    i.USART_SetBaudRate                      0x00024868   Section        0  fsl_usart.o(i.USART_SetBaudRate)
+    i.USART_SetBaudrate                      0x0002497c   Section        0  uart_adapter.o(i.USART_SetBaudrate)
+    i.USART_WriteByte                        0x000249b0   Section        0  uart_adapter.o(i.USART_WriteByte)
+    USART_WriteByte                          0x000249b1   Thumb Code     6  uart_adapter.o(i.USART_WriteByte)
+    i.USER_DPS310_SendData                   0x000249b8   Section        0  private_profile_service.o(i.USER_DPS310_SendData)
+    i.USER_GetBatteryLevel                   0x00024a2c   Section        0  batcharge_user.o(i.USER_GetBatteryLevel)
+    i.USER_SendDateToAir                     0x00024a7c   Section        0  private_profile_server.o(i.USER_SendDateToAir)
+    i.USER_Serial_Printf                     0x00024a90   Section        0  private_profile_server.o(i.USER_Serial_Printf)
+    i.USER_serial_tx                         0x00024aa4   Section        0  private_profile_server.o(i.USER_serial_tx)
+    USER_serial_tx                           0x00024aa5   Thumb Code    14  private_profile_server.o(i.USER_serial_tx)
+    i.User_KeyScan                           0x00024ab8   Section        0  key_user.o(i.User_KeyScan)
+    i.WakeUpFormSleepMode                    0x00024bb8   Section        0  workmode.o(i.WakeUpFormSleepMode)
+    i.WorkMode_SendData                      0x00024dd4   Section        0  private_profile_service.o(i.WorkMode_SendData)
+    i.WorkMode_SendNotifications             0x00024e24   Section        0  private_profile_service.o(i.WorkMode_SendNotifications)
+    WorkMode_SendNotifications               0x00024e25   Thumb Code    54  private_profile_service.o(i.WorkMode_SendNotifications)
+    i.WorkMode_SendToAir                     0x00024e5c   Section        0  private_profile_server.o(i.WorkMode_SendToAir)
+    i.WorkMode_TxCallback                    0x00024e70   Section        0  private_profile_server.o(i.WorkMode_TxCallback)
+    WorkMode_TxCallback                      0x00024e71   Thumb Code   134  private_profile_server.o(i.WorkMode_TxCallback)
+    i.__0sprintf                             0x00024f00   Section        0  printfa.o(i.__0sprintf)
+    i.__ARM_fpclassify                       0x00024f28   Section        0  fpclassify.o(i.__ARM_fpclassify)
+    i.__aeabi_assert                         0x00024f58   Section        0  fsl_common.o(i.__aeabi_assert)
+    i.__hardfp_modf                          0x00024f9c   Section        0  modf.o(i.__hardfp_modf)
+    i.__hardfp_pow                           0x00025070   Section        0  pow.o(i.__hardfp_pow)
+    i.__kernel_poly                          0x00025cc0   Section        0  poly.o(i.__kernel_poly)
+    i.__mathlib_dbl_divzero                  0x00025db8   Section        0  dunder.o(i.__mathlib_dbl_divzero)
+    i.__mathlib_dbl_infnan2                  0x00025de8   Section        0  dunder.o(i.__mathlib_dbl_infnan2)
+    i.__mathlib_dbl_invalid                  0x00025e00   Section        0  dunder.o(i.__mathlib_dbl_invalid)
+    i.__mathlib_dbl_overflow                 0x00025e20   Section        0  dunder.o(i.__mathlib_dbl_overflow)
+    i.__mathlib_dbl_underflow                0x00025e40   Section        0  dunder.o(i.__mathlib_dbl_underflow)
+    i.__scatterload_copy                     0x00025e60   Section       14  handlers.o(i.__scatterload_copy)
+    i.__scatterload_null                     0x00025e6e   Section        2  handlers.o(i.__scatterload_null)
+    i.__scatterload_zeroinit                 0x00025e70   Section       14  handlers.o(i.__scatterload_zeroinit)
+    i.__set_errno                            0x00025e80   Section        0  errno.o(i.__set_errno)
+    i._fp_digits                             0x00025e8c   Section        0  printfa.o(i._fp_digits)
+    _fp_digits                               0x00025e8d   Thumb Code   334  printfa.o(i._fp_digits)
+    i._printf_core                           0x00025ff0   Section        0  printfa.o(i._printf_core)
+    _printf_core                             0x00025ff1   Thumb Code  1744  printfa.o(i._printf_core)
+    i._printf_post_padding                   0x000266cc   Section        0  printfa.o(i._printf_post_padding)
+    _printf_post_padding                     0x000266cd   Thumb Code    36  printfa.o(i._printf_post_padding)
+    i._printf_pre_padding                    0x000266f0   Section        0  printfa.o(i._printf_pre_padding)
+    _printf_pre_padding                      0x000266f1   Thumb Code    46  printfa.o(i._printf_pre_padding)
+    i._sputc                                 0x0002671e   Section        0  printfa.o(i._sputc)
+    _sputc                                   0x0002671f   Thumb Code    10  printfa.o(i._sputc)
+    i.ble_task                               0x00026728   Section        0  fsl_os_abstraction_bm.o(i.ble_task)
+    i.ble_task_init                          0x00026768   Section        0  fsl_os_abstraction_bm.o(i.ble_task_init)
+    i.ctimer_1_match0_callback               0x0002677c   Section        0  timer_user.o(i.ctimer_1_match0_callback)
+    ctimer_1_match0_callback                 0x0002677d   Thumb Code   362  timer_user.o(i.ctimer_1_match0_callback)
+    i.ctimer_2_match0_callback               0x00026948   Section        0  timer_user.o(i.ctimer_2_match0_callback)
+    ctimer_2_match0_callback                 0x00026949   Thumb Code    42  timer_user.o(i.ctimer_2_match0_callback)
+    i.ctimer_3_match0_callback               0x0002697c   Section        0  timer_user.o(i.ctimer_3_match0_callback)
+    ctimer_3_match0_callback                 0x0002697d   Thumb Code    20  timer_user.o(i.ctimer_3_match0_callback)
+    i.delay_bybletask                        0x00026994   Section        0  workmode.o(i.delay_bybletask)
+    i.delay_us                               0x000269c0   Section        0  iic_user.o(i.delay_us)
+    i.dps310_config                          0x000269ca   Section        0  dps310.o(i.dps310_config)
+    i.dps310_get_processed_data              0x00026a74   Section        0  dps310.o(i.dps310_get_processed_data)
+    i.dps310_get_scaling_coef                0x00026d20   Section        0  dps310.o(i.dps310_get_scaling_coef)
+    dps310_get_scaling_coef                  0x00026d21   Thumb Code    76  dps310.o(i.dps310_get_scaling_coef)
+    i.dps310_init                            0x00026d6c   Section        0  dps310.o(i.dps310_init)
+    i.dps310_read_calib_coeffs               0x00026e2a   Section        0  dps310.o(i.dps310_read_calib_coeffs)
+    dps310_read_calib_coeffs                 0x00026e2b   Thumb Code   406  dps310.o(i.dps310_read_calib_coeffs)
+    i.dps310_resume                          0x00026fc0   Section        0  dps310.o(i.dps310_resume)
+    i.dps310_standby                         0x00026fec   Section        0  dps310.o(i.dps310_standby)
+    i.fabs                                   0x00027018   Section        0  fabs.o(i.fabs)
+    i.hardware_init                          0x00027030   Section        0  board.o(i.hardware_init)
+    i.i2c_read_block                         0x0002709c   Section        0  iic_user.o(i.i2c_read_block)
+    i.i2c_read_byte                          0x0002714c   Section        0  iic_user.o(i.i2c_read_byte)
+    i.i2c_write_byte                         0x000271cc   Section        0  iic_user.o(i.i2c_write_byte)
+    i.main                                   0x00027238   Section        0  fsl_os_abstraction_bm.o(i.main)
+    i.main_task                              0x00027260   Section        0  applmain.o(i.main_task)
+    i.osObjectAlloc                          0x00027304   Section        0  fsl_os_abstraction_bm.o(i.osObjectAlloc)
+    osObjectAlloc                            0x00027305   Thumb Code    36  fsl_os_abstraction_bm.o(i.osObjectAlloc)
+    i.osObjectIsAllocated                    0x00027328   Section        0  fsl_os_abstraction_bm.o(i.osObjectIsAllocated)
+    osObjectIsAllocated                      0x00027329   Thumb Code    44  fsl_os_abstraction_bm.o(i.osObjectIsAllocated)
+    i.panic                                  0x00027354   Section        0  panic.o(i.panic)
+    i.sqrt                                   0x00027356   Section        0  sqrt_full.o(i.sqrt)
+    i.switch_to_OSC32M                       0x000273c4   Section        0  workmode.o(i.switch_to_OSC32M)
+    switch_to_OSC32M                         0x000273c5   Thumb Code    30  workmode.o(i.switch_to_OSC32M)
+    i.switch_to_XTAL                         0x000273e2   Section        0  workmode.o(i.switch_to_XTAL)
+    switch_to_XTAL                           0x000273e3   Thumb Code    50  workmode.o(i.switch_to_XTAL)
+    i.task_init                              0x00027414   Section        0  fsl_os_abstraction_bm.o(i.task_init)
+    i.userBOARD_InitPins                     0x00027458   Section        0  userapp.o(i.userBOARD_InitPins)
+    i.user_main                              0x00027464   Section        0  userapp.o(i.user_main)
+    i.user_serial_printf                     0x00027524   Section        0  private_profile_server.o(i.user_serial_printf)
+    user_serial_printf                       0x00027525   Thumb Code    26  private_profile_server.o(i.user_serial_printf)
+    .constdata                               0x00027548   Section        6  board.o(.constdata)
+    .constdata                               0x00027550   Section       40  fsl_os_abstraction_bm.o(.constdata)
+    .constdata                               0x00027578   Section       56  app_config.o(.constdata)
+    adData0                                  0x00027578   Data           1  app_config.o(.constdata)
+    advScanStruct                            0x0002757c   Data          24  app_config.o(.constdata)
+    masterSecurity                           0x00027594   Data           4  app_config.o(.constdata)
+    serviceSecurity                          0x00027598   Data          24  app_config.o(.constdata)
+    .constdata                               0x000275b0   Section       24  gpio_adapter.o(.constdata)
+    gpioPinsPerPort                          0x000275b0   Data           5  gpio_adapter.o(.constdata)
+    maPortBases                              0x000275b8   Data           8  gpio_adapter.o(.constdata)
+    maGpioBases                              0x000275c0   Data           8  gpio_adapter.o(.constdata)
+    .constdata                               0x000275c8   Section       10  ble_controller_task.o(.constdata)
+    .constdata                               0x000275d4   Section      144  controller_config.o(.constdata)
+    .constdata                               0x00027664   Section       16  battery_service.o(.constdata)
+    .constdata                               0x00027674   Section      144  device_info_service.o(.constdata)
+    .constdata                               0x00027704   Section       28  fsl_ctimer.o(.constdata)
+    s_ctimerBases                            0x00027704   Data          16  fsl_ctimer.o(.constdata)
+    s_ctimerClocks                           0x00027714   Data           4  fsl_ctimer.o(.constdata)
+    s_ctimerResets                           0x00027718   Data           4  fsl_ctimer.o(.constdata)
+    s_ctimerIRQ                              0x0002771c   Data           4  fsl_ctimer.o(.constdata)
+    .constdata                               0x00027720   Section       24  fsl_flexcomm.o(.constdata)
+    s_flexcommBaseAddrs                      0x00027724   Data          16  fsl_flexcomm.o(.constdata)
+    s_flexcommClocks                         0x00027734   Data           4  fsl_flexcomm.o(.constdata)
+    .constdata                               0x00027738   Section      224  fsl_adc.o(.constdata)
+    s_adcBases                               0x00027738   Data           4  fsl_adc.o(.constdata)
+    s_adcClocks                              0x0002773c   Data           1  fsl_adc.o(.constdata)
+    s_adcResets                              0x0002773d   Data           1  fsl_adc.o(.constdata)
+    s_adcScanInterval                        0x0002773e   Data           8  fsl_adc.o(.constdata)
+    s_adcVrefVinnBias                        0x00027746   Data           8  fsl_adc.o(.constdata)
+    s_adcClock                               0x0002774e   Data           8  fsl_adc.o(.constdata)
+    s_adcBias                                0x00027758   Data          32  fsl_adc.o(.constdata)
+    s_adcPgaBias                             0x00027778   Data         160  fsl_adc.o(.constdata)
+    .constdata                               0x00027818   Section        6  fsl_sctimer.o(.constdata)
+    s_sctBases                               0x00027818   Data           4  fsl_sctimer.o(.constdata)
+    s_sctClocks                              0x0002781c   Data           1  fsl_sctimer.o(.constdata)
+    s_sctResets                              0x0002781d   Data           1  fsl_sctimer.o(.constdata)
+    .constdata                               0x00027820   Section       14  iic_user.o(.constdata)
+    .constdata                               0x00027830   Section       82  led_user.o(.constdata)
+    .constdata                               0x00027884   Section        2  timer_user.o(.constdata)
+    .constdata                               0x00027888   Section       18  batcharge_user.o(.constdata)
+    .constdata                               0x0002789c   Section        6  load_user.o(.constdata)
+    .constdata                               0x000278a8   Section      136  pow.o(.constdata)
+    bp                                       0x000278a8   Data          16  pow.o(.constdata)
+    dp_h                                     0x000278b8   Data          16  pow.o(.constdata)
+    dp_l                                     0x000278c8   Data          16  pow.o(.constdata)
+    L                                        0x000278d8   Data          48  pow.o(.constdata)
+    P                                        0x00027908   Data          40  pow.o(.constdata)
+    .constdata                               0x00027930   Section        8  qnan.o(.constdata)
+    .conststring                             0x00027938   Section       10  fsl_os_abstraction_bm.o(.conststring)
+    .conststring                             0x00027944   Section        9  app_config.o(.conststring)
+    .conststring                             0x00027950   Section       18  serialmanager.o(.conststring)
+    .conststring                             0x00027964   Section        9  timersmanager.o(.conststring)
+    .conststring                             0x00027970   Section       10  ble_host_tasks.o(.conststring)
+    .conststring                             0x0002797c   Section       15  ble_controller_task.o(.conststring)
+    .rodata6                                 0x0002798c   Section        0  ecdh.o(.rodata)
+    [Anonymous Symbol]                       0x00027990   Section        0  h4tl.o(.rodata)
+    .rodata6                                 0x00027994   Section        0  ec_p_256.o(.rodata)
+    .rodata_23                               0x000279b4   Number         0  ec_p_256.o(.rodata)
+    .rodata_24                               0x000279d4   Number         0  ec_p_256.o(.rodata)
+    .rodata_25                               0x000279f4   Number         0  ec_p_256.o(.rodata)
+    [Anonymous Symbol]                       0x00027a14   Section        0  sm_crypto.o(.rodata)
+    [Anonymous Symbol]                       0x00027a28   Section        0  gatt_db_att.o(.rodata.BASE_UUID)
+    BASE_UUID                                0x00027a28   Data          16  gatt_db_att.o(.rodata.BASE_UUID)
+    [Anonymous Symbol]                       0x00027a38   Section        0  sm_states.o(.rodata.CSWTCH.14)
+    CSWTCH.14                                0x00027a38   Data          25  sm_states.o(.rodata.CSWTCH.14)
+    [Anonymous Symbol]                       0x00027a51   Section        0  sm_states.o(.rodata.CSWTCH.56)
+    CSWTCH.56                                0x00027a51   Data           4  sm_states.o(.rodata.CSWTCH.56)
+    [Anonymous Symbol]                       0x00027a55   Section        0  llm.o(.rodata.CSWTCH.59)
+    CSWTCH.59                                0x00027a55   Data           7  llm.o(.rodata.CSWTCH.59)
+    [Anonymous Symbol]                       0x00027a5c   Section        0  ecc_p256.o(.rodata.bigHexP256)
+    [Anonymous Symbol]                       0x00027a88   Section        0  ecc_p256.o(.rodata.ecc_Jacobian_InfinityPoint256)
+    [Anonymous Symbol]                       0x00027b0c   Section        0  device_db.o(.rodata.gActiveDevicesEntrySize)
+    [Anonymous Symbol]                       0x00027b0e   Section        0  att.o(.rodata.gAttConnEntrySize)
+    [Anonymous Symbol]                       0x00027b10   Section        0  h4tl.o(.rodata.h4tl_msgtype2hdrlen)
+    h4tl_msgtype2hdrlen                      0x00027b10   Data           6  h4tl.o(.rodata.h4tl_msgtype2hdrlen)
+    [Anonymous Symbol]                       0x00027b18   Section        0  hci_msg.o(.rodata.hci_cmd_desc_root_tab)
+    [Anonymous Symbol]                       0x00027b48   Section        0  hci_msg.o(.rodata.hci_cmd_desc_tab_le)
+    [Anonymous Symbol]                       0x00027db8   Section        0  llc_task.o(.rodata.llc_default_handler)
+    [Anonymous Symbol]                       0x00027dc0   Section        0  llc_task.o(.rodata.llc_default_state)
+    llc_default_state                        0x00027dc0   Data         144  llc_task.o(.rodata.llc_default_state)
+    [Anonymous Symbol]                       0x00027e50   Section        0  llc_llcp.o(.rodata.llcp_pdu_handler)
+    llcp_pdu_handler                         0x00027e50   Data         208  llc_llcp.o(.rodata.llcp_pdu_handler)
+    [Anonymous Symbol]                       0x00027f20   Section        0  lld_pdu.o(.rodata.lld_pdu_llcp_pk_desc_tab)
+    lld_pdu_llcp_pk_desc_tab                 0x00027f20   Data         312  lld_pdu.o(.rodata.lld_pdu_llcp_pk_desc_tab)
+    [Anonymous Symbol]                       0x00028058   Section        0  llm_task.o(.rodata.llm_default_handler)
+    [Anonymous Symbol]                       0x00028060   Section        0  llm_task.o(.rodata.llm_default_state)
+    llm_default_state                        0x00028060   Data          64  llm_task.o(.rodata.llm_default_state)
+    [Anonymous Symbol]                       0x000280a0   Section        0  llm_hci.o(.rodata.llm_hci_command_handler_tab)
+    llm_hci_command_handler_tab              0x000280a0   Data         416  llm_hci.o(.rodata.llm_hci_command_handler_tab)
+    [Anonymous Symbol]                       0x00028240   Section        0  sm_states.o(.rodata.smStateTable)
+    smStateTable                             0x00028240   Data         120  sm_states.o(.rodata.smStateTable)
+    [Anonymous Symbol]                       0x000282b8   Section        0  sm_states.o(.rodata.smpLeLegacyIoCapToPairingMethodTable)
+    smpLeLegacyIoCapToPairingMethodTable     0x000282b8   Data          25  sm_states.o(.rodata.smpLeLegacyIoCapToPairingMethodTable)
+    [Anonymous Symbol]                       0x000282d1   Section        0  sm_states.o(.rodata.smpLeScIoCapToPairingMethodTable)
+    smpLeScIoCapToPairingMethodTable         0x000282d1   Data          25  sm_states.o(.rodata.smpLeScIoCapToPairingMethodTable)
+    [Anonymous Symbol]                       0x000282ea   Section        0  sm_states.o(.rodata.smpOpcodeToKeyDistBitMaskTable.9932)
+    smpOpcodeToKeyDistBitMaskTable.9932      0x000282ea   Data          11  sm_states.o(.rodata.smpOpcodeToKeyDistBitMaskTable.9932)
+    [Anonymous Symbol]                       0x000282f5   Section        0  sm_packet_op.o(.rodata.smpPacketTypeLengthTable)
+    smpPacketTypeLengthTable                 0x000282f5   Data          15  sm_packet_op.o(.rodata.smpPacketTypeLengthTable)
+    [Anonymous Symbol]                       0x00028304   Section        0  lld_pdu.o(.rodata.str1.1)
+    [Anonymous Symbol]                       0x00028338   Section        0  hci_msg.o(.rodata.str1.1)
+    [Anonymous Symbol]                       0x00028394   Section        0  ecc_p256.o(.rodata.veryBigHexP256)
+    VERSION_TAGS                             0x00028414   Section        3  ble_globals.o(VERSION_TAGS)
     .textrw                                  0x04000514   Section       96  fsl_power.o(.textrw)
     $v0                                      0x04000514   Number         0  fsl_power.o(.textrw)
     .data                                    0x04000574   Section       28  board.o(.data)
@@ -10066,159 +10067,159 @@ Image Symbol Table
     RTC_SetFreeRunningInterruptThreshold     0x00022085   Thumb Code    16  fsl_rtc.o(i.RTC_SetFreeRunningInterruptThreshold)
     RcvByte_DPS310                           0x00022095   Thumb Code   104  iic_user.o(i.RcvByte_DPS310)
     ReadSmokePower                           0x00022101   Thumb Code    60  private_profile_service.o(i.ReadSmokePower)
-    ReadyForSleepMode                        0x00022141   Thumb Code   364  workmode.o(i.ReadyForSleepMode)
-    RestartTiming                            0x000222e5   Thumb Code    28  workmode.o(i.RestartTiming)
-    SCT0_IRQHandler                          0x00022319   Thumb Code    12  fsl_sctimer.o(i.SCT0_IRQHandler)
-    SCTIMER_CreateAndScheduleEvent           0x0002232d   Thumb Code   456  fsl_sctimer.o(i.SCTIMER_CreateAndScheduleEvent)
-    SCTIMER_EventHandleIRQ                   0x00022505   Thumb Code    72  fsl_sctimer.o(i.SCTIMER_EventHandleIRQ)
-    SCTIMER_GetDefaultConfig                 0x00022555   Thumb Code    40  fsl_sctimer.o(i.SCTIMER_GetDefaultConfig)
-    SCTIMER_Init                             0x00022651   Thumb Code   212  fsl_sctimer.o(i.SCTIMER_Init)
-    SCTIMER_SetupPwm                         0x000227c1   Thumb Code   426  fsl_sctimer.o(i.SCTIMER_SetupPwm)
-    SHA256_Hash                              0x000229f3   Thumb Code    38  seclib.o(i.SHA256_Hash)
-    SHA256_HashFinish                        0x00022a19   Thumb Code   148  seclib.o(i.SHA256_HashFinish)
-    SHA256_HashUpdate                        0x00022aad   Thumb Code   164  seclib.o(i.SHA256_HashUpdate)
-    SHA256_Init                              0x00022b51   Thumb Code    22  seclib.o(i.SHA256_Init)
-    SYS_Init                                 0x00022bb5   Thumb Code   500  userapp.o(i.SYS_Init)
-    SecLib_Init                              0x00022e09   Thumb Code     2  seclib.o(i.SecLib_Init)
-    SecLib_XorN                              0x00022e6f   Thumb Code    26  seclib.o(i.SecLib_XorN)
-    SendByte_DPS310                          0x00022e89   Thumb Code   156  iic_user.o(i.SendByte_DPS310)
-    SerialManagerTask                        0x00022f2d   Thumb Code   214  serialmanager.o(i.SerialManagerTask)
-    SerialManager_Init                       0x00023011   Thumb Code    86  serialmanager.o(i.SerialManager_Init)
-    SerialManager_RxNotify                   0x0002307d   Thumb Code   104  serialmanager.o(i.SerialManager_RxNotify)
-    SerialManager_TxNotify                   0x000230ed   Thumb Code   142  serialmanager.o(i.SerialManager_TxNotify)
-    Serial_AsyncWrite                        0x00023185   Thumb Code   198  serialmanager.o(i.Serial_AsyncWrite)
-    Serial_InitInterface                     0x00023251   Thumb Code   198  serialmanager.o(i.Serial_InitInterface)
-    Serial_Print                             0x00023329   Thumb Code    72  serialmanager.o(i.Serial_Print)
-    Serial_PrintDec                          0x00023371   Thumb Code    74  serialmanager.o(i.Serial_PrintDec)
-    Serial_PrintHex                          0x000233bb   Thumb Code   218  serialmanager.o(i.Serial_PrintHex)
-    Serial_SetBaudRate                       0x00023495   Thumb Code    68  serialmanager.o(i.Serial_SetBaudRate)
-    Serial_SyncWrite                         0x000234dd   Thumb Code    88  serialmanager.o(i.Serial_SyncWrite)
-    SmokeEnergy_DataToAir                    0x000236c1   Thumb Code    14  private_profile_server.o(i.SmokeEnergy_DataToAir)
-    SmokeEnergy_SendData                     0x000236d5   Thumb Code   110  private_profile_service.o(i.SmokeEnergy_SendData)
-    SmokePower_DataToAir                     0x00023815   Thumb Code    14  private_profile_server.o(i.SmokePower_DataToAir)
-    SmokePower_SendData                      0x00023829   Thumb Code   110  private_profile_service.o(i.SmokePower_SendData)
-    StackTimer_ClearIntFlag                  0x00023969   Thumb Code    20  tmr_adapter.o(i.StackTimer_ClearIntFlag)
-    StackTimer_Disable                       0x00023981   Thumb Code    14  tmr_adapter.o(i.StackTimer_Disable)
-    StackTimer_Enable                        0x00023995   Thumb Code    14  tmr_adapter.o(i.StackTimer_Enable)
-    StackTimer_GetCounterValue               0x000239a9   Thumb Code    46  tmr_adapter.o(i.StackTimer_GetCounterValue)
-    StackTimer_GetInputFrequency             0x000239dd   Thumb Code    20  tmr_adapter.o(i.StackTimer_GetInputFrequency)
-    StackTimer_ISR                           0x000239f1   Thumb Code    26  timersmanager.o(i.StackTimer_ISR)
-    StackTimer_Init                          0x00023a15   Thumb Code   146  tmr_adapter.o(i.StackTimer_Init)
-    StackTimer_SetOffsetTicks                0x00023ab9   Thumb Code    16  tmr_adapter.o(i.StackTimer_SetOffsetTicks)
-    Start_I2c_DPS310                         0x00023acd   Thumb Code    76  iic_user.o(i.Start_I2c_DPS310)
-    Stop_I2c_DPS310                          0x00023b1d   Thumb Code    56  iic_user.o(i.Stop_I2c_DPS310)
-    SystemCoreClockUpdate                    0x00023b59   Thumb Code   112  system_qn908xc.o(i.SystemCoreClockUpdate)
-    SystemInit                               0x00023bd9   Thumb Code   222  system_qn908xc.o(i.SystemInit)
-    TEST_LED_Pin_Init                        0x00023ced   Thumb Code    26  timer_user.o(i.TEST_LED_Pin_Init)
-    TMR_AllocateTimer                        0x00023d11   Thumb Code    38  timersmanager.o(i.TMR_AllocateTimer)
-    TMR_EnableTimer                          0x00023d3d   Thumb Code    78  timersmanager.o(i.TMR_EnableTimer)
-    TMR_FreeTimer                            0x00023d99   Thumb Code    24  timersmanager.o(i.TMR_FreeTimer)
-    TMR_Init                                 0x00023dd5   Thumb Code    92  timersmanager.o(i.TMR_Init)
-    TMR_IsTimerActive                        0x00023e45   Thumb Code    22  timersmanager.o(i.TMR_IsTimerActive)
-    TMR_IsTimerReady                         0x00023e5b   Thumb Code    22  timersmanager.o(i.TMR_IsTimerReady)
-    TMR_NotifyClkChanged                     0x00023e71   Thumb Code    38  timersmanager.o(i.TMR_NotifyClkChanged)
-    TMR_StartLowPowerTimer                   0x00023ecd   Thumb Code    38  timersmanager.o(i.TMR_StartLowPowerTimer)
-    TMR_StartSingleShotTimer                 0x00023ef3   Thumb Code    26  timersmanager.o(i.TMR_StartSingleShotTimer)
-    TMR_StartTimer                           0x00023f0d   Thumb Code   128  timersmanager.o(i.TMR_StartTimer)
-    TMR_StopTimer                            0x00023f91   Thumb Code   128  timersmanager.o(i.TMR_StopTimer)
-    TMR_SyncLpmTimers                        0x00024021   Thumb Code    14  timersmanager.o(i.TMR_SyncLpmTimers)
-    TMR_Task                                 0x00024035   Thumb Code   506  timersmanager.o(i.TMR_Task)
-    Time1_Init                               0x00024259   Thumb Code    96  timer_user.o(i.Time1_Init)
-    Time2_Init                               0x000242c1   Thumb Code    94  timer_user.o(i.Time2_Init)
-    Time3_Init                               0x00024329   Thumb Code    86  timer_user.o(i.Time3_Init)
-    TmrTicksFromMilliseconds                 0x0002438d   Thumb Code    28  timersmanager.o(i.TmrTicksFromMilliseconds)
-    USART_GetDefaultConfig                   0x000243d9   Thumb Code    48  fsl_usart.o(i.USART_GetDefaultConfig)
-    USART_Init                               0x00024539   Thumb Code   226  fsl_usart.o(i.USART_Init)
-    USART_Initialize                         0x00024695   Thumb Code   172  uart_adapter.o(i.USART_Initialize)
-    USART_InstallRxCalback                   0x00024759   Thumb Code    32  uart_adapter.o(i.USART_InstallRxCalback)
-    USART_InstallTxCalback                   0x0002477d   Thumb Code    32  uart_adapter.o(i.USART_InstallTxCalback)
-    USART_IsTxActive                         0x000247a1   Thumb Code    44  uart_adapter.o(i.USART_IsTxActive)
-    USART_SendData                           0x000247d5   Thumb Code   128  uart_adapter.o(i.USART_SendData)
-    USART_SetBaudRate                        0x0002485d   Thumb Code   152  fsl_usart.o(i.USART_SetBaudRate)
-    USART_SetBaudrate                        0x00024971   Thumb Code    48  uart_adapter.o(i.USART_SetBaudrate)
-    USER_DPS310_SendData                     0x000249ad   Thumb Code   110  private_profile_service.o(i.USER_DPS310_SendData)
-    USER_GetBatteryLevel                     0x00024a21   Thumb Code    62  batcharge_user.o(i.USER_GetBatteryLevel)
-    USER_SendDateToAir                       0x00024a71   Thumb Code    14  private_profile_server.o(i.USER_SendDateToAir)
-    USER_Serial_Printf                       0x00024a85   Thumb Code    14  private_profile_server.o(i.USER_Serial_Printf)
-    User_KeyScan                             0x00024aad   Thumb Code   226  key_user.o(i.User_KeyScan)
-    WakeUpFormSleepMode                      0x00024bad   Thumb Code   466  workmode.o(i.WakeUpFormSleepMode)
-    WorkMode_SendData                        0x00024dc9   Thumb Code    74  private_profile_service.o(i.WorkMode_SendData)
-    WorkMode_SendToAir                       0x00024e51   Thumb Code    14  private_profile_server.o(i.WorkMode_SendToAir)
-    __0sprintf                               0x00024ef5   Thumb Code    34  printfa.o(i.__0sprintf)
-    __1sprintf                               0x00024ef5   Thumb Code     0  printfa.o(i.__0sprintf)
-    __2sprintf                               0x00024ef5   Thumb Code     0  printfa.o(i.__0sprintf)
-    __c89sprintf                             0x00024ef5   Thumb Code     0  printfa.o(i.__0sprintf)
-    sprintf                                  0x00024ef5   Thumb Code     0  printfa.o(i.__0sprintf)
-    __ARM_fpclassify                         0x00024f1d   Thumb Code    48  fpclassify.o(i.__ARM_fpclassify)
-    __aeabi_assert                           0x00024f4d   Thumb Code    24  fsl_common.o(i.__aeabi_assert)
-    __hardfp_modf                            0x00024f91   Thumb Code   202  modf.o(i.__hardfp_modf)
-    __hardfp_pow                             0x00025061   Thumb Code  3072  pow.o(i.__hardfp_pow)
-    __kernel_poly                            0x00025cb1   Thumb Code   248  poly.o(i.__kernel_poly)
-    __mathlib_dbl_divzero                    0x00025da9   Thumb Code    28  dunder.o(i.__mathlib_dbl_divzero)
-    __mathlib_dbl_infnan2                    0x00025dd9   Thumb Code    20  dunder.o(i.__mathlib_dbl_infnan2)
-    __mathlib_dbl_invalid                    0x00025df1   Thumb Code    24  dunder.o(i.__mathlib_dbl_invalid)
-    __mathlib_dbl_overflow                   0x00025e11   Thumb Code    24  dunder.o(i.__mathlib_dbl_overflow)
-    __mathlib_dbl_underflow                  0x00025e31   Thumb Code    24  dunder.o(i.__mathlib_dbl_underflow)
-    __scatterload_copy                       0x00025e51   Thumb Code    14  handlers.o(i.__scatterload_copy)
-    __scatterload_null                       0x00025e5f   Thumb Code     2  handlers.o(i.__scatterload_null)
-    __scatterload_zeroinit                   0x00025e61   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
-    __set_errno                              0x00025e71   Thumb Code     6  errno.o(i.__set_errno)
-    ble_task                                 0x00026719   Thumb Code    54  fsl_os_abstraction_bm.o(i.ble_task)
-    ble_task_init                            0x00026759   Thumb Code    10  fsl_os_abstraction_bm.o(i.ble_task_init)
-    delay_bybletask                          0x00026985   Thumb Code    40  workmode.o(i.delay_bybletask)
-    delay_us                                 0x000269b1   Thumb Code    10  iic_user.o(i.delay_us)
-    dps310_config                            0x000269bb   Thumb Code   170  dps310.o(i.dps310_config)
-    dps310_get_processed_data                0x00026a65   Thumb Code   658  dps310.o(i.dps310_get_processed_data)
-    dps310_init                              0x00026d5d   Thumb Code   190  dps310.o(i.dps310_init)
-    dps310_resume                            0x00026fb1   Thumb Code    44  dps310.o(i.dps310_resume)
-    dps310_standby                           0x00026fdd   Thumb Code    44  dps310.o(i.dps310_standby)
-    fabs                                     0x00027009   Thumb Code    24  fabs.o(i.fabs)
-    hardware_init                            0x00027021   Thumb Code    90  board.o(i.hardware_init)
-    i2c_read_block                           0x0002708d   Thumb Code   170  iic_user.o(i.i2c_read_block)
-    i2c_read_byte                            0x0002713d   Thumb Code   124  iic_user.o(i.i2c_read_byte)
-    i2c_write_byte                           0x000271bd   Thumb Code   104  iic_user.o(i.i2c_write_byte)
-    main                                     0x00027229   Thumb Code    36  fsl_os_abstraction_bm.o(i.main)
-    main_task                                0x00027251   Thumb Code   134  applmain.o(i.main_task)
-    panic                                    0x00027345   Thumb Code     2  panic.o(i.panic)
-    sqrt                                     0x00027347   Thumb Code   110  sqrt_full.o(i.sqrt)
-    task_init                                0x00027405   Thumb Code    58  fsl_os_abstraction_bm.o(i.task_init)
-    userBOARD_InitPins                       0x00027449   Thumb Code    10  userapp.o(i.userBOARD_InitPins)
-    user_main                                0x00027455   Thumb Code   176  userapp.o(i.user_main)
-    gUseRtos_c                               0x00027540   Data           1  fsl_os_abstraction_bm.o(.constdata)
-    osSemaphoreInfo                          0x00027544   Data          12  fsl_os_abstraction_bm.o(.constdata)
-    osMutexInfo                              0x00027550   Data          12  fsl_os_abstraction_bm.o(.constdata)
-    osEventInfo                              0x0002755c   Data          12  fsl_os_abstraction_bm.o(.constdata)
-    gRfSysClk26MHz_c                         0x000275b8   Data           1  ble_controller_task.o(.constdata)
-    gBD_ADDR_OUI_c                           0x000275b9   Data           3  ble_controller_task.o(.constdata)
-    gAdvertisingPacketInterval_c             0x000275bc   Data           1  ble_controller_task.o(.constdata)
-    gScanChannelMap_c                        0x000275bd   Data           1  ble_controller_task.o(.constdata)
-    gInitiatorChannelMap_c                   0x000275be   Data           1  ble_controller_task.o(.constdata)
-    gOffsetToFirstInstant_c                  0x000275c0   Data           2  ble_controller_task.o(.constdata)
-    user_rwip_coex_cfg                       0x000275c4   Data           5  controller_config.o(.constdata)
-    ble_task_desc                            0x000275cc   Data          64  controller_config.o(.constdata)
-    fw_configuration                         0x0002760c   Data          28  controller_config.o(.constdata)
-    em_offset_config                         0x00027628   Data          44  controller_config.o(.constdata)
-    kFlexcommIrqs                            0x00027710   Data           4  fsl_flexcomm.o(.constdata)
-    __mathlib_zero                           0x00027920   Data           8  qnan.o(.constdata)
-    gEcP256_MultiplicationBufferSize_c       0x0002797c   Data           4  ecdh.o(.rodata)
-    P256_g_point_x                           0x00027984   Data          32  ec_p_256.o(.rodata)
-    P256_g_point_y                           0x000279a4   Data          32  ec_p_256.o(.rodata)
-    P256_orderMinusOne                       0x000279c4   Data          32  ec_p_256.o(.rodata)
-    P256_one                                 0x000279e4   Data          32  ec_p_256.o(.rodata)
-    bigHexP256                               0x00027a4c   Data          44  ecc_p256.o(.rodata.bigHexP256)
-    ecc_Jacobian_InfinityPoint256            0x00027a78   Data         132  ecc_p256.o(.rodata.ecc_Jacobian_InfinityPoint256)
-    gActiveDevicesEntrySize                  0x00027afc   Data           2  device_db.o(.rodata.gActiveDevicesEntrySize)
-    gAttConnEntrySize                        0x00027afe   Data           2  att.o(.rodata.gAttConnEntrySize)
-    hci_cmd_desc_root_tab                    0x00027b08   Data          48  hci_msg.o(.rodata.hci_cmd_desc_root_tab)
-    hci_cmd_desc_tab_le                      0x00027b38   Data         624  hci_msg.o(.rodata.hci_cmd_desc_tab_le)
-    llc_default_handler                      0x00027da8   Data           8  llc_task.o(.rodata.llc_default_handler)
-    llm_default_handler                      0x00028048   Data           8  llm_task.o(.rodata.llm_default_handler)
-    veryBigHexP256                           0x00028384   Data          80  ecc_p256.o(.rodata.veryBigHexP256)
-    Region$$Table$$Base                      0x000283d4   Number         0  anon$$obj.o(Region$$Table)
-    Region$$Table$$Limit                     0x00028404   Number         0  anon$$obj.o(Region$$Table)
-    gGapMaxServiceSpecificSecurityRequirements 0x00028404   Data           1  ble_globals.o(VERSION_TAGS)
-    gBleMaxActiveConnections                 0x00028405   Data           1  ble_globals.o(VERSION_TAGS)
-    gMaxL2caQueueSize                        0x00028406   Data           1  ble_globals.o(VERSION_TAGS)
+    ReadyForSleepMode                        0x00022141   Thumb Code   376  workmode.o(i.ReadyForSleepMode)
+    RestartTiming                            0x000222f1   Thumb Code    28  workmode.o(i.RestartTiming)
+    SCT0_IRQHandler                          0x00022325   Thumb Code    12  fsl_sctimer.o(i.SCT0_IRQHandler)
+    SCTIMER_CreateAndScheduleEvent           0x00022339   Thumb Code   456  fsl_sctimer.o(i.SCTIMER_CreateAndScheduleEvent)
+    SCTIMER_EventHandleIRQ                   0x00022511   Thumb Code    72  fsl_sctimer.o(i.SCTIMER_EventHandleIRQ)
+    SCTIMER_GetDefaultConfig                 0x00022561   Thumb Code    40  fsl_sctimer.o(i.SCTIMER_GetDefaultConfig)
+    SCTIMER_Init                             0x0002265d   Thumb Code   212  fsl_sctimer.o(i.SCTIMER_Init)
+    SCTIMER_SetupPwm                         0x000227cd   Thumb Code   426  fsl_sctimer.o(i.SCTIMER_SetupPwm)
+    SHA256_Hash                              0x000229ff   Thumb Code    38  seclib.o(i.SHA256_Hash)
+    SHA256_HashFinish                        0x00022a25   Thumb Code   148  seclib.o(i.SHA256_HashFinish)
+    SHA256_HashUpdate                        0x00022ab9   Thumb Code   164  seclib.o(i.SHA256_HashUpdate)
+    SHA256_Init                              0x00022b5d   Thumb Code    22  seclib.o(i.SHA256_Init)
+    SYS_Init                                 0x00022bc1   Thumb Code   500  userapp.o(i.SYS_Init)
+    SecLib_Init                              0x00022e15   Thumb Code     2  seclib.o(i.SecLib_Init)
+    SecLib_XorN                              0x00022e7b   Thumb Code    26  seclib.o(i.SecLib_XorN)
+    SendByte_DPS310                          0x00022e95   Thumb Code   156  iic_user.o(i.SendByte_DPS310)
+    SerialManagerTask                        0x00022f39   Thumb Code   214  serialmanager.o(i.SerialManagerTask)
+    SerialManager_Init                       0x0002301d   Thumb Code    86  serialmanager.o(i.SerialManager_Init)
+    SerialManager_RxNotify                   0x00023089   Thumb Code   104  serialmanager.o(i.SerialManager_RxNotify)
+    SerialManager_TxNotify                   0x000230f9   Thumb Code   142  serialmanager.o(i.SerialManager_TxNotify)
+    Serial_AsyncWrite                        0x00023191   Thumb Code   198  serialmanager.o(i.Serial_AsyncWrite)
+    Serial_InitInterface                     0x0002325d   Thumb Code   198  serialmanager.o(i.Serial_InitInterface)
+    Serial_Print                             0x00023335   Thumb Code    72  serialmanager.o(i.Serial_Print)
+    Serial_PrintDec                          0x0002337d   Thumb Code    74  serialmanager.o(i.Serial_PrintDec)
+    Serial_PrintHex                          0x000233c7   Thumb Code   218  serialmanager.o(i.Serial_PrintHex)
+    Serial_SetBaudRate                       0x000234a1   Thumb Code    68  serialmanager.o(i.Serial_SetBaudRate)
+    Serial_SyncWrite                         0x000234e9   Thumb Code    88  serialmanager.o(i.Serial_SyncWrite)
+    SmokeEnergy_DataToAir                    0x000236cd   Thumb Code    14  private_profile_server.o(i.SmokeEnergy_DataToAir)
+    SmokeEnergy_SendData                     0x000236e1   Thumb Code   110  private_profile_service.o(i.SmokeEnergy_SendData)
+    SmokePower_DataToAir                     0x00023821   Thumb Code    14  private_profile_server.o(i.SmokePower_DataToAir)
+    SmokePower_SendData                      0x00023835   Thumb Code   110  private_profile_service.o(i.SmokePower_SendData)
+    StackTimer_ClearIntFlag                  0x00023975   Thumb Code    20  tmr_adapter.o(i.StackTimer_ClearIntFlag)
+    StackTimer_Disable                       0x0002398d   Thumb Code    14  tmr_adapter.o(i.StackTimer_Disable)
+    StackTimer_Enable                        0x000239a1   Thumb Code    14  tmr_adapter.o(i.StackTimer_Enable)
+    StackTimer_GetCounterValue               0x000239b5   Thumb Code    46  tmr_adapter.o(i.StackTimer_GetCounterValue)
+    StackTimer_GetInputFrequency             0x000239e9   Thumb Code    20  tmr_adapter.o(i.StackTimer_GetInputFrequency)
+    StackTimer_ISR                           0x000239fd   Thumb Code    26  timersmanager.o(i.StackTimer_ISR)
+    StackTimer_Init                          0x00023a21   Thumb Code   146  tmr_adapter.o(i.StackTimer_Init)
+    StackTimer_SetOffsetTicks                0x00023ac5   Thumb Code    16  tmr_adapter.o(i.StackTimer_SetOffsetTicks)
+    Start_I2c_DPS310                         0x00023ad9   Thumb Code    76  iic_user.o(i.Start_I2c_DPS310)
+    Stop_I2c_DPS310                          0x00023b29   Thumb Code    56  iic_user.o(i.Stop_I2c_DPS310)
+    SystemCoreClockUpdate                    0x00023b65   Thumb Code   112  system_qn908xc.o(i.SystemCoreClockUpdate)
+    SystemInit                               0x00023be5   Thumb Code   222  system_qn908xc.o(i.SystemInit)
+    TEST_LED_Pin_Init                        0x00023cf9   Thumb Code    26  timer_user.o(i.TEST_LED_Pin_Init)
+    TMR_AllocateTimer                        0x00023d1d   Thumb Code    38  timersmanager.o(i.TMR_AllocateTimer)
+    TMR_EnableTimer                          0x00023d49   Thumb Code    78  timersmanager.o(i.TMR_EnableTimer)
+    TMR_FreeTimer                            0x00023da5   Thumb Code    24  timersmanager.o(i.TMR_FreeTimer)
+    TMR_Init                                 0x00023de1   Thumb Code    92  timersmanager.o(i.TMR_Init)
+    TMR_IsTimerActive                        0x00023e51   Thumb Code    22  timersmanager.o(i.TMR_IsTimerActive)
+    TMR_IsTimerReady                         0x00023e67   Thumb Code    22  timersmanager.o(i.TMR_IsTimerReady)
+    TMR_NotifyClkChanged                     0x00023e7d   Thumb Code    38  timersmanager.o(i.TMR_NotifyClkChanged)
+    TMR_StartLowPowerTimer                   0x00023ed9   Thumb Code    38  timersmanager.o(i.TMR_StartLowPowerTimer)
+    TMR_StartSingleShotTimer                 0x00023eff   Thumb Code    26  timersmanager.o(i.TMR_StartSingleShotTimer)
+    TMR_StartTimer                           0x00023f19   Thumb Code   128  timersmanager.o(i.TMR_StartTimer)
+    TMR_StopTimer                            0x00023f9d   Thumb Code   128  timersmanager.o(i.TMR_StopTimer)
+    TMR_SyncLpmTimers                        0x0002402d   Thumb Code    14  timersmanager.o(i.TMR_SyncLpmTimers)
+    TMR_Task                                 0x00024041   Thumb Code   506  timersmanager.o(i.TMR_Task)
+    Time1_Init                               0x00024265   Thumb Code    96  timer_user.o(i.Time1_Init)
+    Time2_Init                               0x000242cd   Thumb Code    94  timer_user.o(i.Time2_Init)
+    Time3_Init                               0x00024335   Thumb Code    86  timer_user.o(i.Time3_Init)
+    TmrTicksFromMilliseconds                 0x00024399   Thumb Code    28  timersmanager.o(i.TmrTicksFromMilliseconds)
+    USART_GetDefaultConfig                   0x000243e5   Thumb Code    48  fsl_usart.o(i.USART_GetDefaultConfig)
+    USART_Init                               0x00024545   Thumb Code   226  fsl_usart.o(i.USART_Init)
+    USART_Initialize                         0x000246a1   Thumb Code   172  uart_adapter.o(i.USART_Initialize)
+    USART_InstallRxCalback                   0x00024765   Thumb Code    32  uart_adapter.o(i.USART_InstallRxCalback)
+    USART_InstallTxCalback                   0x00024789   Thumb Code    32  uart_adapter.o(i.USART_InstallTxCalback)
+    USART_IsTxActive                         0x000247ad   Thumb Code    44  uart_adapter.o(i.USART_IsTxActive)
+    USART_SendData                           0x000247e1   Thumb Code   128  uart_adapter.o(i.USART_SendData)
+    USART_SetBaudRate                        0x00024869   Thumb Code   152  fsl_usart.o(i.USART_SetBaudRate)
+    USART_SetBaudrate                        0x0002497d   Thumb Code    48  uart_adapter.o(i.USART_SetBaudrate)
+    USER_DPS310_SendData                     0x000249b9   Thumb Code   110  private_profile_service.o(i.USER_DPS310_SendData)
+    USER_GetBatteryLevel                     0x00024a2d   Thumb Code    62  batcharge_user.o(i.USER_GetBatteryLevel)
+    USER_SendDateToAir                       0x00024a7d   Thumb Code    14  private_profile_server.o(i.USER_SendDateToAir)
+    USER_Serial_Printf                       0x00024a91   Thumb Code    14  private_profile_server.o(i.USER_Serial_Printf)
+    User_KeyScan                             0x00024ab9   Thumb Code   226  key_user.o(i.User_KeyScan)
+    WakeUpFormSleepMode                      0x00024bb9   Thumb Code   466  workmode.o(i.WakeUpFormSleepMode)
+    WorkMode_SendData                        0x00024dd5   Thumb Code    74  private_profile_service.o(i.WorkMode_SendData)
+    WorkMode_SendToAir                       0x00024e5d   Thumb Code    14  private_profile_server.o(i.WorkMode_SendToAir)
+    __0sprintf                               0x00024f01   Thumb Code    34  printfa.o(i.__0sprintf)
+    __1sprintf                               0x00024f01   Thumb Code     0  printfa.o(i.__0sprintf)
+    __2sprintf                               0x00024f01   Thumb Code     0  printfa.o(i.__0sprintf)
+    __c89sprintf                             0x00024f01   Thumb Code     0  printfa.o(i.__0sprintf)
+    sprintf                                  0x00024f01   Thumb Code     0  printfa.o(i.__0sprintf)
+    __ARM_fpclassify                         0x00024f29   Thumb Code    48  fpclassify.o(i.__ARM_fpclassify)
+    __aeabi_assert                           0x00024f59   Thumb Code    24  fsl_common.o(i.__aeabi_assert)
+    __hardfp_modf                            0x00024f9d   Thumb Code   202  modf.o(i.__hardfp_modf)
+    __hardfp_pow                             0x00025071   Thumb Code  3072  pow.o(i.__hardfp_pow)
+    __kernel_poly                            0x00025cc1   Thumb Code   248  poly.o(i.__kernel_poly)
+    __mathlib_dbl_divzero                    0x00025db9   Thumb Code    28  dunder.o(i.__mathlib_dbl_divzero)
+    __mathlib_dbl_infnan2                    0x00025de9   Thumb Code    20  dunder.o(i.__mathlib_dbl_infnan2)
+    __mathlib_dbl_invalid                    0x00025e01   Thumb Code    24  dunder.o(i.__mathlib_dbl_invalid)
+    __mathlib_dbl_overflow                   0x00025e21   Thumb Code    24  dunder.o(i.__mathlib_dbl_overflow)
+    __mathlib_dbl_underflow                  0x00025e41   Thumb Code    24  dunder.o(i.__mathlib_dbl_underflow)
+    __scatterload_copy                       0x00025e61   Thumb Code    14  handlers.o(i.__scatterload_copy)
+    __scatterload_null                       0x00025e6f   Thumb Code     2  handlers.o(i.__scatterload_null)
+    __scatterload_zeroinit                   0x00025e71   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
+    __set_errno                              0x00025e81   Thumb Code     6  errno.o(i.__set_errno)
+    ble_task                                 0x00026729   Thumb Code    54  fsl_os_abstraction_bm.o(i.ble_task)
+    ble_task_init                            0x00026769   Thumb Code    10  fsl_os_abstraction_bm.o(i.ble_task_init)
+    delay_bybletask                          0x00026995   Thumb Code    40  workmode.o(i.delay_bybletask)
+    delay_us                                 0x000269c1   Thumb Code    10  iic_user.o(i.delay_us)
+    dps310_config                            0x000269cb   Thumb Code   170  dps310.o(i.dps310_config)
+    dps310_get_processed_data                0x00026a75   Thumb Code   658  dps310.o(i.dps310_get_processed_data)
+    dps310_init                              0x00026d6d   Thumb Code   190  dps310.o(i.dps310_init)
+    dps310_resume                            0x00026fc1   Thumb Code    44  dps310.o(i.dps310_resume)
+    dps310_standby                           0x00026fed   Thumb Code    44  dps310.o(i.dps310_standby)
+    fabs                                     0x00027019   Thumb Code    24  fabs.o(i.fabs)
+    hardware_init                            0x00027031   Thumb Code    90  board.o(i.hardware_init)
+    i2c_read_block                           0x0002709d   Thumb Code   170  iic_user.o(i.i2c_read_block)
+    i2c_read_byte                            0x0002714d   Thumb Code   124  iic_user.o(i.i2c_read_byte)
+    i2c_write_byte                           0x000271cd   Thumb Code   104  iic_user.o(i.i2c_write_byte)
+    main                                     0x00027239   Thumb Code    36  fsl_os_abstraction_bm.o(i.main)
+    main_task                                0x00027261   Thumb Code   134  applmain.o(i.main_task)
+    panic                                    0x00027355   Thumb Code     2  panic.o(i.panic)
+    sqrt                                     0x00027357   Thumb Code   110  sqrt_full.o(i.sqrt)
+    task_init                                0x00027415   Thumb Code    58  fsl_os_abstraction_bm.o(i.task_init)
+    userBOARD_InitPins                       0x00027459   Thumb Code    10  userapp.o(i.userBOARD_InitPins)
+    user_main                                0x00027465   Thumb Code   176  userapp.o(i.user_main)
+    gUseRtos_c                               0x00027550   Data           1  fsl_os_abstraction_bm.o(.constdata)
+    osSemaphoreInfo                          0x00027554   Data          12  fsl_os_abstraction_bm.o(.constdata)
+    osMutexInfo                              0x00027560   Data          12  fsl_os_abstraction_bm.o(.constdata)
+    osEventInfo                              0x0002756c   Data          12  fsl_os_abstraction_bm.o(.constdata)
+    gRfSysClk26MHz_c                         0x000275c8   Data           1  ble_controller_task.o(.constdata)
+    gBD_ADDR_OUI_c                           0x000275c9   Data           3  ble_controller_task.o(.constdata)
+    gAdvertisingPacketInterval_c             0x000275cc   Data           1  ble_controller_task.o(.constdata)
+    gScanChannelMap_c                        0x000275cd   Data           1  ble_controller_task.o(.constdata)
+    gInitiatorChannelMap_c                   0x000275ce   Data           1  ble_controller_task.o(.constdata)
+    gOffsetToFirstInstant_c                  0x000275d0   Data           2  ble_controller_task.o(.constdata)
+    user_rwip_coex_cfg                       0x000275d4   Data           5  controller_config.o(.constdata)
+    ble_task_desc                            0x000275dc   Data          64  controller_config.o(.constdata)
+    fw_configuration                         0x0002761c   Data          28  controller_config.o(.constdata)
+    em_offset_config                         0x00027638   Data          44  controller_config.o(.constdata)
+    kFlexcommIrqs                            0x00027720   Data           4  fsl_flexcomm.o(.constdata)
+    __mathlib_zero                           0x00027930   Data           8  qnan.o(.constdata)
+    gEcP256_MultiplicationBufferSize_c       0x0002798c   Data           4  ecdh.o(.rodata)
+    P256_g_point_x                           0x00027994   Data          32  ec_p_256.o(.rodata)
+    P256_g_point_y                           0x000279b4   Data          32  ec_p_256.o(.rodata)
+    P256_orderMinusOne                       0x000279d4   Data          32  ec_p_256.o(.rodata)
+    P256_one                                 0x000279f4   Data          32  ec_p_256.o(.rodata)
+    bigHexP256                               0x00027a5c   Data          44  ecc_p256.o(.rodata.bigHexP256)
+    ecc_Jacobian_InfinityPoint256            0x00027a88   Data         132  ecc_p256.o(.rodata.ecc_Jacobian_InfinityPoint256)
+    gActiveDevicesEntrySize                  0x00027b0c   Data           2  device_db.o(.rodata.gActiveDevicesEntrySize)
+    gAttConnEntrySize                        0x00027b0e   Data           2  att.o(.rodata.gAttConnEntrySize)
+    hci_cmd_desc_root_tab                    0x00027b18   Data          48  hci_msg.o(.rodata.hci_cmd_desc_root_tab)
+    hci_cmd_desc_tab_le                      0x00027b48   Data         624  hci_msg.o(.rodata.hci_cmd_desc_tab_le)
+    llc_default_handler                      0x00027db8   Data           8  llc_task.o(.rodata.llc_default_handler)
+    llm_default_handler                      0x00028058   Data           8  llm_task.o(.rodata.llm_default_handler)
+    veryBigHexP256                           0x00028394   Data          80  ecc_p256.o(.rodata.veryBigHexP256)
+    Region$$Table$$Base                      0x000283e4   Number         0  anon$$obj.o(Region$$Table)
+    Region$$Table$$Limit                     0x00028414   Number         0  anon$$obj.o(Region$$Table)
+    gGapMaxServiceSpecificSecurityRequirements 0x00028414   Data           1  ble_globals.o(VERSION_TAGS)
+    gBleMaxActiveConnections                 0x00028415   Data           1  ble_globals.o(VERSION_TAGS)
+    gMaxL2caQueueSize                        0x00028416   Data           1  ble_globals.o(VERSION_TAGS)
     rom_entry_point                          0x03000738   ARM Code       0  fw_symbols_mdk.h ABSOLUTE
     APP_RestoreBleReg                        0x030008b5   Thumb Code     0  fw_symbols_mdk.h ABSOLUTE
     APP_SaveBleReg                           0x03000921   Thumb Code     0  fw_symbols_mdk.h ABSOLUTE
@@ -10765,7 +10766,7 @@ Memory Map of the image
 
   Image Entry point : 0x00000255
 
-  Load Region LR_m_text (Base: 0x00000000, Size: 0x00028fb8, Max: 0x0007e800, ABSOLUTE)
+  Load Region LR_m_text (Base: 0x00000000, Size: 0x00028fc8, Max: 0x0007e800, ABSOLUTE)
 
     Execution Region VECTOR_ROM (Base: 0x00000000, Size: 0x00000114, Max: 0x00000114, ABSOLUTE)
 
@@ -10793,7 +10794,7 @@ Memory Map of the image
     0x00000194   0x0000000c   Data   RO         4115    NVM_TABLE           applmain.o
 
 
-    Execution Region ER_m_text (Base: 0x00000254, Size: 0x000281b4, Max: 0x0007c5ac, ABSOLUTE, FIXED)
+    Execution Region ER_m_text (Base: 0x00000254, Size: 0x000281c4, Max: 0x0007c5ac, ABSOLUTE, FIXED)
 
     Base Addr    Size         Type   Attr      Idx    E Section Name        Object
 
@@ -12038,241 +12039,242 @@ Memory Map of the image
     0x00022084   0x00000010   Code   RO         5686    i.RTC_SetFreeRunningInterruptThreshold  fsl_rtc.o
     0x00022094   0x0000006c   Code   RO         7112    i.RcvByte_DPS310    iic_user.o
     0x00022100   0x00000040   Code   RO         4582    i.ReadSmokePower    private_profile_service.o
-    0x00022140   0x000001a4   Code   RO         7890    i.ReadyForSleepMode  workmode.o
-    0x000222e4   0x00000034   Code   RO         7891    i.RestartTiming     workmode.o
-    0x00022318   0x00000014   Code   RO         6217    i.SCT0_IRQHandler   fsl_sctimer.o
-    0x0002232c   0x000001d8   Code   RO         6218    i.SCTIMER_CreateAndScheduleEvent  fsl_sctimer.o
-    0x00022504   0x00000050   Code   RO         6220    i.SCTIMER_EventHandleIRQ  fsl_sctimer.o
-    0x00022554   0x0000006c   Code   RO         6222    i.SCTIMER_GetDefaultConfig  fsl_sctimer.o
-    0x000225c0   0x00000090   Code   RO         6223    i.SCTIMER_GetInstance  fsl_sctimer.o
-    0x00022650   0x00000138   Code   RO         6225    i.SCTIMER_Init      fsl_sctimer.o
-    0x00022788   0x0000001e   Code   RO         6229    i.SCTIMER_SetupOutputClearAction  fsl_sctimer.o
-    0x000227a6   0x0000001a   Code   RO         6230    i.SCTIMER_SetupOutputSetAction  fsl_sctimer.o
-    0x000227c0   0x00000214   Code   RO         6232    i.SCTIMER_SetupPwm  fsl_sctimer.o
-    0x000229d4   0x0000001e   Code   RO         7350    i.SCTIMER_StartTimer  led_user.o
-    0x000229f2   0x00000026   Code   RO         3488    i.SHA256_Hash       seclib.o
-    0x00022a18   0x00000094   Code   RO         3489    i.SHA256_HashFinish  seclib.o
-    0x00022aac   0x000000a4   Code   RO         3490    i.SHA256_HashUpdate  seclib.o
-    0x00022b50   0x00000016   Code   RO         3491    i.SHA256_Init       seclib.o
-    0x00022b66   0x00000016   Code   RO         3492    i.SHA256_hash_n     seclib.o
-    0x00022b7c   0x00000038   Code   RO           21    i.SYSCON_SetLoadCap  board.o
-    0x00022bb4   0x00000254   Code   RO         6942    i.SYS_Init          userapp.o
-    0x00022e08   0x00000002   Code   RO         3493    i.SecLib_Init       seclib.o
-    0x00022e0a   0x00000024   Code   RO         3494    i.SecLib_LeftShiftOneBit  seclib.o
-    0x00022e2e   0x00000028   Code   RO         3495    i.SecLib_Padding    seclib.o
-    0x00022e56   0x00000018   Code   RO         3496    i.SecLib_Xor128     seclib.o
-    0x00022e6e   0x0000001a   Code   RO         3497    i.SecLib_XorN       seclib.o
-    0x00022e88   0x000000a4   Code   RO         7113    i.SendByte_DPS310   iic_user.o
-    0x00022f2c   0x000000e4   Code   RO         2271    i.SerialManagerTask  serialmanager.o
-    0x00023010   0x0000006c   Code   RO         2272    i.SerialManager_Init  serialmanager.o
-    0x0002307c   0x00000070   Code   RO         2273    i.SerialManager_RxNotify  serialmanager.o
-    0x000230ec   0x00000098   Code   RO         2274    i.SerialManager_TxNotify  serialmanager.o
-    0x00023184   0x000000cc   Code   RO         2275    i.Serial_AsyncWrite  serialmanager.o
-    0x00023250   0x000000d8   Code   RO         2279    i.Serial_InitInterface  serialmanager.o
-    0x00023328   0x00000048   Code   RO         2281    i.Serial_Print      serialmanager.o
-    0x00023370   0x0000004a   Code   RO         2282    i.Serial_PrintDec   serialmanager.o
-    0x000233ba   0x000000da   Code   RO         2283    i.Serial_PrintHex   serialmanager.o
-    0x00023494   0x00000048   Code   RO         2286    i.Serial_SetBaudRate  serialmanager.o
-    0x000234dc   0x0000005c   Code   RO         2288    i.Serial_SyncWrite  serialmanager.o
-    0x00023538   0x000000b0   Code   RO         2289    i.Serial_TxQueueMaintenance  serialmanager.o
-    0x000235e8   0x00000030   Code   RO         2290    i.Serial_UartRxCb   serialmanager.o
-    0x00023618   0x0000000c   Code   RO         2291    i.Serial_UartTxCb   serialmanager.o
-    0x00023624   0x0000009c   Code   RO         2292    i.Serial_WriteInternal  serialmanager.o
-    0x000236c0   0x00000014   Code   RO          940    i.SmokeEnergy_DataToAir  private_profile_server.o
-    0x000236d4   0x00000074   Code   RO         4583    i.SmokeEnergy_SendData  private_profile_service.o
-    0x00023748   0x000000cc   Code   RO          941    i.SmokeEnergy_TxCallback  private_profile_server.o
-    0x00023814   0x00000014   Code   RO          942    i.SmokePower_DataToAir  private_profile_server.o
-    0x00023828   0x00000074   Code   RO         4584    i.SmokePower_SendData  private_profile_service.o
-    0x0002389c   0x000000cc   Code   RO          943    i.SmokePower_TxCallback  private_profile_server.o
-    0x00023968   0x00000018   Code   RO         3176    i.StackTimer_ClearIntFlag  tmr_adapter.o
-    0x00023980   0x00000014   Code   RO         3177    i.StackTimer_Disable  tmr_adapter.o
-    0x00023994   0x00000014   Code   RO         3178    i.StackTimer_Enable  tmr_adapter.o
-    0x000239a8   0x00000034   Code   RO         3179    i.StackTimer_GetCounterValue  tmr_adapter.o
-    0x000239dc   0x00000014   Code   RO         3180    i.StackTimer_GetInputFrequency  tmr_adapter.o
-    0x000239f0   0x00000024   Code   RO         2932    i.StackTimer_ISR    timersmanager.o
-    0x00023a14   0x000000a4   Code   RO         3181    i.StackTimer_Init   tmr_adapter.o
-    0x00023ab8   0x00000014   Code   RO         3182    i.StackTimer_SetOffsetTicks  tmr_adapter.o
-    0x00023acc   0x00000050   Code   RO         7114    i.Start_I2c_DPS310  iic_user.o
-    0x00023b1c   0x0000003c   Code   RO         7115    i.Stop_I2c_DPS310   iic_user.o
-    0x00023b58   0x00000080   Code   RO          600    i.SystemCoreClockUpdate  system_qn908xc.o
-    0x00023bd8   0x00000114   Code   RO          601    i.SystemInit        system_qn908xc.o
-    0x00023cec   0x00000024   Code   RO         7503    i.TEST_LED_Pin_Init  timer_user.o
-    0x00023d10   0x0000002c   Code   RO         2933    i.TMR_AllocateTimer  timersmanager.o
-    0x00023d3c   0x0000005c   Code   RO         2935    i.TMR_EnableTimer   timersmanager.o
-    0x00023d98   0x0000001c   Code   RO         2936    i.TMR_FreeTimer     timersmanager.o
-    0x00023db4   0x00000010   Code   RO         2941    i.TMR_GetTimerStatus  timersmanager.o
-    0x00023dc4   0x00000010   Code   RO         2942    i.TMR_GetTimerType  timersmanager.o
-    0x00023dd4   0x00000070   Code   RO         2944    i.TMR_Init          timersmanager.o
-    0x00023e44   0x00000016   Code   RO         2945    i.TMR_IsTimerActive  timersmanager.o
-    0x00023e5a   0x00000016   Code   RO         2946    i.TMR_IsTimerReady  timersmanager.o
-    0x00023e70   0x00000034   Code   RO         2949    i.TMR_NotifyClkChanged  timersmanager.o
-    0x00023ea4   0x00000014   Code   RO         2953    i.TMR_SetTimerStatus  timersmanager.o
-    0x00023eb8   0x00000014   Code   RO         2954    i.TMR_SetTimerType  timersmanager.o
-    0x00023ecc   0x00000026   Code   RO         2958    i.TMR_StartLowPowerTimer  timersmanager.o
-    0x00023ef2   0x0000001a   Code   RO         2961    i.TMR_StartSingleShotTimer  timersmanager.o
-    0x00023f0c   0x00000084   Code   RO         2962    i.TMR_StartTimer    timersmanager.o
-    0x00023f90   0x00000090   Code   RO         2963    i.TMR_StopTimer     timersmanager.o
-    0x00024020   0x00000014   Code   RO         2964    i.TMR_SyncLpmTimers  timersmanager.o
-    0x00024034   0x00000224   Code   RO         2965    i.TMR_Task          timersmanager.o
-    0x00024258   0x00000068   Code   RO         7504    i.Time1_Init        timer_user.o
-    0x000242c0   0x00000068   Code   RO         7505    i.Time2_Init        timer_user.o
-    0x00024328   0x00000064   Code   RO         7506    i.Time3_Init        timer_user.o
-    0x0002438c   0x00000020   Code   RO         2967    i.TmrTicksFromMilliseconds  timersmanager.o
-    0x000243ac   0x00000018   Code   RO          944    i.TxSerial_Printf   private_profile_server.o
-    0x000243c4   0x0000000a   Code   RO         2460    i.USART_ClearStatusFlags  uart_adapter.o
-    0x000243ce   0x0000000a   Code   RO         2462    i.USART_EnableInterrupts  uart_adapter.o
-    0x000243d8   0x0000007c   Code   RO         5040    i.USART_GetDefaultConfig  fsl_usart.o
-    0x00024454   0x00000008   Code   RO         2464    i.USART_GetStatusFlags  uart_adapter.o
-    0x0002445c   0x000000dc   Code   RO         2465    i.USART_ISR         uart_adapter.o
-    0x00024538   0x0000015c   Code   RO         5042    i.USART_Init        fsl_usart.o
-    0x00024694   0x000000c4   Code   RO         2466    i.USART_Initialize  uart_adapter.o
-    0x00024758   0x00000024   Code   RO         2467    i.USART_InstallRxCalback  uart_adapter.o
-    0x0002477c   0x00000024   Code   RO         2468    i.USART_InstallTxCalback  uart_adapter.o
-    0x000247a0   0x00000034   Code   RO         2469    i.USART_IsTxActive  uart_adapter.o
-    0x000247d4   0x00000088   Code   RO         2472    i.USART_SendData    uart_adapter.o
-    0x0002485c   0x00000114   Code   RO         5044    i.USART_SetBaudRate  fsl_usart.o
-    0x00024970   0x00000034   Code   RO         2473    i.USART_SetBaudrate  uart_adapter.o
-    0x000249a4   0x00000006   Code   RO         2474    i.USART_WriteByte   uart_adapter.o
-    0x000249aa   0x00000002   PAD
-    0x000249ac   0x00000074   Code   RO         4585    i.USER_DPS310_SendData  private_profile_service.o
-    0x00024a20   0x00000050   Code   RO         7659    i.USER_GetBatteryLevel  batcharge_user.o
-    0x00024a70   0x00000014   Code   RO          945    i.USER_SendDateToAir  private_profile_server.o
-    0x00024a84   0x00000014   Code   RO          946    i.USER_Serial_Printf  private_profile_server.o
-    0x00024a98   0x00000014   Code   RO          947    i.USER_serial_tx    private_profile_server.o
-    0x00024aac   0x00000100   Code   RO         7593    i.User_KeyScan      key_user.o
-    0x00024bac   0x0000021c   Code   RO         7892    i.WakeUpFormSleepMode  workmode.o
-    0x00024dc8   0x00000050   Code   RO         4586    i.WorkMode_SendData  private_profile_service.o
-    0x00024e18   0x00000036   Code   RO         4587    i.WorkMode_SendNotifications  private_profile_service.o
-    0x00024e4e   0x00000002   PAD
-    0x00024e50   0x00000014   Code   RO          948    i.WorkMode_SendToAir  private_profile_server.o
-    0x00024e64   0x00000090   Code   RO          949    i.WorkMode_TxCallback  private_profile_server.o
-    0x00024ef4   0x00000028   Code   RO         9668    i.__0sprintf        mc_w.l(printfa.o)
-    0x00024f1c   0x00000030   Code   RO         9742    i.__ARM_fpclassify  m_wm.l(fpclassify.o)
-    0x00024f4c   0x00000044   Code   RO         4786    i.__aeabi_assert    fsl_common.o
-    0x00024f90   0x000000d0   Code   RO         9389    i.__hardfp_modf     m_wm.l(modf.o)
-    0x00025060   0x00000c50   Code   RO         9395    i.__hardfp_pow      m_wm.l(pow.o)
-    0x00025cb0   0x000000f8   Code   RO         9744    i.__kernel_poly     m_wm.l(poly.o)
-    0x00025da8   0x00000030   Code   RO         9722    i.__mathlib_dbl_divzero  m_wm.l(dunder.o)
-    0x00025dd8   0x00000014   Code   RO         9724    i.__mathlib_dbl_infnan2  m_wm.l(dunder.o)
-    0x00025dec   0x00000004   PAD
-    0x00025df0   0x00000020   Code   RO         9725    i.__mathlib_dbl_invalid  m_wm.l(dunder.o)
-    0x00025e10   0x00000020   Code   RO         9726    i.__mathlib_dbl_overflow  m_wm.l(dunder.o)
-    0x00025e30   0x00000020   Code   RO         9728    i.__mathlib_dbl_underflow  m_wm.l(dunder.o)
-    0x00025e50   0x0000000e   Code   RO         9803    i.__scatterload_copy  mc_w.l(handlers.o)
-    0x00025e5e   0x00000002   Code   RO         9804    i.__scatterload_null  mc_w.l(handlers.o)
-    0x00025e60   0x0000000e   Code   RO         9805    i.__scatterload_zeroinit  mc_w.l(handlers.o)
-    0x00025e6e   0x00000002   PAD
-    0x00025e70   0x0000000c   Code   RO         9783    i.__set_errno       mc_w.l(errno.o)
-    0x00025e7c   0x00000164   Code   RO         9673    i._fp_digits        mc_w.l(printfa.o)
-    0x00025fe0   0x000006dc   Code   RO         9674    i._printf_core      mc_w.l(printfa.o)
-    0x000266bc   0x00000024   Code   RO         9675    i._printf_post_padding  mc_w.l(printfa.o)
-    0x000266e0   0x0000002e   Code   RO         9676    i._printf_pre_padding  mc_w.l(printfa.o)
-    0x0002670e   0x0000000a   Code   RO         9678    i._sputc            mc_w.l(printfa.o)
-    0x00026718   0x00000040   Code   RO          672    i.ble_task          fsl_os_abstraction_bm.o
-    0x00026758   0x00000014   Code   RO          673    i.ble_task_init     fsl_os_abstraction_bm.o
-    0x0002676c   0x000001cc   Code   RO         7507    i.ctimer_1_match0_callback  timer_user.o
-    0x00026938   0x00000034   Code   RO         7508    i.ctimer_2_match0_callback  timer_user.o
-    0x0002696c   0x00000018   Code   RO         7509    i.ctimer_3_match0_callback  timer_user.o
-    0x00026984   0x0000002c   Code   RO         7893    i.delay_bybletask   workmode.o
-    0x000269b0   0x0000000a   Code   RO         7116    i.delay_us          iic_user.o
-    0x000269ba   0x000000aa   Code   RO         7040    i.dps310_config     dps310.o
-    0x00026a64   0x000002ac   Code   RO         7041    i.dps310_get_processed_data  dps310.o
-    0x00026d10   0x0000004c   Code   RO         7042    i.dps310_get_scaling_coef  dps310.o
-    0x00026d5c   0x000000be   Code   RO         7043    i.dps310_init       dps310.o
-    0x00026e1a   0x00000196   Code   RO         7044    i.dps310_read_calib_coeffs  dps310.o
-    0x00026fb0   0x0000002c   Code   RO         7045    i.dps310_resume     dps310.o
-    0x00026fdc   0x0000002c   Code   RO         7046    i.dps310_standby    dps310.o
-    0x00027008   0x00000018   Code   RO         9738    i.fabs              m_wm.l(fabs.o)
-    0x00027020   0x0000006c   Code   RO           22    i.hardware_init     board.o
-    0x0002708c   0x000000b0   Code   RO         7117    i.i2c_read_block    iic_user.o
-    0x0002713c   0x00000080   Code   RO         7118    i.i2c_read_byte     iic_user.o
-    0x000271bc   0x0000006c   Code   RO         7119    i.i2c_write_byte    iic_user.o
-    0x00027228   0x00000028   Code   RO          674    i.main              fsl_os_abstraction_bm.o
-    0x00027250   0x000000a4   Code   RO         4112    i.main_task         applmain.o
-    0x000272f4   0x00000024   Code   RO          675    i.osObjectAlloc     fsl_os_abstraction_bm.o
-    0x00027318   0x0000002c   Code   RO          677    i.osObjectIsAllocated  fsl_os_abstraction_bm.o
-    0x00027344   0x00000002   Code   RO         1995    i.panic             panic.o
-    0x00027346   0x0000006e   Code   RO         9749    i.sqrt              m_wm.l(sqrt_full.o)
-    0x000273b4   0x0000001e   Code   RO         7895    i.switch_to_OSC32M  workmode.o
-    0x000273d2   0x00000032   Code   RO         7896    i.switch_to_XTAL    workmode.o
-    0x00027404   0x00000044   Code   RO          678    i.task_init         fsl_os_abstraction_bm.o
-    0x00027448   0x0000000a   Code   RO         6943    i.userBOARD_InitPins  userapp.o
-    0x00027452   0x00000002   PAD
-    0x00027454   0x000000c0   Code   RO         6944    i.user_main         userapp.o
-    0x00027514   0x00000024   Code   RO          950    i.user_serial_printf  private_profile_server.o
-    0x00027538   0x00000006   Data   RO           23    .constdata          board.o
-    0x0002753e   0x00000002   PAD
-    0x00027540   0x00000028   Data   RO          680    .constdata          fsl_os_abstraction_bm.o
-    0x00027568   0x00000038   Data   RO         1250    .constdata          app_config.o
-    0x000275a0   0x00000018   Data   RO         1407    .constdata          gpio_adapter.o
-    0x000275b8   0x0000000a   Data   RO         3995    .constdata          ble_controller_task.o
-    0x000275c2   0x00000002   PAD
-    0x000275c4   0x00000090   Data   RO         4301    .constdata          controller_config.o
-    0x00027654   0x00000010   Data   RO         4471    .constdata          battery_service.o
-    0x00027664   0x00000090   Data   RO         4524    .constdata          device_info_service.o
-    0x000276f4   0x0000001c   Data   RO         5270    .constdata          fsl_ctimer.o
-    0x00027710   0x00000018   Data   RO         5607    .constdata          fsl_flexcomm.o
-    0x00027728   0x000000e0   Data   RO         5951    .constdata          fsl_adc.o
-    0x00027808   0x00000006   Data   RO         6235    .constdata          fsl_sctimer.o
-    0x0002780e   0x00000002   PAD
-    0x00027810   0x0000000e   Data   RO         7120    .constdata          iic_user.o
+    0x00022140   0x000001b0   Code   RO         7890    i.ReadyForSleepMode  workmode.o
+    0x000222f0   0x00000034   Code   RO         7891    i.RestartTiming     workmode.o
+    0x00022324   0x00000014   Code   RO         6217    i.SCT0_IRQHandler   fsl_sctimer.o
+    0x00022338   0x000001d8   Code   RO         6218    i.SCTIMER_CreateAndScheduleEvent  fsl_sctimer.o
+    0x00022510   0x00000050   Code   RO         6220    i.SCTIMER_EventHandleIRQ  fsl_sctimer.o
+    0x00022560   0x0000006c   Code   RO         6222    i.SCTIMER_GetDefaultConfig  fsl_sctimer.o
+    0x000225cc   0x00000090   Code   RO         6223    i.SCTIMER_GetInstance  fsl_sctimer.o
+    0x0002265c   0x00000138   Code   RO         6225    i.SCTIMER_Init      fsl_sctimer.o
+    0x00022794   0x0000001e   Code   RO         6229    i.SCTIMER_SetupOutputClearAction  fsl_sctimer.o
+    0x000227b2   0x0000001a   Code   RO         6230    i.SCTIMER_SetupOutputSetAction  fsl_sctimer.o
+    0x000227cc   0x00000214   Code   RO         6232    i.SCTIMER_SetupPwm  fsl_sctimer.o
+    0x000229e0   0x0000001e   Code   RO         7350    i.SCTIMER_StartTimer  led_user.o
+    0x000229fe   0x00000026   Code   RO         3488    i.SHA256_Hash       seclib.o
+    0x00022a24   0x00000094   Code   RO         3489    i.SHA256_HashFinish  seclib.o
+    0x00022ab8   0x000000a4   Code   RO         3490    i.SHA256_HashUpdate  seclib.o
+    0x00022b5c   0x00000016   Code   RO         3491    i.SHA256_Init       seclib.o
+    0x00022b72   0x00000016   Code   RO         3492    i.SHA256_hash_n     seclib.o
+    0x00022b88   0x00000038   Code   RO           21    i.SYSCON_SetLoadCap  board.o
+    0x00022bc0   0x00000254   Code   RO         6942    i.SYS_Init          userapp.o
+    0x00022e14   0x00000002   Code   RO         3493    i.SecLib_Init       seclib.o
+    0x00022e16   0x00000024   Code   RO         3494    i.SecLib_LeftShiftOneBit  seclib.o
+    0x00022e3a   0x00000028   Code   RO         3495    i.SecLib_Padding    seclib.o
+    0x00022e62   0x00000018   Code   RO         3496    i.SecLib_Xor128     seclib.o
+    0x00022e7a   0x0000001a   Code   RO         3497    i.SecLib_XorN       seclib.o
+    0x00022e94   0x000000a4   Code   RO         7113    i.SendByte_DPS310   iic_user.o
+    0x00022f38   0x000000e4   Code   RO         2271    i.SerialManagerTask  serialmanager.o
+    0x0002301c   0x0000006c   Code   RO         2272    i.SerialManager_Init  serialmanager.o
+    0x00023088   0x00000070   Code   RO         2273    i.SerialManager_RxNotify  serialmanager.o
+    0x000230f8   0x00000098   Code   RO         2274    i.SerialManager_TxNotify  serialmanager.o
+    0x00023190   0x000000cc   Code   RO         2275    i.Serial_AsyncWrite  serialmanager.o
+    0x0002325c   0x000000d8   Code   RO         2279    i.Serial_InitInterface  serialmanager.o
+    0x00023334   0x00000048   Code   RO         2281    i.Serial_Print      serialmanager.o
+    0x0002337c   0x0000004a   Code   RO         2282    i.Serial_PrintDec   serialmanager.o
+    0x000233c6   0x000000da   Code   RO         2283    i.Serial_PrintHex   serialmanager.o
+    0x000234a0   0x00000048   Code   RO         2286    i.Serial_SetBaudRate  serialmanager.o
+    0x000234e8   0x0000005c   Code   RO         2288    i.Serial_SyncWrite  serialmanager.o
+    0x00023544   0x000000b0   Code   RO         2289    i.Serial_TxQueueMaintenance  serialmanager.o
+    0x000235f4   0x00000030   Code   RO         2290    i.Serial_UartRxCb   serialmanager.o
+    0x00023624   0x0000000c   Code   RO         2291    i.Serial_UartTxCb   serialmanager.o
+    0x00023630   0x0000009c   Code   RO         2292    i.Serial_WriteInternal  serialmanager.o
+    0x000236cc   0x00000014   Code   RO          940    i.SmokeEnergy_DataToAir  private_profile_server.o
+    0x000236e0   0x00000074   Code   RO         4583    i.SmokeEnergy_SendData  private_profile_service.o
+    0x00023754   0x000000cc   Code   RO          941    i.SmokeEnergy_TxCallback  private_profile_server.o
+    0x00023820   0x00000014   Code   RO          942    i.SmokePower_DataToAir  private_profile_server.o
+    0x00023834   0x00000074   Code   RO         4584    i.SmokePower_SendData  private_profile_service.o
+    0x000238a8   0x000000cc   Code   RO          943    i.SmokePower_TxCallback  private_profile_server.o
+    0x00023974   0x00000018   Code   RO         3176    i.StackTimer_ClearIntFlag  tmr_adapter.o
+    0x0002398c   0x00000014   Code   RO         3177    i.StackTimer_Disable  tmr_adapter.o
+    0x000239a0   0x00000014   Code   RO         3178    i.StackTimer_Enable  tmr_adapter.o
+    0x000239b4   0x00000034   Code   RO         3179    i.StackTimer_GetCounterValue  tmr_adapter.o
+    0x000239e8   0x00000014   Code   RO         3180    i.StackTimer_GetInputFrequency  tmr_adapter.o
+    0x000239fc   0x00000024   Code   RO         2932    i.StackTimer_ISR    timersmanager.o
+    0x00023a20   0x000000a4   Code   RO         3181    i.StackTimer_Init   tmr_adapter.o
+    0x00023ac4   0x00000014   Code   RO         3182    i.StackTimer_SetOffsetTicks  tmr_adapter.o
+    0x00023ad8   0x00000050   Code   RO         7114    i.Start_I2c_DPS310  iic_user.o
+    0x00023b28   0x0000003c   Code   RO         7115    i.Stop_I2c_DPS310   iic_user.o
+    0x00023b64   0x00000080   Code   RO          600    i.SystemCoreClockUpdate  system_qn908xc.o
+    0x00023be4   0x00000114   Code   RO          601    i.SystemInit        system_qn908xc.o
+    0x00023cf8   0x00000024   Code   RO         7503    i.TEST_LED_Pin_Init  timer_user.o
+    0x00023d1c   0x0000002c   Code   RO         2933    i.TMR_AllocateTimer  timersmanager.o
+    0x00023d48   0x0000005c   Code   RO         2935    i.TMR_EnableTimer   timersmanager.o
+    0x00023da4   0x0000001c   Code   RO         2936    i.TMR_FreeTimer     timersmanager.o
+    0x00023dc0   0x00000010   Code   RO         2941    i.TMR_GetTimerStatus  timersmanager.o
+    0x00023dd0   0x00000010   Code   RO         2942    i.TMR_GetTimerType  timersmanager.o
+    0x00023de0   0x00000070   Code   RO         2944    i.TMR_Init          timersmanager.o
+    0x00023e50   0x00000016   Code   RO         2945    i.TMR_IsTimerActive  timersmanager.o
+    0x00023e66   0x00000016   Code   RO         2946    i.TMR_IsTimerReady  timersmanager.o
+    0x00023e7c   0x00000034   Code   RO         2949    i.TMR_NotifyClkChanged  timersmanager.o
+    0x00023eb0   0x00000014   Code   RO         2953    i.TMR_SetTimerStatus  timersmanager.o
+    0x00023ec4   0x00000014   Code   RO         2954    i.TMR_SetTimerType  timersmanager.o
+    0x00023ed8   0x00000026   Code   RO         2958    i.TMR_StartLowPowerTimer  timersmanager.o
+    0x00023efe   0x0000001a   Code   RO         2961    i.TMR_StartSingleShotTimer  timersmanager.o
+    0x00023f18   0x00000084   Code   RO         2962    i.TMR_StartTimer    timersmanager.o
+    0x00023f9c   0x00000090   Code   RO         2963    i.TMR_StopTimer     timersmanager.o
+    0x0002402c   0x00000014   Code   RO         2964    i.TMR_SyncLpmTimers  timersmanager.o
+    0x00024040   0x00000224   Code   RO         2965    i.TMR_Task          timersmanager.o
+    0x00024264   0x00000068   Code   RO         7504    i.Time1_Init        timer_user.o
+    0x000242cc   0x00000068   Code   RO         7505    i.Time2_Init        timer_user.o
+    0x00024334   0x00000064   Code   RO         7506    i.Time3_Init        timer_user.o
+    0x00024398   0x00000020   Code   RO         2967    i.TmrTicksFromMilliseconds  timersmanager.o
+    0x000243b8   0x00000018   Code   RO          944    i.TxSerial_Printf   private_profile_server.o
+    0x000243d0   0x0000000a   Code   RO         2460    i.USART_ClearStatusFlags  uart_adapter.o
+    0x000243da   0x0000000a   Code   RO         2462    i.USART_EnableInterrupts  uart_adapter.o
+    0x000243e4   0x0000007c   Code   RO         5040    i.USART_GetDefaultConfig  fsl_usart.o
+    0x00024460   0x00000008   Code   RO         2464    i.USART_GetStatusFlags  uart_adapter.o
+    0x00024468   0x000000dc   Code   RO         2465    i.USART_ISR         uart_adapter.o
+    0x00024544   0x0000015c   Code   RO         5042    i.USART_Init        fsl_usart.o
+    0x000246a0   0x000000c4   Code   RO         2466    i.USART_Initialize  uart_adapter.o
+    0x00024764   0x00000024   Code   RO         2467    i.USART_InstallRxCalback  uart_adapter.o
+    0x00024788   0x00000024   Code   RO         2468    i.USART_InstallTxCalback  uart_adapter.o
+    0x000247ac   0x00000034   Code   RO         2469    i.USART_IsTxActive  uart_adapter.o
+    0x000247e0   0x00000088   Code   RO         2472    i.USART_SendData    uart_adapter.o
+    0x00024868   0x00000114   Code   RO         5044    i.USART_SetBaudRate  fsl_usart.o
+    0x0002497c   0x00000034   Code   RO         2473    i.USART_SetBaudrate  uart_adapter.o
+    0x000249b0   0x00000006   Code   RO         2474    i.USART_WriteByte   uart_adapter.o
+    0x000249b6   0x00000002   PAD
+    0x000249b8   0x00000074   Code   RO         4585    i.USER_DPS310_SendData  private_profile_service.o
+    0x00024a2c   0x00000050   Code   RO         7659    i.USER_GetBatteryLevel  batcharge_user.o
+    0x00024a7c   0x00000014   Code   RO          945    i.USER_SendDateToAir  private_profile_server.o
+    0x00024a90   0x00000014   Code   RO          946    i.USER_Serial_Printf  private_profile_server.o
+    0x00024aa4   0x00000014   Code   RO          947    i.USER_serial_tx    private_profile_server.o
+    0x00024ab8   0x00000100   Code   RO         7593    i.User_KeyScan      key_user.o
+    0x00024bb8   0x0000021c   Code   RO         7892    i.WakeUpFormSleepMode  workmode.o
+    0x00024dd4   0x00000050   Code   RO         4586    i.WorkMode_SendData  private_profile_service.o
+    0x00024e24   0x00000036   Code   RO         4587    i.WorkMode_SendNotifications  private_profile_service.o
+    0x00024e5a   0x00000002   PAD
+    0x00024e5c   0x00000014   Code   RO          948    i.WorkMode_SendToAir  private_profile_server.o
+    0x00024e70   0x00000090   Code   RO          949    i.WorkMode_TxCallback  private_profile_server.o
+    0x00024f00   0x00000028   Code   RO         9668    i.__0sprintf        mc_w.l(printfa.o)
+    0x00024f28   0x00000030   Code   RO         9742    i.__ARM_fpclassify  m_wm.l(fpclassify.o)
+    0x00024f58   0x00000044   Code   RO         4786    i.__aeabi_assert    fsl_common.o
+    0x00024f9c   0x000000d0   Code   RO         9389    i.__hardfp_modf     m_wm.l(modf.o)
+    0x0002506c   0x00000004   PAD
+    0x00025070   0x00000c50   Code   RO         9395    i.__hardfp_pow      m_wm.l(pow.o)
+    0x00025cc0   0x000000f8   Code   RO         9744    i.__kernel_poly     m_wm.l(poly.o)
+    0x00025db8   0x00000030   Code   RO         9722    i.__mathlib_dbl_divzero  m_wm.l(dunder.o)
+    0x00025de8   0x00000014   Code   RO         9724    i.__mathlib_dbl_infnan2  m_wm.l(dunder.o)
+    0x00025dfc   0x00000004   PAD
+    0x00025e00   0x00000020   Code   RO         9725    i.__mathlib_dbl_invalid  m_wm.l(dunder.o)
+    0x00025e20   0x00000020   Code   RO         9726    i.__mathlib_dbl_overflow  m_wm.l(dunder.o)
+    0x00025e40   0x00000020   Code   RO         9728    i.__mathlib_dbl_underflow  m_wm.l(dunder.o)
+    0x00025e60   0x0000000e   Code   RO         9803    i.__scatterload_copy  mc_w.l(handlers.o)
+    0x00025e6e   0x00000002   Code   RO         9804    i.__scatterload_null  mc_w.l(handlers.o)
+    0x00025e70   0x0000000e   Code   RO         9805    i.__scatterload_zeroinit  mc_w.l(handlers.o)
+    0x00025e7e   0x00000002   PAD
+    0x00025e80   0x0000000c   Code   RO         9783    i.__set_errno       mc_w.l(errno.o)
+    0x00025e8c   0x00000164   Code   RO         9673    i._fp_digits        mc_w.l(printfa.o)
+    0x00025ff0   0x000006dc   Code   RO         9674    i._printf_core      mc_w.l(printfa.o)
+    0x000266cc   0x00000024   Code   RO         9675    i._printf_post_padding  mc_w.l(printfa.o)
+    0x000266f0   0x0000002e   Code   RO         9676    i._printf_pre_padding  mc_w.l(printfa.o)
+    0x0002671e   0x0000000a   Code   RO         9678    i._sputc            mc_w.l(printfa.o)
+    0x00026728   0x00000040   Code   RO          672    i.ble_task          fsl_os_abstraction_bm.o
+    0x00026768   0x00000014   Code   RO          673    i.ble_task_init     fsl_os_abstraction_bm.o
+    0x0002677c   0x000001cc   Code   RO         7507    i.ctimer_1_match0_callback  timer_user.o
+    0x00026948   0x00000034   Code   RO         7508    i.ctimer_2_match0_callback  timer_user.o
+    0x0002697c   0x00000018   Code   RO         7509    i.ctimer_3_match0_callback  timer_user.o
+    0x00026994   0x0000002c   Code   RO         7893    i.delay_bybletask   workmode.o
+    0x000269c0   0x0000000a   Code   RO         7116    i.delay_us          iic_user.o
+    0x000269ca   0x000000aa   Code   RO         7040    i.dps310_config     dps310.o
+    0x00026a74   0x000002ac   Code   RO         7041    i.dps310_get_processed_data  dps310.o
+    0x00026d20   0x0000004c   Code   RO         7042    i.dps310_get_scaling_coef  dps310.o
+    0x00026d6c   0x000000be   Code   RO         7043    i.dps310_init       dps310.o
+    0x00026e2a   0x00000196   Code   RO         7044    i.dps310_read_calib_coeffs  dps310.o
+    0x00026fc0   0x0000002c   Code   RO         7045    i.dps310_resume     dps310.o
+    0x00026fec   0x0000002c   Code   RO         7046    i.dps310_standby    dps310.o
+    0x00027018   0x00000018   Code   RO         9738    i.fabs              m_wm.l(fabs.o)
+    0x00027030   0x0000006c   Code   RO           22    i.hardware_init     board.o
+    0x0002709c   0x000000b0   Code   RO         7117    i.i2c_read_block    iic_user.o
+    0x0002714c   0x00000080   Code   RO         7118    i.i2c_read_byte     iic_user.o
+    0x000271cc   0x0000006c   Code   RO         7119    i.i2c_write_byte    iic_user.o
+    0x00027238   0x00000028   Code   RO          674    i.main              fsl_os_abstraction_bm.o
+    0x00027260   0x000000a4   Code   RO         4112    i.main_task         applmain.o
+    0x00027304   0x00000024   Code   RO          675    i.osObjectAlloc     fsl_os_abstraction_bm.o
+    0x00027328   0x0000002c   Code   RO          677    i.osObjectIsAllocated  fsl_os_abstraction_bm.o
+    0x00027354   0x00000002   Code   RO         1995    i.panic             panic.o
+    0x00027356   0x0000006e   Code   RO         9749    i.sqrt              m_wm.l(sqrt_full.o)
+    0x000273c4   0x0000001e   Code   RO         7895    i.switch_to_OSC32M  workmode.o
+    0x000273e2   0x00000032   Code   RO         7896    i.switch_to_XTAL    workmode.o
+    0x00027414   0x00000044   Code   RO          678    i.task_init         fsl_os_abstraction_bm.o
+    0x00027458   0x0000000a   Code   RO         6943    i.userBOARD_InitPins  userapp.o
+    0x00027462   0x00000002   PAD
+    0x00027464   0x000000c0   Code   RO         6944    i.user_main         userapp.o
+    0x00027524   0x00000024   Code   RO          950    i.user_serial_printf  private_profile_server.o
+    0x00027548   0x00000006   Data   RO           23    .constdata          board.o
+    0x0002754e   0x00000002   PAD
+    0x00027550   0x00000028   Data   RO          680    .constdata          fsl_os_abstraction_bm.o
+    0x00027578   0x00000038   Data   RO         1250    .constdata          app_config.o
+    0x000275b0   0x00000018   Data   RO         1407    .constdata          gpio_adapter.o
+    0x000275c8   0x0000000a   Data   RO         3995    .constdata          ble_controller_task.o
+    0x000275d2   0x00000002   PAD
+    0x000275d4   0x00000090   Data   RO         4301    .constdata          controller_config.o
+    0x00027664   0x00000010   Data   RO         4471    .constdata          battery_service.o
+    0x00027674   0x00000090   Data   RO         4524    .constdata          device_info_service.o
+    0x00027704   0x0000001c   Data   RO         5270    .constdata          fsl_ctimer.o
+    0x00027720   0x00000018   Data   RO         5607    .constdata          fsl_flexcomm.o
+    0x00027738   0x000000e0   Data   RO         5951    .constdata          fsl_adc.o
+    0x00027818   0x00000006   Data   RO         6235    .constdata          fsl_sctimer.o
     0x0002781e   0x00000002   PAD
-    0x00027820   0x00000052   Data   RO         7351    .constdata          led_user.o
-    0x00027872   0x00000002   PAD
-    0x00027874   0x00000002   Data   RO         7511    .constdata          timer_user.o
-    0x00027876   0x00000002   PAD
-    0x00027878   0x00000012   Data   RO         7660    .constdata          batcharge_user.o
-    0x0002788a   0x00000002   PAD
-    0x0002788c   0x00000006   Data   RO         7784    .constdata          load_user.o
-    0x00027892   0x00000006   PAD
-    0x00027898   0x00000088   Data   RO         9398    .constdata          m_wm.l(pow.o)
-    0x00027920   0x00000008   Data   RO         9746    .constdata          m_wm.l(qnan.o)
-    0x00027928   0x0000000a   Data   RO          681    .conststring        fsl_os_abstraction_bm.o
-    0x00027932   0x00000002   PAD
-    0x00027934   0x00000009   Data   RO         1251    .conststring        app_config.o
-    0x0002793d   0x00000003   PAD
-    0x00027940   0x00000012   Data   RO         2294    .conststring        serialmanager.o
-    0x00027952   0x00000002   PAD
-    0x00027954   0x00000009   Data   RO         2969    .conststring        timersmanager.o
-    0x0002795d   0x00000003   PAD
-    0x00027960   0x0000000a   Data   RO         3860    .conststring        ble_host_tasks.o
-    0x0002796a   0x00000002   PAD
-    0x0002796c   0x0000000f   Data   RO         3996    .conststring        ble_controller_task.o
-    0x0002797b   0x00000001   PAD
-    0x0002797c   0x00000004   Data   RO         8587    .rodata             lib_crypto_m4.a(ecdh.o)
-    0x00027980   0x00000004   Data   RO         9128    .rodata             lib_ble_QN908XC_controller.a(h4tl.o)
-    0x00027984   0x00000080   Data   RO         9151    .rodata             lib_crypto_m4.a(ec_p_256.o)
-    0x00027a04   0x00000014   Data   RO         9319    .rodata             lib_ble_5-0_host_peripheral_cm4.a(sm_crypto.o)
-    0x00027a18   0x00000010   Data   RO         9245    .rodata.BASE_UUID   lib_ble_5-0_host_peripheral_cm4.a(gatt_db_att.o)
-    0x00027a28   0x00000019   Data   RO         9203    .rodata.CSWTCH.14   lib_ble_5-0_host_peripheral_cm4.a(sm_states.o)
-    0x00027a41   0x00000004   Data   RO         9204    .rodata.CSWTCH.56   lib_ble_5-0_host_peripheral_cm4.a(sm_states.o)
-    0x00027a45   0x00000007   Data   RO         8948    .rodata.CSWTCH.59   lib_ble_QN908XC_controller.a(llm.o)
-    0x00027a4c   0x0000002c   Data   RO         9110    .rodata.bigHexP256  lib_ble_QN908XC_controller.a(ecc_p256.o)
-    0x00027a78   0x00000084   Data   RO         9111    .rodata.ecc_Jacobian_InfinityPoint256  lib_ble_QN908XC_controller.a(ecc_p256.o)
-    0x00027afc   0x00000002   Data   RO         8437    .rodata.gActiveDevicesEntrySize  lib_ble_5-0_host_peripheral_cm4.a(device_db.o)
-    0x00027afe   0x00000002   Data   RO         8484    .rodata.gAttConnEntrySize  lib_ble_5-0_host_peripheral_cm4.a(att.o)
-    0x00027b00   0x00000006   Data   RO         9129    .rodata.h4tl_msgtype2hdrlen  lib_ble_QN908XC_controller.a(h4tl.o)
-    0x00027b06   0x00000002   PAD
-    0x00027b08   0x00000030   Data   RO         9386    .rodata.hci_cmd_desc_root_tab  lib_ble_QN908XC_controller.a(hci_msg.o)
-    0x00027b38   0x00000270   Data   RO         9387    .rodata.hci_cmd_desc_tab_le  lib_ble_QN908XC_controller.a(hci_msg.o)
-    0x00027da8   0x00000008   Data   RO         8527    .rodata.llc_default_handler  lib_ble_QN908XC_controller.a(llc_task.o)
-    0x00027db0   0x00000090   Data   RO         8528    .rodata.llc_default_state  lib_ble_QN908XC_controller.a(llc_task.o)
-    0x00027e40   0x000000d0   Data   RO         9060    .rodata.llcp_pdu_handler  lib_ble_QN908XC_controller.a(llc_llcp.o)
-    0x00027f10   0x00000138   Data   RO         9380    .rodata.lld_pdu_llcp_pk_desc_tab  lib_ble_QN908XC_controller.a(lld_pdu.o)
-    0x00028048   0x00000008   Data   RO         8489    .rodata.llm_default_handler  lib_ble_QN908XC_controller.a(llm_task.o)
-    0x00028050   0x00000040   Data   RO         8490    .rodata.llm_default_state  lib_ble_QN908XC_controller.a(llm_task.o)
-    0x00028090   0x000001a0   Data   RO         8965    .rodata.llm_hci_command_handler_tab  lib_ble_QN908XC_controller.a(llm_hci.o)
-    0x00028230   0x00000078   Data   RO         9205    .rodata.smStateTable  lib_ble_5-0_host_peripheral_cm4.a(sm_states.o)
-    0x000282a8   0x00000019   Data   RO         9206    .rodata.smpLeLegacyIoCapToPairingMethodTable  lib_ble_5-0_host_peripheral_cm4.a(sm_states.o)
-    0x000282c1   0x00000019   Data   RO         9207    .rodata.smpLeScIoCapToPairingMethodTable  lib_ble_5-0_host_peripheral_cm4.a(sm_states.o)
-    0x000282da   0x0000000b   Data   RO         9208    .rodata.smpOpcodeToKeyDistBitMaskTable.9932  lib_ble_5-0_host_peripheral_cm4.a(sm_states.o)
-    0x000282e5   0x0000000f   Data   RO         9350    .rodata.smpPacketTypeLengthTable  lib_ble_5-0_host_peripheral_cm4.a(sm_packet_op.o)
-    0x000282f4   0x00000034   Data   RO         9381    .rodata.str1.1      lib_ble_QN908XC_controller.a(lld_pdu.o)
-    0x00028328   0x0000005b   Data   RO         9388    .rodata.str1.1      lib_ble_QN908XC_controller.a(hci_msg.o)
-    0x00028383   0x00000001   PAD
-    0x00028384   0x00000050   Data   RO         9112    .rodata.veryBigHexP256  lib_ble_QN908XC_controller.a(ecc_p256.o)
-    0x000283d4   0x00000030   Data   RO         9801    Region$$Table       anon$$obj.o
-    0x00028404   0x00000003   Data   RO         4277    VERSION_TAGS        ble_globals.o
+    0x00027820   0x0000000e   Data   RO         7120    .constdata          iic_user.o
+    0x0002782e   0x00000002   PAD
+    0x00027830   0x00000052   Data   RO         7351    .constdata          led_user.o
+    0x00027882   0x00000002   PAD
+    0x00027884   0x00000002   Data   RO         7511    .constdata          timer_user.o
+    0x00027886   0x00000002   PAD
+    0x00027888   0x00000012   Data   RO         7660    .constdata          batcharge_user.o
+    0x0002789a   0x00000002   PAD
+    0x0002789c   0x00000006   Data   RO         7784    .constdata          load_user.o
+    0x000278a2   0x00000006   PAD
+    0x000278a8   0x00000088   Data   RO         9398    .constdata          m_wm.l(pow.o)
+    0x00027930   0x00000008   Data   RO         9746    .constdata          m_wm.l(qnan.o)
+    0x00027938   0x0000000a   Data   RO          681    .conststring        fsl_os_abstraction_bm.o
+    0x00027942   0x00000002   PAD
+    0x00027944   0x00000009   Data   RO         1251    .conststring        app_config.o
+    0x0002794d   0x00000003   PAD
+    0x00027950   0x00000012   Data   RO         2294    .conststring        serialmanager.o
+    0x00027962   0x00000002   PAD
+    0x00027964   0x00000009   Data   RO         2969    .conststring        timersmanager.o
+    0x0002796d   0x00000003   PAD
+    0x00027970   0x0000000a   Data   RO         3860    .conststring        ble_host_tasks.o
+    0x0002797a   0x00000002   PAD
+    0x0002797c   0x0000000f   Data   RO         3996    .conststring        ble_controller_task.o
+    0x0002798b   0x00000001   PAD
+    0x0002798c   0x00000004   Data   RO         8587    .rodata             lib_crypto_m4.a(ecdh.o)
+    0x00027990   0x00000004   Data   RO         9128    .rodata             lib_ble_QN908XC_controller.a(h4tl.o)
+    0x00027994   0x00000080   Data   RO         9151    .rodata             lib_crypto_m4.a(ec_p_256.o)
+    0x00027a14   0x00000014   Data   RO         9319    .rodata             lib_ble_5-0_host_peripheral_cm4.a(sm_crypto.o)
+    0x00027a28   0x00000010   Data   RO         9245    .rodata.BASE_UUID   lib_ble_5-0_host_peripheral_cm4.a(gatt_db_att.o)
+    0x00027a38   0x00000019   Data   RO         9203    .rodata.CSWTCH.14   lib_ble_5-0_host_peripheral_cm4.a(sm_states.o)
+    0x00027a51   0x00000004   Data   RO         9204    .rodata.CSWTCH.56   lib_ble_5-0_host_peripheral_cm4.a(sm_states.o)
+    0x00027a55   0x00000007   Data   RO         8948    .rodata.CSWTCH.59   lib_ble_QN908XC_controller.a(llm.o)
+    0x00027a5c   0x0000002c   Data   RO         9110    .rodata.bigHexP256  lib_ble_QN908XC_controller.a(ecc_p256.o)
+    0x00027a88   0x00000084   Data   RO         9111    .rodata.ecc_Jacobian_InfinityPoint256  lib_ble_QN908XC_controller.a(ecc_p256.o)
+    0x00027b0c   0x00000002   Data   RO         8437    .rodata.gActiveDevicesEntrySize  lib_ble_5-0_host_peripheral_cm4.a(device_db.o)
+    0x00027b0e   0x00000002   Data   RO         8484    .rodata.gAttConnEntrySize  lib_ble_5-0_host_peripheral_cm4.a(att.o)
+    0x00027b10   0x00000006   Data   RO         9129    .rodata.h4tl_msgtype2hdrlen  lib_ble_QN908XC_controller.a(h4tl.o)
+    0x00027b16   0x00000002   PAD
+    0x00027b18   0x00000030   Data   RO         9386    .rodata.hci_cmd_desc_root_tab  lib_ble_QN908XC_controller.a(hci_msg.o)
+    0x00027b48   0x00000270   Data   RO         9387    .rodata.hci_cmd_desc_tab_le  lib_ble_QN908XC_controller.a(hci_msg.o)
+    0x00027db8   0x00000008   Data   RO         8527    .rodata.llc_default_handler  lib_ble_QN908XC_controller.a(llc_task.o)
+    0x00027dc0   0x00000090   Data   RO         8528    .rodata.llc_default_state  lib_ble_QN908XC_controller.a(llc_task.o)
+    0x00027e50   0x000000d0   Data   RO         9060    .rodata.llcp_pdu_handler  lib_ble_QN908XC_controller.a(llc_llcp.o)
+    0x00027f20   0x00000138   Data   RO         9380    .rodata.lld_pdu_llcp_pk_desc_tab  lib_ble_QN908XC_controller.a(lld_pdu.o)
+    0x00028058   0x00000008   Data   RO         8489    .rodata.llm_default_handler  lib_ble_QN908XC_controller.a(llm_task.o)
+    0x00028060   0x00000040   Data   RO         8490    .rodata.llm_default_state  lib_ble_QN908XC_controller.a(llm_task.o)
+    0x000280a0   0x000001a0   Data   RO         8965    .rodata.llm_hci_command_handler_tab  lib_ble_QN908XC_controller.a(llm_hci.o)
+    0x00028240   0x00000078   Data   RO         9205    .rodata.smStateTable  lib_ble_5-0_host_peripheral_cm4.a(sm_states.o)
+    0x000282b8   0x00000019   Data   RO         9206    .rodata.smpLeLegacyIoCapToPairingMethodTable  lib_ble_5-0_host_peripheral_cm4.a(sm_states.o)
+    0x000282d1   0x00000019   Data   RO         9207    .rodata.smpLeScIoCapToPairingMethodTable  lib_ble_5-0_host_peripheral_cm4.a(sm_states.o)
+    0x000282ea   0x0000000b   Data   RO         9208    .rodata.smpOpcodeToKeyDistBitMaskTable.9932  lib_ble_5-0_host_peripheral_cm4.a(sm_states.o)
+    0x000282f5   0x0000000f   Data   RO         9350    .rodata.smpPacketTypeLengthTable  lib_ble_5-0_host_peripheral_cm4.a(sm_packet_op.o)
+    0x00028304   0x00000034   Data   RO         9381    .rodata.str1.1      lib_ble_QN908XC_controller.a(lld_pdu.o)
+    0x00028338   0x0000005b   Data   RO         9388    .rodata.str1.1      lib_ble_QN908XC_controller.a(hci_msg.o)
+    0x00028393   0x00000001   PAD
+    0x00028394   0x00000050   Data   RO         9112    .rodata.veryBigHexP256  lib_ble_QN908XC_controller.a(ecc_p256.o)
+    0x000283e4   0x00000030   Data   RO         9801    Region$$Table       anon$$obj.o
+    0x00028414   0x00000003   Data   RO         4277    VERSION_TAGS        ble_globals.o
 
 
     Execution Region INT_STORAGE (Base: 0x0007c800, Size: 0x00000000, Max: 0x00000000, ABSOLUTE)
@@ -12594,10 +12596,10 @@ Image component sizes
        320         44          0          4          0      11001   tmr_adapter.o
        762         64          0         20          0      43832   uart_adapter.o
        798        126          0         40        160      14009   userapp.o
-      8986       1274          0         85         60      63419   workmode.o
+      8998       1274          0         85         60      63427   workmode.o
 
     ----------------------------------------------------------------------
-     52018       6998       1288       2860      36936    1981396   Object Totals
+     52030       6998       1288       2860      36936    1981404   Object Totals
       1420          0         48          0      10644          0   (incl. Generated)
         48          0         34         29          7          0   (incl. Padding)
 
@@ -12713,8 +12715,8 @@ Image component sizes
        110          0          0          0          0        168   fepilogue.o
 
     ----------------------------------------------------------------------
-    108562       6884       2792         36       2544       7476   Library Totals
-        92          0          3          5         45          0   (incl. Padding)
+    108566       6888       2792         36       2544       7476   Library Totals
+        96          4          3          5         45          0   (incl. Padding)
 
     ----------------------------------------------------------------------
 
@@ -12728,7 +12730,7 @@ Image component sizes
       1812          0          0          0          0       1696   mf_w.l
 
     ----------------------------------------------------------------------
-    108562       6884       2792         36       2544       7476   Library Totals
+    108566       6888       2792         36       2544       7476   Library Totals
 
     ----------------------------------------------------------------------
 
@@ -12737,15 +12739,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-    160580      13882       4080       2896      39480    1940492   Grand Totals
-    160580      13882       4080       2896      39480    1940492   ELF Image Totals
-    160580      13882       4080       2896          0          0   ROM Totals
+    160596      13886       4080       2896      39480    1940500   Grand Totals
+    160596      13886       4080       2896      39480    1940500   ELF Image Totals
+    160596      13886       4080       2896          0          0   ROM Totals
 
 ==============================================================================
 
-    Total RO  Size (Code + RO Data)               164660 ( 160.80kB)
+    Total RO  Size (Code + RO Data)               164676 ( 160.82kB)
     Total RW  Size (RW Data + ZI Data)             42376 (  41.38kB)
-    Total ROM Size (Code + RO Data + RW Data)     167556 ( 163.63kB)
+    Total ROM Size (Code + RO Data + RW Data)     167572 ( 163.64kB)
 
 ==============================================================================
 
