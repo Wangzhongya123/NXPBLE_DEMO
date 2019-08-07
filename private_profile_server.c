@@ -229,26 +229,29 @@ void BleApp_HandleKeys(key_event_t events)
             for (i = 0; i < gAppMaxConnections_c; i++)
             {
 				if(mAdvState.advOn)
+				{
 					Gap_StopAdvertising();
-				
+					mAdvState.advOn = FALSE;
+					mRestartAdv = TRUE;
+				}
+
 				if (mPeerInformation[i].deviceId != gInvalidDeviceId_c)
+				{
 					Gap_Disconnect(mPeerInformation[i].deviceId);
-				
-				Bas_Unsubscribe(&basServiceConfig, i);
-				/* qpps Unsubscribe client */
-				Qpp_Unsubscribe();
-				ECig_Unsubscribe();
-				mPeerInformation[i].bytsReceivedPerInterval = 0;
-				mPeerInformation[i].bytsSentPerInterval = 0;
-				mPeerInformation[i].ntf_cfg = QPPS_VALUE_NTF_OFF;
-				mPeerInformation[i].deviceId = gInvalidDeviceId_c;
-				
-				TMR_StopTimer(mBatteryMeasurementTimerId);
-                //TMR_StopTimer(mQppsThroughputStatisticsTimerId);
-				
-				mPeerInformation[i].deviceId= gInvalidDeviceId_c;
-				mAdvState.advOn = FALSE;
-				mRestartAdv = TRUE;
+					Bas_Unsubscribe(&basServiceConfig, i);
+					/* qpps Unsubscribe client */
+					Qpp_Unsubscribe();
+					ECig_Unsubscribe();
+					mPeerInformation[i].bytsReceivedPerInterval = 0;
+					mPeerInformation[i].bytsSentPerInterval = 0;
+					mPeerInformation[i].ntf_cfg = QPPS_VALUE_NTF_OFF;
+					mPeerInformation[i].deviceId = gInvalidDeviceId_c;
+					
+					TMR_StopTimer(mBatteryMeasurementTimerId);
+					//TMR_StopTimer(mQppsThroughputStatisticsTimerId);
+					
+					mPeerInformation[i].deviceId= gInvalidDeviceId_c;				
+				}	
             }
             break;
         }

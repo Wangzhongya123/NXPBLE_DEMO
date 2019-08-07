@@ -318,7 +318,7 @@ WORK_MODE CheckWorkMode(void)
 			Sec_Flag = 0;
 
 			LoadRESTest_EN();	
-			//delay_bybletask(20);
+			delay_bybletask(20);
 			error_code = CalculateResistant_Value(&res,&ntc_res);
 
 			memset(str,'\0',15);
@@ -332,6 +332,9 @@ WORK_MODE CheckWorkMode(void)
 			ret = dps310_get_processed_data(&drv_state,&pressure,&temperature);
 			memset(DPS310_Send_Str,'\0',SENDDATA_NUMBER);
 			sprintf(DPS310_Send_Str,"%.3fhPa %.2fC", (float)pressure,(float)temperature);	
+			//sprintf(DPS310_Send_Str,"%c%c%cP%c:%c%.3f%c,%cT%c:%c%.2f%c%c%c", \
+			'[','{','"','"','"',(float)pressure,'"','"','"','"',(float)temperature,'"','}',']');	
+			//sprintf(DPS310_Send_Str,"[{\"P\":\"%.3f\"}]",(float)pressure);	
 			DPS310SentDataToAir((char *)DPS310_Send_Str);		
 		}
 
@@ -1302,7 +1305,7 @@ Smokemode_ERROR Mode_Smoke_Work(void)
 			_send_power_data = 0;
 			
 			memset(SmokePower_Send_Str,'\0',SmokePower_SENDDATA_NUMBER);
-			sprintf(SmokePower_Send_Str,"%.2f W",TargerPower);	
+			sprintf(SmokePower_Send_Str,"%.2f",TargerPower);	
 			SmokePower_DataToAir((char *)SmokePower_Send_Str);	
 		}
 
@@ -1624,6 +1627,10 @@ void Mode_Sleep_Work(void)
 	#endif	
 	
 	LED_All_Off();
+	
+	BleApp_HandleKeys(gKBD_EventLongPB1_c);	
+	delay_bybletask(200);
+	
 	if(OnOffPowerByKey==1)//开机状态到睡眠时闪灯，如果从关机模式进入睡眠不闪灯	,只有按键关机才闪灯，自然关机不闪灯		
 	{
 		switch (Volt_Class)
@@ -1878,8 +1885,8 @@ void ReadyForSleepMode(void)
 	uint32_t msk, val;
 	
 	BleApp_HandleKeys(gKBD_EventLongPB1_c);	
-	dps310_standby(&drv_state);		
 	
+	dps310_standby(&drv_state);		
 	LED_All_Off();
 	Smoke_Flag = DISABLED;	
 	PWMOUT_DIS();

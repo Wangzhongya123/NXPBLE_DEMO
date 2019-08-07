@@ -119,10 +119,12 @@ static float ADC_Channel_Result(unsigned char ADC_CHANNEL)
 	#endif	
 
 	fresult = ADC_ConversionResult2Mv(ADC, ADC_CHANNEL, USER_DEFAULT_ADC_CFG_IDX, vref, g_AdcVinn,adcConvResult);	
-	
+		
 	if(fresult<0)
 		fresult = 0;
-		
+	
+	ADC_Enable(ADC, false);	
+	
 	return fresult;
 }
 

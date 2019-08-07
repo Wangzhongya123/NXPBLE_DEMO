@@ -183,7 +183,8 @@ void BOD_init(void)
     RESET_ClearResetSource();
 	
     BOD_GetDefaultConfig(&config);
-    config.int_thr = kBOD_InterruptThreshold2; /*2.72V   低压中断值*/
+    //config.int_thr = kBOD_InterruptThreshold2; /*2.72V   低压中断值*/
+	config.int_thr = kBOD_InterruptThreshold1; /*2.45V   低压中断值*/
     config.reset_thr = kBOD_ResetThreshold2;   /*2.0V	低压复位值 */
 
     /*Init BOD module*/

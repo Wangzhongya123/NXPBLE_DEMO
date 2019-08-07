@@ -8,7 +8,7 @@
 *************************************************************************************/
 
 /* Parameters */
-#define SENDDATA_NUMBER  30   /*传送的字符串的长度*/
+#define SENDDATA_NUMBER  32   /*传送的字符串的长度*/
 #define RECEIVEDATA_NUMBER  30   /*传送的字符串的长度*/
 #define SmokePower_SENDDATA_NUMBER  8 
 #define SmokeEnergy_SENDDATA_NUMBER  10 
