@@ -214,15 +214,17 @@ void BleApp_HandleKeys(key_event_t events)
     {
         case gKBD_EventPressPB1_c:
         {
-            for (i = 0; i < gAppMaxConnections_c; i++)
-            {
-              if (mPeerInformation[i].deviceId == gInvalidDeviceId_c)
-                break;
-            }
-			
-            if(i < gAppMaxConnections_c)
-              BleApp_Start();
-            break;
+			for (i = 0; i < gAppMaxConnections_c; i++)
+			{
+			  if (mPeerInformation[i].deviceId == gInvalidDeviceId_c)
+				break;
+			}
+
+			if(i < gAppMaxConnections_c)
+			{
+				mRestartAdv = TRUE;
+				BleApp_Start();			
+			} break; 
         }
         case gKBD_EventLongPB1_c:
         {
@@ -248,9 +250,7 @@ void BleApp_HandleKeys(key_event_t events)
 					mPeerInformation[i].deviceId = gInvalidDeviceId_c;
 					
 					TMR_StopTimer(mBatteryMeasurementTimerId);
-					//TMR_StopTimer(mQppsThroughputStatisticsTimerId);
-					
-					mPeerInformation[i].deviceId= gInvalidDeviceId_c;				
+					//TMR_StopTimer(mQppsThroughputStatisticsTimerId);			
 				}	
             }
             break;
@@ -408,12 +408,10 @@ static void BleApp_AdvertisingCallback (gapAdvertisingEvent_t* pAdvertisingEvent
                 break;
             }
 
-            //LED_StopFlashingAllLeds();//modify by wzy
-            //Led1Flashing();//modify by wzy
-			
             if(!mAdvState.advOn)
             {
-                //Led2Flashing();//Led3Flashing();//Led4Flashing();//modify by wzy
+               	CTIMER_StopTimer(CTIMER3);//modify by wzy
+				TEST_LED_Pin_Init();//modify by wzy
             }
             else
             {
@@ -541,9 +539,7 @@ static void BleApp_ConnectionCallback (deviceId_t peerDeviceId, gapConnectionEve
 
 			CTIMER_StopTimer(CTIMER3);//modify by wzy
 			TEST_LED_Pin_Init();//modify by wzy
-			//Time3_Init(2);//start led  //modify by wzy
 
-			
             for (uint8_t i = 0; i < gAppMaxConnections_c; i++)
             {
                 if(mPeerInformation[i].deviceId != gInvalidDeviceId_c)

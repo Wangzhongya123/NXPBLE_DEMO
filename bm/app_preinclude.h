@@ -36,7 +36,7 @@
  * 	App Configuration
  ********************************************************************************** */
  /*! Number of connections supported by the application */
-#define gAppMaxConnections_c   2
+#define gAppMaxConnections_c   1        //modify by wzy  default = 2
 /*! Enable/disable use of bonding capability */
 #define gAppUseBonding_d   0
 
